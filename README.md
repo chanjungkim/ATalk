@@ -1,5 +1,5 @@
 # 스마트문화콘텐츠 웹 & 앱개발 과정, 첫 프로젝트 #
-
+[과정 Summary 보기](https://chanjungkim.github.io/study/androidstudy/)
 * ##### 3팀
 * ##### 팀장: [김찬중](https://www.linkedin.com/in/chanjungkim/)
 * ##### 팀원: [장진영](https://github.com/jinyoung1105), [최정호](https://github.com/odoria), [홍준완](https://github.com/hongjunwan) 
