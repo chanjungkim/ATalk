@@ -1,4 +1,4 @@
-# 스마트문화콘텐츠 웹 & 앱개발 과정 3팀
+=== 스마트문화콘텐츠 웹 & 앱개발 과정 3팀 ===
 ## 3팀
 ## [김찬중](https://github.com/chanjungkim), [장진영](https://github.com/jinyoung1105), [최정호](https://github.com/odoria), [홍준완](https://github.com/hongjunwan) 
 ## 주제: (프로그래머 / 직장인을 위한) 채팅 프로그램
