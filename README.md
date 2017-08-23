@@ -1,7 +1,7 @@
 # 스마트문화콘텐츠 웹 & 앱개발 과정, 첫 프로젝트#
 
 ##### 3팀
-##### 팀원: [김찬중](https://github.com/chanjungkim), [장진영](https://github.com/jinyoung1105), [최정호](https://github.com/odoria), [홍준완](https://github.com/hongjunwan) 
+##### 팀원: [김찬중](https://www.linkedin.com/in/chanjungkim/), [장진영](https://github.com/jinyoung1105), [최정호](https://github.com/odoria), [홍준완](https://github.com/hongjunwan) 
 ##### 주제: (프로그래머 / 직장인을 위한) 채팅 프로그램
 ##### 사용 언어: JAVA
 ##### 프로젝트 기간: 2017년 8월 7일 ~ 미정 (한 달 예정)
