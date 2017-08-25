@@ -92,7 +92,7 @@ public class LogIn extends JFrame{
 		
 		setTitle("ATalk");
 		
-		setSize(400, 300);
+		setSize(700, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
 		setVisible(true);
