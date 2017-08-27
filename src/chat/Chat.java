@@ -134,7 +134,7 @@ public class Chat extends JFrame{
 		
 		leftBottomPanel.setSize(500, 800);
 		typeAreaPanel.setSize(500, 800);
-		setSize(1000, 800);
+		setSize(700, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
