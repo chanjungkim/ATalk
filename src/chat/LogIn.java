@@ -1,13 +1,17 @@
 package chat;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,13 +37,13 @@ public class LogIn extends JFrame{
 		accountPanel = new JPanel();
 		anotherPanel = new JPanel();
 		
-		ImageIcon facebook = new ImageIcon("C:\\Users\\Public\\Pictures\\Sample Pictures\\펭귄.jpg");
-		JLabel fbLabel = new JLabel();
-		fbLabel.setIcon(facebook);
-		
-		ImageIcon google = new ImageIcon("C:\\Users\\Public\\Pictures\\Sample Pictures\\수국.jpg");
-		JLabel ggLabel = new JLabel();
-		fbLabel.setIcon(google);
+//		ImageIcon facebook = new ImageIcon("C:\\Users\\Public\\Pictures\\Sample Pictures\\펭귄.jpg");
+//		JLabel fbLabel = new JLabel();
+//		fbLabel.setIcon(facebook);
+//		
+//		ImageIcon google = new ImageIcon("C:\\Users\\Public\\Pictures\\Sample Pictures\\수국.jpg");
+//		JLabel ggLabel = new JLabel();
+//		fbLabel.setIcon(google);
 		
 		idField = new JTextField(15);
 		pwField = new JTextField(15);
@@ -97,10 +101,32 @@ public class LogIn extends JFrame{
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if(e.getKeyChar()==e.VK_ENTER){
-					System.out.println("로그인 화면으로 넘어갑니다...");
 					if(idField.getText().equals(MY_ID) & pw.equals(MY_PW)){
+						System.out.println("로그인 화면으로 넘어갑니다...");
 						dispose();
 						Chat chatFrame = new Chat();
+					}else{
+						JDialog dialog = new JDialog();
+						JPanel errorPanel = new JPanel();
+						JButton check = new JButton("확인");
+						JLabel message = new JLabel("아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주세요.");
+						
+						check.addActionListener(new ActionListener(){
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								dialog.dispose();
+							}
+						});
+						errorPanel.setLayout(new BorderLayout());
+						
+						errorPanel.add(message, "Center");
+						errorPanel.add(check, "South");
+	
+						dialog.add(errorPanel);
+						
+						dialog.pack();
+						dialog.setTitle("ERROR!!");
+						dialog.setVisible(true);
 					}
 				}else if(e.getKeyChar()==e.VK_BACK_SPACE){
 					pw=pw.substring(0, pw.length()-1);
@@ -118,17 +144,18 @@ public class LogIn extends JFrame{
 		});
 		
 		accountPanel.setLayout(new BoxLayout(accountPanel, 1));
-		panel.setLayout(new BoxLayout(panel, 1));
+		panel.setLayout(new BorderLayout());
 
 		namePanel.add(lb);
 		accountPanel.add(idField);
 		accountPanel.add(pwField);
-		anotherPanel.add(fbLabel);
-		anotherPanel.add(ggLabel);
 		
-		panel.add(anotherPanel);
-		panel.add(namePanel);
-		panel.add(accountPanel);
+//		anotherPanel.add(fbLabel);
+//		anotherPanel.add(ggLabel);
+
+		panel.add(namePanel, "North");
+		panel.add(accountPanel, "Center");
+		panel.add(anotherPanel, "South");
 		
 		add(panel);
 		
