@@ -21,8 +21,8 @@ public class LogIn extends JFrame{
 	private JLabel lb;
 	private JTextField idField;
 	private JTextField pwField;
-	private String id;
-	private String pw;
+	private String id="";
+	private String pw="";
 	
 	public LogIn() {
 		panel = new JPanel();
@@ -93,12 +93,19 @@ public class LogIn extends JFrame{
 			}
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if(e.getKeyCode()==e.VK_ENTER){
-					// Try to Log in
-				}else if(e.getKeyCode()==e.VK_ESCAPE){
-					pw.substring(0, pw.length()-1);
+				if(e.getKeyChar()==e.VK_ENTER){
+					System.out.println("로그인 화면");
+				}else if(e.getKeyChar()==e.VK_BACK_SPACE){
+					pw=pw.substring(0, pw.length()-1);
+					System.out.println("변경된 패스워드: "+pw);
 				}else{
-					// change it to star
+					String stars = "";
+					
+					pw+=e.getKeyChar();
+					for(int i = 0 ; i < pw.length()-1; i++) stars+="*";
+					
+					pwField.setText(stars);
+					System.out.println("추가된 패스워드: "+pw);
 				}
 			}
 		});
