@@ -94,13 +94,13 @@ public class LogIn extends JFrame{
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if(e.getKeyChar()==e.VK_ENTER){
-					System.out.println("로그인 화면");
+					System.out.println("로그인 화면으로 넘어갑니다...");
 				}else if(e.getKeyChar()==e.VK_BACK_SPACE){
 					pw=pw.substring(0, pw.length()-1);
 					System.out.println("변경된 패스워드: "+pw);
 				}else{
 					String stars = "";
-					
+
 					pw+=e.getKeyChar();
 					for(int i = 0 ; i < pw.length()-1; i++) stars+="*";
 					
