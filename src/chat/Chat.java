@@ -8,6 +8,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 import javax.swing.BoxLayout;
@@ -47,11 +49,15 @@ public class Chat extends JFrame{
 		typeAreaPanel = new JPanel();
 		leftTopPanel = new JPanel();
 		leftBottomPanel = new JPanel();
-				
+		
 		leftPanel = new JPanel();
+		leftPanel.setToolTipText("<는 뒤로가기를 뜻합니다. 현재 로그아웃처럼 로그인화면으로 빠져나갑니다. 가운데는 유저 리스트를 보여주고 맨 하단은 마이크 설정을 보여줍니다.");
 		rightPanel = new JPanel();
+		messageField.setToolTipText("메시지 창은 Edit할 수 없습니다. Typing하는 곳에 /help 혹은 /code을 치면 Bot이 대답합니다. 글이 많으면 스크롤이 활성화됩니다.");
 		
 		// Function
+		messageField.setEditable(false);
+		
 		backBtn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -99,8 +105,34 @@ public class Chat extends JFrame{
 							System.out.println("need some help?");
 							break;
 						case "code":
-							messageField.setText(messageField.getText()+"\nBot:\n1: class Main{\n2:     public static void main(String[] args){\n3:       System.out.println(\"Hello, World!\");\n4:    }\n6: }");
+							if(st.hasMoreTokens()){
+								String type = st.nextToken();
+								switch(type){
+								case "java":
+									messageField.setText(messageField.getText()+"\natalk:\n1: class Main{\n2:     public static void main(String[] args){\n3:       System.out.println(\"Hello, World!\");\n4:     }\n5: }");
+									break;
+								case "python":
+									messageField.setText(messageField.getText()+"\natalk:\n1:print('Hello, World!')");
+									break;
+								default:
+									messageField.setText(messageField.getText()+"\natalk:\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }");
+									break;
+								}
+							}else{
+								messageField.setText(messageField.getText()+"\natalk:\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }");
+							}
 							System.out.println("code mode.");
+							break;
+						case "time":
+							Date dt = new Date();
+							System.out.println(dt.toString());
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, hh:mm:ss a"); 
+							
+							messageField.setText(messageField.getText()+"\nBot: It's "+sdf.format(dt).toString());
+
+							break;
+						case "sing":
+							messageField.setText(messageField.getText()+"\nBot: Row, row, row your boat, Gently down the stream, Merrily merrily, merrily, merrily Life is but a dream");
 							break;
 						default:
 							messageField.setText(messageField.getText()+"\nBot: Incorrect command.");
@@ -132,7 +164,7 @@ public class Chat extends JFrame{
 
 		// Change this area
 		userListPanel.setBackground(Color.YELLOW);
-		messageField.setBackground(Color.gray);
+		messageField.setBackground(Color.ORANGE);
 
 		// end
 		

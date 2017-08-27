@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JToolTip;
 
 public class LogIn extends JFrame{
 	private JPanel panel;
@@ -46,6 +47,7 @@ public class LogIn extends JFrame{
 //		fbLabel.setIcon(google);
 		
 		idField = new JTextField(15);
+		idField.setToolTipText("id:atalk pw:1234를 입력하면 로그인 됩니다.");
 		pwField = new JTextField(15);
 		
 		lb = new JLabel("Atalk");
