@@ -24,6 +24,9 @@ public class LogIn extends JFrame{
 	private String id="";
 	private String pw="";
 	
+	private final String MY_ID = "atalk";
+	private final String MY_PW = "1234";
+	
 	public LogIn() {
 		panel = new JPanel();
 		namePanel = new JPanel();
@@ -95,6 +98,10 @@ public class LogIn extends JFrame{
 			public void keyTyped(KeyEvent e) {
 				if(e.getKeyChar()==e.VK_ENTER){
 					System.out.println("로그인 화면으로 넘어갑니다...");
+					if(idField.getText().equals(MY_ID) & pw.equals(MY_PW)){
+						dispose();
+						Chat chatFrame = new Chat();
+					}
 				}else if(e.getKeyChar()==e.VK_BACK_SPACE){
 					pw=pw.substring(0, pw.length()-1);
 					System.out.println("변경된 패스워드: "+pw);
@@ -132,4 +139,20 @@ public class LogIn extends JFrame{
 		setResizable(true);
 		setVisible(true);
 	}
+
+//	public String getId() {
+//		return idField.getText();
+//	}
+//
+//	public String getPw() {
+//		return pw;
+//	}
+//
+//	public String getMY_ID() {
+//		return MY_ID;
+//	}
+//
+//	public String getMY_PW() {
+//		return MY_PW;
+//	}
 }
