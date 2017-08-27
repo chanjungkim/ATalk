@@ -3,7 +3,8 @@ package chat;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.IOException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -20,7 +21,9 @@ public class LogIn extends JFrame{
 	private JLabel lb;
 	private JTextField idField;
 	private JTextField pwField;
-
+	private String id;
+	private String pw;
+	
 	public LogIn() {
 		panel = new JPanel();
 		namePanel = new JPanel();
@@ -47,7 +50,9 @@ public class LogIn extends JFrame{
 		idField.addFocusListener(new FocusListener() {
 				@Override
 				public void focusGained(FocusEvent e) {
-					idField.setText("");
+					if(idField.getText().equals("Username")){
+						idField.setText("");
+					}
 				}
 	
 				@Override
@@ -63,7 +68,9 @@ public class LogIn extends JFrame{
 		pwField.addFocusListener(new FocusListener() {
 				@Override
 				public void focusGained(FocusEvent e) {
-					pwField.setText("");
+					if(pwField.getText().equals("Password")){
+						pwField.setText("");
+					}
 				}
 	
 				@Override
@@ -73,6 +80,27 @@ public class LogIn extends JFrame{
 						pwField.setText("Password");
 					}
 				}
+		});
+		
+		pwField.addKeyListener(new KeyListener(){
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(e.getKeyCode()==e.VK_ENTER){
+					// Try to Log in
+				}else if(e.getKeyCode()==e.VK_ESCAPE){
+					pw.substring(0, pw.length()-1);
+				}else{
+					// change it to star
+				}
+			}
 		});
 		
 		accountPanel.setLayout(new BoxLayout(accountPanel, 1));
