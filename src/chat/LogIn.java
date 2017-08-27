@@ -104,7 +104,7 @@ public class LogIn extends JFrame{
 			public void keyTyped(KeyEvent e) {
 				if(e.getKeyChar()==e.VK_ENTER){
 					if(idField.getText().equals(MY_ID) & pw.equals(MY_PW)){
-						System.out.println("로그인 화면으로 넘어갑니다...");
+						System.out.println("로그인 중...");
 						dispose();
 						Chat chatFrame = new Chat();
 					}else{

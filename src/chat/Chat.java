@@ -101,7 +101,7 @@ public class Chat extends JFrame{
 					if(commandChecker.charAt(0) =='/'){
 						switch(commandChecker.substring(1, commandChecker.length())){
 						case "help":
-							messageField.setText(messageField.getText()+"\nBot: need some help?");
+							messageField.setText(messageField.getText()+"\nBot: need some help?\nThese commands are available now: \n/help: Show command list. \n/code (java/python): code mode \n/sing: Bot sings\n/time: Show current time");
 							System.out.println("need some help?");
 							break;
 						case "code":
