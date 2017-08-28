@@ -153,6 +153,20 @@ public class Chat extends JFrame{
 			}
 		});
 		
+		mic.addActionListener(new ActionListener() {
+			int i = 0;
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(i == 0) {
+					System.out.println("마이크가 음소거 되었습니다.");
+					i+=1;
+				}else {
+					System.out.println("마이크가 활성화 되었습니다.");
+					i=0;
+				}
+			}
+		});
+		
 		// Layout
 		messagesAreaPanel.setLayout(new BorderLayout());
 		messageField.setLayout(new BorderLayout());
@@ -191,6 +205,9 @@ public class Chat extends JFrame{
 		panel.add(rightPanel, "Center");
 		add(panel);
 		
+		
+		// Definition
+		setTitle("ATalk");
 		leftBottomPanel.setSize(500, 800);
 		typeAreaPanel.setSize(500, 800);
 		setSize(700, 500);
