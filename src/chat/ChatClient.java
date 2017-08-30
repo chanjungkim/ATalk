@@ -236,25 +236,25 @@ public class ChatClient extends JFrame{
 					if(commandChecker.charAt(0) =='/'){
 						switch(commandChecker.substring(1, commandChecker.length())){
 						case "help":
-							messageField.setText(messageField.getText()+"\nBot: need some help?\nThese commands are available now: \n/help: Show command list. \n/code ((none)/java/python): code mode(default is 'c'.) \n/sing: Bot sings\n/time: Show current time");
-							System.out.println("need some help?");
+							messageField.setText(messageField.getText()+"\nBot: need some help?\nThese commands are available now: \n/help: Show command list. \n/code ((none)/java/python): code mode(default is 'c'.) \n/sing: Bot sings\n/time: Show current time\n");
+							System.out.println("need some help?\n");
 							break;
 						case "code":
 							if(st.hasMoreTokens()){
 								String type = st.nextToken();
 								switch(type){
 								case "java":
-									messageField.setText(messageField.getText()+"\n"+nickPart+"\n1: class Main{\n2:     public static void main(String[] args){\n3:       System.out.println(\"Hello, World!\");\n4:     }\n5: }");
+									messageField.setText(messageField.getText()+"\n"+nickPart+"\n1: class Main{\n2:     public static void main(String[] args){\n3:       System.out.println(\"Hello, World!\");\n4:     }\n5: }\n");
 									break;
 								case "python":
-									messageField.setText(messageField.getText()+"\n"+nickPart+"\n1:print('Hello, World!')");
+									messageField.setText(messageField.getText()+"\n"+nickPart+"\n1:print('Hello, World!')\n");
 									break;
 								default:
-									messageField.setText(messageField.getText()+"\n1"+nickPart+"\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }");
+									messageField.setText(messageField.getText()+"\n1"+nickPart+"\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }\n");
 									break;
 								}
 							}else{
-								messageField.setText(messageField.getText()+"\n"+nickPart+"\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }");
+								messageField.setText(messageField.getText()+"\n"+nickPart+"\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }\n");
 							}
 							System.out.println("code mode.");
 							break;
@@ -263,14 +263,14 @@ public class ChatClient extends JFrame{
 							System.out.println(dt.toString());
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, hh:mm:ss a"); 
 							
-							messageField.setText(messageField.getText()+"\nBot: It's "+sdf.format(dt).toString());
+							messageField.setText(messageField.getText()+"\nBot: It's "+sdf.format(dt).toString()+"\n");
 
 							break;
 						case "sing":
-							messageField.setText(messageField.getText()+"\nBot: Row, row, row your boat, Gently down the stream, Merrily merrily, merrily, merrily Life is but a dream");
+							messageField.setText(messageField.getText()+"\nBot: Row, row, row your boat, Gently down the stream, Merrily merrily, merrily, merrily Life is but a dream\n");
 							break;
 						default:
-							messageField.setText(messageField.getText()+"\nBot: Incorrect command.");
+							messageField.setText(messageField.getText()+"\nBot: Incorrect command.\n");
 						}
 						
 						if(st.hasMoreTokens()){
