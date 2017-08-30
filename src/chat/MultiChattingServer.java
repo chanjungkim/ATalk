@@ -9,13 +9,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
  
 // 서버는 클라이언트의 수만큼 쓰레드를 리스트에 유지하고
 // 클라이언트가 추가 될때마다 소켓을 생성하여 쓰레드에게 전달함.
-public class MultiChattingServer {
+public class MultiChattingServer extends JFrame{
     private ServerSocket serverSocket;
     private List<ChattingThread> threadList;
-     
+    private JPanel panel = new JPanel();
+    private JLabel lb = new JLabel("서버 실행중...");
     // 서버 생성자
     public MultiChattingServer() {
         threadList = new ArrayList<>();
@@ -36,6 +41,12 @@ public class MultiChattingServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        panel.add(lb);
+        add(panel);
+        setTitle("서버");
+        setSize(200,100);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
     }
  
     // 서버의 리스트에 있는 모든 쓰레드에게 메세지 발송 명령해서
@@ -72,7 +83,7 @@ public class MultiChattingServer {
         public void run() {
             try {
                 nickname = br.readLine();
-                broadcast("[" + nickname + "]님이 입장하셨습니다.");
+                broadcast(nickname+"님이 입장하셨습니다.");
  
                 while (true) {
                     String msg = br.readLine();

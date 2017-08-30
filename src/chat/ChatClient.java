@@ -118,7 +118,7 @@ public class ChatClient extends JFrame{
         /////////////////////////////////////////////////////
         // 서버와의 통신을 위한 네트워크 설정 부분
         try {
-            Socket socket = new Socket(InetAddress.getByName("127.0.0.1"),5555);
+            Socket socket = new Socket(InetAddress.getByName("70.12.115.56"),5555);
              
             bw = new BufferedWriter(new OutputStreamWriter(
                     socket.getOutputStream()));
@@ -226,6 +226,9 @@ public class ChatClient extends JFrame{
         public void run() {
             try {
                 while (true) {
+                	
+                	Thread.sleep(1000);
+                	
                     String receiveMsg = br.readLine();
                     StringTokenizer st = new StringTokenizer(receiveMsg);
 					String nickPart = st.nextToken();
@@ -286,7 +289,10 @@ public class ChatClient extends JFrame{
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
  
