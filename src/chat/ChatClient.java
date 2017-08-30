@@ -96,8 +96,7 @@ public class ChatClient extends JFrame{
         /////////////////////////////////////////////////////
         // 서버와의 통신을 위한 네트워크 설정 부분
         try {
-            Socket socket = 
-                new Socket(InetAddress.getByName("127.0.0.1"),5555);
+            Socket socket = new Socket(InetAddress.getByName("127.0.0.1"),5555);
              
             bw = new BufferedWriter(new OutputStreamWriter(
                     socket.getOutputStream()));
@@ -210,7 +209,7 @@ public class ChatClient extends JFrame{
 					String text="";
 
 					if(commandChecker.charAt(0) =='/'){
-						switch(commandChecker.substring(1, commandChecker.length())){
+						switch(commandChecker.substring(2, commandChecker.length())){
 						case "help":
 							messageField.setText(messageField.getText()+"\nBot: need some help?\nThese commands are available now: \n/help: Show command list. \n/code ((none)/java/python): code mode(default is 'c'.) \n/sing: Bot sings\n/time: Show current time");
 							System.out.println("need some help?");

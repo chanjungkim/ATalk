@@ -76,7 +76,7 @@ public class MultiChattingServer {
  
                 while (true) {
                     String msg = br.readLine();
-                    broadcast(nickname + ":" + msg);
+                    broadcast(nickname + ": " + msg);
                 }
             } catch (IOException e) {
                 // 담당 클라이언트가 퇴장했을 때
