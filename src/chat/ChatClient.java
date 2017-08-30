@@ -6,8 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -36,15 +34,17 @@ public class ChatClient extends JFrame{
 	private JPanel typeAreaPanel;
 	private JPanel leftTopPanel;
 	private JPanel leftBottomPanel;
-	
+	private JPanel chatSetPanel;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
 	
 	private JButton backBtn = new JButton("<");
-	private JTextField typeField = new JTextField("Type");
-
+	
 	private JTextPane messageField = new JTextPane();
 	private JScrollPane scrollFrame;
+	
+	private JTextField typeField = new JTextField("Type");
+	private JButton chatSetBtn = new JButton("+");
 	
 	private JButton user1 = new JButton("atalk");
 	private JButton user2 = new JButton("USER-1");
@@ -53,6 +53,8 @@ public class ChatClient extends JFrame{
     private BufferedReader br;
     private BufferedWriter bw;
 	
+    private String nickname;
+    
 	public ChatClient(){
 		panel = new JPanel();
 		userListPanel = new JPanel();
@@ -61,6 +63,7 @@ public class ChatClient extends JFrame{
 		typeAreaPanel = new JPanel();
 		leftTopPanel = new JPanel();
 		leftBottomPanel = new JPanel();
+		chatSetPanel = new JPanel();
 		
 		leftPanel = new JPanel();
 		leftPanel.setToolTipText("<는 뒤로가기를 뜻합니다. 현재 로그아웃처럼 로그인화면으로 빠져나갑니다. 가운데는 유저 리스트를 보여주고 맨 하단은 마이크 설정을 보여줍니다.");
@@ -89,7 +92,26 @@ public class ChatClient extends JFrame{
 
 			}
 		});
-		
+		chatSetBtn.addActionListener(new ActionListener() {
+			int i = 0;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(i==0) {
+					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight()-5);
+					//rightPanel.add(chatSetPanel, "Center");
+					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 5);
+					chatSetBtn.setText("-");
+					i = 1;
+				}
+				else{
+					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight()+5);
+					//rightPanel.add(chatSetPanel, "Center");
+					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 0);
+					chatSetBtn.setText("+");
+					i = 0;
+				}
+			}
+		});
 		// Network
         // 이벤트 처리기(서버에게 메세지 보내는 작업) 등록
         ChattingListener listener = new ChattingListener();
@@ -103,7 +125,7 @@ public class ChatClient extends JFrame{
             br = new BufferedReader(new InputStreamReader(
                     socket.getInputStream()));
             // 서버와 연결한 후에 닉네임 입력해서 전송하기
-            String nickname = JOptionPane.showInputDialog
+            nickname = JOptionPane.showInputDialog
                     (this, "대화명 입력하세요.",JOptionPane.INFORMATION_MESSAGE);
              
             bw.write(nickname+"\n");
@@ -118,7 +140,7 @@ public class ChatClient extends JFrame{
         }
 		
         typeField.addActionListener(listener);
-
+        
 		mic.addActionListener(new ActionListener() {
 			int i = 0;
 			@Override
@@ -137,7 +159,7 @@ public class ChatClient extends JFrame{
 		messagesAreaPanel.setLayout(new BorderLayout());
 		messageField.setLayout(new BorderLayout());
 		userListPanel.setLayout(new BoxLayout(userListPanel, 1));
-		typeAreaPanel.setLayout(new BorderLayout());
+		typeAreaPanel.setLayout(new BoxLayout(typeAreaPanel, 0));
 		leftPanel.setLayout(new BorderLayout());
 		rightPanel.setLayout(new BorderLayout());
 		panel.setLayout(new BorderLayout());
@@ -163,6 +185,7 @@ public class ChatClient extends JFrame{
 
 		messagesAreaPanel.add(scrollFrame);
 		typeAreaPanel.add(typeField);
+		typeAreaPanel.add(chatSetBtn);
 		
 		rightPanel.add(messagesAreaPanel, "Center");
 		rightPanel.add(typeAreaPanel, "South");
@@ -205,11 +228,13 @@ public class ChatClient extends JFrame{
                 while (true) {
                     String receiveMsg = br.readLine();
                     StringTokenizer st = new StringTokenizer(receiveMsg);
+					String nickPart = st.nextToken();
 					String commandChecker = st.nextToken();
+					
 					String text="";
-
+					System.out.println(commandChecker);
 					if(commandChecker.charAt(0) =='/'){
-						switch(commandChecker.substring(2, commandChecker.length())){
+						switch(commandChecker.substring(1, commandChecker.length())){
 						case "help":
 							messageField.setText(messageField.getText()+"\nBot: need some help?\nThese commands are available now: \n/help: Show command list. \n/code ((none)/java/python): code mode(default is 'c'.) \n/sing: Bot sings\n/time: Show current time");
 							System.out.println("need some help?");
@@ -219,17 +244,17 @@ public class ChatClient extends JFrame{
 								String type = st.nextToken();
 								switch(type){
 								case "java":
-									messageField.setText(messageField.getText()+"\n1: class Main{\n2:     public static void main(String[] args){\n3:       System.out.println(\"Hello, World!\");\n4:     }\n5: }");
+									messageField.setText(messageField.getText()+"\n"+nickPart+"\n1: class Main{\n2:     public static void main(String[] args){\n3:       System.out.println(\"Hello, World!\");\n4:     }\n5: }");
 									break;
 								case "python":
-									messageField.setText(messageField.getText()+"\n1:print('Hello, World!')");
+									messageField.setText(messageField.getText()+"\n"+nickPart+"\n1:print('Hello, World!')");
 									break;
 								default:
-									messageField.setText(messageField.getText()+"\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }");
+									messageField.setText(messageField.getText()+"\n1"+nickPart+"\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }");
 									break;
 								}
 							}else{
-								messageField.setText(messageField.getText()+"\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }");
+								messageField.setText(messageField.getText()+"\n"+nickPart+"\n1:#include <stdio.h>\n2: \n3: int main(){\n4: printf(\"Hello, World!\");\n5: }");
 							}
 							System.out.println("code mode.");
 							break;
