@@ -63,7 +63,7 @@ public class Chat extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Go to the previous frame.");
 				dispose();
-				LogIn logInFrame = new LogIn();
+				RoomList roomList = new RoomList();
 			}
 		});
 		

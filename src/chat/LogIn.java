@@ -106,7 +106,7 @@ public class LogIn extends JFrame{
 					if(idField.getText().equals(MY_ID) & pw.equals(MY_PW)){
 						System.out.println("로그인 중...");
 						dispose();
-						Chat chatFrame = new Chat();
+						RoomList roomList = new RoomList();
 					}else{
 						JDialog dialog = new JDialog();
 						JPanel errorPanel = new JPanel();

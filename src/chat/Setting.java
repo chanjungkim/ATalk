@@ -1,3 +1,5 @@
+/* RoomList의 내부클래스로 사용됨
+ * 
 package chat;
 
 import java.awt.BorderLayout;
@@ -68,8 +70,5 @@ public class Setting  extends JFrame{
 		set.setVisible(true);
 		setDefaultCloseOperation(set.EXIT_ON_CLOSE);
 	}
-	
-	public static void main(String[] args) {
-		Setting s = new Setting();
-	}
 }
+*/
