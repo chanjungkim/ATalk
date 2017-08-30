@@ -37,7 +37,7 @@ public class RoomList extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				Chat chat = new Chat();
+				ChatClient chat = new ChatClient();
 			}
 		});
 		
