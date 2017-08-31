@@ -18,7 +18,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 
 public class LogIn extends JFrame{
 	private JPanel panel;
@@ -189,16 +188,15 @@ public class LogIn extends JFrame{
 		private JLabel pwLb = new JLabel("비밀번호");
 		private JLabel nameLb = new JLabel("이름");
 		private JLabel birthDateLb = new JLabel("생년월일");
-		private JLabel sexLb = new JLabel("성별");
+		private JLabel emailLb = new JLabel("이메일");
+		private JLabel phoneLb = new JLabel("전화번호");
 
 		private JTextField idField = new JTextField(10);
 		private JTextField pwField = new JTextField(10);
 		private JTextField nameField = new JTextField(10);
 		private JTextField birthDateField = new JTextField(10);
-
-		private JPanel sexBtnPn = new JPanel();
-		private JToggleButton man = new JToggleButton("남자");
-		private JToggleButton woman = new JToggleButton("여자");
+		private JTextField emailField = new JTextField(15);		
+		private JTextField phoneField = new JTextField(15);
 		
 		private JButton confirmShowBtn = new JButton("약관 보기");
 		private JCheckBox confirmCheck = new JCheckBox("약관 동의");
@@ -222,10 +220,11 @@ public class LogIn extends JFrame{
 			topPanel.add(birthDateLb);
 			topPanel.add(birthDateField);
 			
-			topPanel.add(sexLb);
-			sexBtnPn.add(man);
-			sexBtnPn.add(woman);
-			topPanel.add(sexBtnPn);
+			topPanel.add(emailLb);
+			topPanel.add(emailField);
+
+			topPanel.add(birthDateLb);
+			topPanel.add(birthDateField);
 
 			topPanel.add(confirmShowBtn);
 			topPanel.add(confirmCheck);
