@@ -205,7 +205,7 @@ public class LogIn extends JFrame{
 		private JButton cancelBtn = new JButton("취소");
 		public SignUpDialog () {
 
-			topPanel.setLayout(new GridLayout(7,2));
+			topPanel.setLayout(new GridLayout(8,2));
 //			bottomPanel.setLayout(new BoxLayout(bottomPanel, 1));
 			
 			topPanel.add(idLb);
@@ -223,8 +223,8 @@ public class LogIn extends JFrame{
 			topPanel.add(emailLb);
 			topPanel.add(emailField);
 
-			topPanel.add(birthDateLb);
-			topPanel.add(birthDateField);
+			topPanel.add(phoneLb);
+			topPanel.add(phoneField);
 
 			topPanel.add(confirmShowBtn);
 			topPanel.add(confirmCheck);
@@ -232,11 +232,41 @@ public class LogIn extends JFrame{
 			topPanel.add(okBtn);
 			topPanel.add(cancelBtn);
 
+			// Function
+			confirmShowBtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("약관 내용 보이기");
+				}
+			});
+			
+			okBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(confirmCheck.isSelected()) {
+						System.out.println("가입완료");
+						hide();
+					}else {
+						System.out.println("동의하셔야합니다.");
+					}
+				}
+			});
+			
+			cancelBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					hide();
+				}
+			});
+			
 			add(topPanel);
 	//		add(panel);
+			setTitle("Atalk 회원가입");
+			setResizable(false);
 			setSize(250, 300);
 			setVisible(true);
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
+			setDefaultCloseOperation(HIDE_ON_CLOSE);
 		}
 	}
 }
