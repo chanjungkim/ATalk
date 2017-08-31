@@ -2,6 +2,7 @@ package chat;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -11,12 +12,13 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JToolTip;
+import javax.swing.JToggleButton;
 
 public class LogIn extends JFrame{
 	private JPanel panel;
@@ -29,6 +31,7 @@ public class LogIn extends JFrame{
 	private String id="";
 	private String pw="";
 	
+	private JButton signUpBtn = new JButton("회원가입");
 	private final String MY_ID = "atalk";
 	private final String MY_PW = "1234";
 	
@@ -37,7 +40,7 @@ public class LogIn extends JFrame{
 		namePanel = new JPanel();
 		accountPanel = new JPanel();
 		anotherPanel = new JPanel();
-		
+
 //		ImageIcon facebook = new ImageIcon("C:\\Users\\Public\\Pictures\\Sample Pictures\\펭귄.jpg");
 //		JLabel fbLabel = new JLabel();
 //		fbLabel.setIcon(facebook);
@@ -54,7 +57,14 @@ public class LogIn extends JFrame{
 		Font font = new Font("돋움", Font.PLAIN, 100);
 		
 		lb.setFont(font);
+		signUpBtn.addActionListener(new ActionListener() {
 			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new SignUpDialog();
+			}
+		});
+		
 		idField.setText("Username");
 		idField.addFocusListener(new FocusListener() {
 				@Override
@@ -149,8 +159,10 @@ public class LogIn extends JFrame{
 		panel.setLayout(new BorderLayout());
 
 		namePanel.add(lb);
+
 		accountPanel.add(idField);
 		accountPanel.add(pwField);
+		accountPanel.add(signUpBtn);
 		
 //		anotherPanel.add(fbLabel);
 //		anotherPanel.add(ggLabel);
@@ -168,20 +180,65 @@ public class LogIn extends JFrame{
 		setResizable(true);
 		setVisible(true);
 	}
+	public class SignUpDialog  extends JFrame{
+		private JDialog set  = new JDialog(this,"Atalk 회원가입");
+		private JPanel topPanel = new JPanel();
+		private JPanel bottomPanel = new JPanel();
+		
+		private JLabel idLb = new JLabel("아이디");
+		private JLabel pwLb = new JLabel("비밀번호");
+		private JLabel nameLb = new JLabel("이름");
+		private JLabel birthDateLb = new JLabel("생년월일");
+		private JLabel sexLb = new JLabel("성별");
 
-//	public String getId() {
-//		return idField.getText();
-//	}
-//
-//	public String getPw() {
-//		return pw;
-//	}
-//
-//	public String getMY_ID() {
-//		return MY_ID;
-//	}
-//
-//	public String getMY_PW() {
-//		return MY_PW;
-//	}
+		private JTextField idField = new JTextField(10);
+		private JTextField pwField = new JTextField(10);
+		private JTextField nameField = new JTextField(10);
+		private JTextField birthDateField = new JTextField(10);
+
+		private JPanel sexBtnPn = new JPanel();
+		private JToggleButton man = new JToggleButton("남자");
+		private JToggleButton woman = new JToggleButton("여자");
+		
+		private JButton confirmShowBtn = new JButton("약관 보기");
+		private JCheckBox confirmCheck = new JCheckBox("약관 동의");
+		
+		private JButton okBtn = new JButton("가입");
+		private JButton cancelBtn = new JButton("취소");
+		public SignUpDialog () {
+
+			topPanel.setLayout(new GridLayout(7,2));
+//			bottomPanel.setLayout(new BoxLayout(bottomPanel, 1));
+			
+			topPanel.add(idLb);
+			topPanel.add(idField);
+
+			topPanel.add(pwLb);
+			topPanel.add(pwField);
+
+			topPanel.add(nameLb);
+			topPanel.add(nameField);
+			
+			topPanel.add(birthDateLb);
+			topPanel.add(birthDateField);
+			
+			topPanel.add(sexLb);
+			sexBtnPn.add(man);
+			sexBtnPn.add(woman);
+			topPanel.add(sexBtnPn);
+
+			topPanel.add(confirmShowBtn);
+			topPanel.add(confirmCheck);
+
+			topPanel.add(okBtn);
+			topPanel.add(cancelBtn);
+
+			add(topPanel);
+	//		add(panel);
+			setSize(250, 300);
+			setVisible(true);
+			setDefaultCloseOperation(EXIT_ON_CLOSE);
+		}
+	}
 }
+
