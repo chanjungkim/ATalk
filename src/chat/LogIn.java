@@ -2,6 +2,7 @@ package chat;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -11,12 +12,12 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JToolTip;
 
 public class LogIn extends JFrame{
 	private JPanel panel;
@@ -29,6 +30,7 @@ public class LogIn extends JFrame{
 	private String id="";
 	private String pw="";
 	
+	private JButton signUpBtn = new JButton("회원가입");
 	private final String MY_ID = "atalk";
 	private final String MY_PW = "1234";
 	
@@ -37,7 +39,7 @@ public class LogIn extends JFrame{
 		namePanel = new JPanel();
 		accountPanel = new JPanel();
 		anotherPanel = new JPanel();
-		
+
 //		ImageIcon facebook = new ImageIcon("C:\\Users\\Public\\Pictures\\Sample Pictures\\펭귄.jpg");
 //		JLabel fbLabel = new JLabel();
 //		fbLabel.setIcon(facebook);
@@ -54,7 +56,14 @@ public class LogIn extends JFrame{
 		Font font = new Font("돋움", Font.PLAIN, 100);
 		
 		lb.setFont(font);
+		signUpBtn.addActionListener(new ActionListener() {
 			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new SignUpDialog();
+			}
+		});
+		
 		idField.setText("Username");
 		idField.addFocusListener(new FocusListener() {
 				@Override
@@ -149,8 +158,10 @@ public class LogIn extends JFrame{
 		panel.setLayout(new BorderLayout());
 
 		namePanel.add(lb);
+
 		accountPanel.add(idField);
 		accountPanel.add(pwField);
+		accountPanel.add(signUpBtn);
 		
 //		anotherPanel.add(fbLabel);
 //		anotherPanel.add(ggLabel);
@@ -168,20 +179,95 @@ public class LogIn extends JFrame{
 		setResizable(true);
 		setVisible(true);
 	}
+	public class SignUpDialog  extends JFrame{
+		private JDialog set  = new JDialog(this,"Atalk 회원가입");
+		private JPanel topPanel = new JPanel();
+		private JPanel bottomPanel = new JPanel();
+		
+		private JLabel idLb = new JLabel("아이디");
+		private JLabel pwLb = new JLabel("비밀번호");
+		private JLabel nameLb = new JLabel("이름");
+		private JLabel birthDateLb = new JLabel("생년월일");
+		private JLabel emailLb = new JLabel("이메일");
+		private JLabel phoneLb = new JLabel("전화번호");
 
-//	public String getId() {
-//		return idField.getText();
-//	}
-//
-//	public String getPw() {
-//		return pw;
-//	}
-//
-//	public String getMY_ID() {
-//		return MY_ID;
-//	}
-//
-//	public String getMY_PW() {
-//		return MY_PW;
-//	}
+		private JTextField idField = new JTextField(10);
+		private JTextField pwField = new JTextField(10);
+		private JTextField nameField = new JTextField(10);
+		private JTextField birthDateField = new JTextField(10);
+		private JTextField emailField = new JTextField(15);		
+		private JTextField phoneField = new JTextField(15);
+		
+		private JButton confirmShowBtn = new JButton("약관 보기");
+		private JCheckBox confirmCheck = new JCheckBox("약관 동의");
+		
+		private JButton okBtn = new JButton("가입");
+		private JButton cancelBtn = new JButton("취소");
+		public SignUpDialog () {
+
+			topPanel.setLayout(new GridLayout(8,2));
+//			bottomPanel.setLayout(new BoxLayout(bottomPanel, 1));
+			
+			topPanel.add(idLb);
+			topPanel.add(idField);
+
+			topPanel.add(pwLb);
+			topPanel.add(pwField);
+
+			topPanel.add(nameLb);
+			topPanel.add(nameField);
+			
+			topPanel.add(birthDateLb);
+			topPanel.add(birthDateField);
+			
+			topPanel.add(emailLb);
+			topPanel.add(emailField);
+
+			topPanel.add(phoneLb);
+			topPanel.add(phoneField);
+
+			topPanel.add(confirmShowBtn);
+			topPanel.add(confirmCheck);
+
+			topPanel.add(okBtn);
+			topPanel.add(cancelBtn);
+
+			// Function
+			confirmShowBtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("약관 내용 보이기");
+				}
+			});
+			
+			okBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(confirmCheck.isSelected()) {
+						System.out.println("가입완료");
+						hide();
+					}else {
+						System.out.println("동의하셔야합니다.");
+					}
+				}
+			});
+			
+			cancelBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					hide();
+				}
+			});
+			
+			add(topPanel);
+	//		add(panel);
+			setTitle("Atalk 회원가입");
+			setResizable(false);
+			setSize(250, 300);
+			setVisible(true);
+			setDefaultCloseOperation(HIDE_ON_CLOSE);
+		}
+	}
 }
+
