@@ -34,9 +34,9 @@ class CompileFrame extends JFrame{
 		inputArea = new JTextArea();
 		outputArea = new JTextArea();
 		scroll1 = new JScrollPane(codeArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//codeArea에 스크롤 생성
+		//codeArea�뿉 �뒪�겕濡� �깮�꽦
 		scroll2 = new JScrollPane(inputArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//inputArea에 스크롤 생성
+		//inputArea�뿉 �뒪�겕濡� �깮�꽦
 
 		
 		this.getContentPane().add(scroll1);
@@ -49,10 +49,10 @@ class CompileFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				Compile compile = new Compile(codeArea.getText(), inputArea.getText());
 				
-				//codeArea 부분의 code부분을 compile class로 넘겨서 컴파일 시킴
+				//codeArea 遺�遺꾩쓽 code遺�遺꾩쓣 compile class濡� �꽆寃⑥꽌 而댄뙆�씪 �떆�궡
 				inputArea.setText(compile.getResult());
-				//실행 결과를 inputArea로 set
-				btn.setText("결과");
+				//�떎�뻾 寃곌낵瑜� inputArea濡� set
+				btn.setText("寃곌낵");
 			}
 		});
 		scroll1.setBounds(50, 50, 550, 450);
@@ -78,7 +78,7 @@ class CompileFrame extends JFrame{
 		"import java.lang.*;" + "\n"+
 		"import java.io.*;" + "\n" +
 		"import java.util.Scanner;" + "\n" +
-		"class code" + "\n" +
+		"class Code" + "\n" +
 		"{" + "\n" +
 		"	public static void main (String[] args) throws java.lang.Exception"+ "\n"+
 		"	{" + "\n"+
