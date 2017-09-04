@@ -45,7 +45,7 @@ public class Compile {
 				scanner.useDelimiter(System.getProperty("line.separator"));
 				
 				while (scanner.hasNext()) {
-		//			System.out.println(scanner.next().toString());
+					System.out.println(scanner.next().toString());
 					//super.setInputTextArea(scanner.next().toString());
 					result += scanner.next().toString() + "\n";
 				}
