@@ -15,27 +15,34 @@ import javax.swing.JTextArea;
 public class Compile {
 	
 	String result = "";
-	public Compile(String code) {
-		String fileName = "jinyoung.java";
+	public Compile(String code,String input) {
+		String codeFileName = "code.java";
+		String inputFileName = "input.txt";
 		// 현재 경로의 jinyoung.java
 		
 
 		try {
 
 			// 파일 객체 생성
-			File file = new File(fileName);
+			File CodeFile = new File(codeFileName);
+			File InputFile = new File(inputFileName);
 
 			// true 지정시 파일의 기존 내용에 이어서 작성, true없을 시 새로 작성
-			FileWriter fw = new FileWriter(file);
+			FileWriter fwCode = new FileWriter(CodeFile);
+			FileWriter fwInput = new FileWriter(InputFile);
 
 			// 파일안에 문자열 쓰기
-			fw.write(code);
-			fw.flush();
-
+			fwCode.write(code);
+			fwInput.write(input);
+			
+			fwCode.flush();
+			fwInput.flush();
+			
 			// 객체 닫기
-			fw.close();
-
-			String command1 = "cmd.exe /c javac jinyoung.java & java jinyoung";
+			fwCode.close();
+			fwInput.close();
+			
+			String command1 = "cmd.exe /c javac code.java & java code < input.txt";
 
 			try {
 				// Runtime.getRuntime().exec(command2);
@@ -46,7 +53,7 @@ public class Compile {
 				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				Scanner scanner = new Scanner(br);
 				scanner.useDelimiter(System.getProperty("line.separator"));
-				String intpt;
+				
 				while (scanner.hasNext()) {
 		//			System.out.println(scanner.next().toString());
 					//super.setInputTextArea(scanner.next().toString());
