@@ -37,7 +37,7 @@ public class Compile {
 			fwCode.close();
 			fwInput.close();
 			
-			String command1 = "cmd.exe /c ./Java/jdk1.8.0_111/bin/ & javac Code.java & java Code < input.txt";
+			String command1 = "cmd.exe /c ./Java/jdk1.8.0_111/bin/javac Code.java & java Code < input.txt";
 
 			try {
 				// Runtime.getRuntime().exec(command2);
