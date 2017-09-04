@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 class CompileFrame extends JFrame{
+
 	//JFrame compile;
 	JPanel textPanel;
 	JPanel btnPanel;
@@ -45,7 +47,8 @@ class CompileFrame extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Compile compile = new Compile(codeArea.getText());
+				Compile compile = new Compile(codeArea.getText(), inputArea.getText());
+				
 				//codeArea 부분의 code부분을 compile class로 넘겨서 컴파일 시킴
 				inputArea.setText(compile.getResult());
 				//실행 결과를 inputArea로 set
@@ -74,7 +77,8 @@ class CompileFrame extends JFrame{
 		"import java.util.*;" + "\n"+
 		"import java.lang.*;" + "\n"+
 		"import java.io.*;" + "\n" +
-		"class jinyoung" + "\n" +
+		"import java.util.Scanner;" + "\n" +
+		"class code" + "\n" +
 		"{" + "\n" +
 		"	public static void main (String[] args) throws java.lang.Exception"+ "\n"+
 		"	{" + "\n"+
