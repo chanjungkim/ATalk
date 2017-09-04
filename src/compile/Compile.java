@@ -32,7 +32,7 @@ public class Compile {
 		    position = position.replace((char)92, (char)47);
 	    	System.out.println(position);
 	    	
-			String command1 = "cmd.exe /c "+position+"/jdk1.8.0_111/bin/javac Code.java & "+position+"/jdk1.8.0_111/bin/java Code < "+position+"input.txt";
+			String command1 = "cmd.exe /c "+position+"/jdk1.8.0_111/bin/javac Code.java & "+position+"/jdk1.8.0_111/bin/java Code < input.txt";
 
 			try {
 				// Runtime.getRuntime().exec(command2);
