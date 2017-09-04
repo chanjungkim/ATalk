@@ -11,33 +11,28 @@ public class Compile {
 	
 	String result = "";
 	public Compile(String code,String input) {
-		String codeFileName = "Code.java";
-		String inputFileName = "input.txt";
-		// �쁽�옱 寃쎈줈�쓽 jinyoung.java
-		
-
 		try {
+			File codeFile = new File("Code.java");
+			File inputFile = new File("input.txt");
+			
+			FileWriter fwCode = new FileWriter(codeFile);
+			FileWriter fwInput = new FileWriter(inputFile);
 
-			// �뙆�씪 媛앹껜 �깮�꽦
-			File CodeFile = new File(codeFileName);
-			File InputFile = new File(inputFileName);
-
-			// true 吏��젙�떆 �뙆�씪�쓽 湲곗〈 �궡�슜�뿉 �씠�뼱�꽌 �옉�꽦, true�뾾�쓣 �떆 �깉濡� �옉�꽦
-			FileWriter fwCode = new FileWriter(CodeFile);
-			FileWriter fwInput = new FileWriter(InputFile);
-
-			// �뙆�씪�븞�뿉 臾몄옄�뿴 �벐湲�
 			fwCode.write(code);
 			fwInput.write(input);
 			
 			fwCode.flush();
 			fwInput.flush();
 			
-			// 媛앹껜 �떕湲�
 			fwCode.close();
 			fwInput.close();
 			
-			String command1 = "cmd.exe /c ./Java/jdk1.8.0_111/bin/javac Code.java & java Code < input.txt";
+		    // 디렉토리 위치 구하기
+			String position = codeFile.getCanonicalPath().substring(0, codeFile.getCanonicalPath().length()-codeFile.getName().length());
+		    position = position.replace((char)92, (char)47);
+	    	System.out.println(position);
+	    	
+			String command1 = "cmd.exe /c "+position+"/jdk1.8.0_111/bin/javac Code.java & "+position+"/jdk1.8.0_111/bin/java Code < "+position+"input.txt";
 
 			try {
 				// Runtime.getRuntime().exec(command2);

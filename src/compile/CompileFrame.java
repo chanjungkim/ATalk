@@ -2,10 +2,10 @@ package compile;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,15 +44,24 @@ class CompileFrame extends JFrame{
 		btn = new JButton("RUN");
 		btn.setBounds(300, 600, 100, 60);
 		btn.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Compile compile = new Compile(codeArea.getText(), inputArea.getText());
 				
-				//codeArea 遺�遺꾩쓽 code遺�遺꾩쓣 compile class濡� �꽆寃⑥꽌 而댄뙆�씪 �떆�궡
 				inputArea.setText(compile.getResult());
-				//�떎�뻾 寃곌낵瑜� inputArea濡� set
-				btn.setText("寃곌낵");
+				btn.setText("Done!");
+			}
+		});
+		codeArea.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(btn.getText().equals("Done!")){
+					btn.setText("RUN");
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
 			}
 		});
 		scroll1.setBounds(50, 50, 550, 450);
@@ -74,16 +83,14 @@ class CompileFrame extends JFrame{
 		btnPanel.add(btn);
 		
 		String t = 
-		"import java.util.*;" + "\n"+
-		"import java.lang.*;" + "\n"+
-		"import java.io.*;" + "\n" +
-		"import java.util.Scanner;" + "\n" +
-		"class Code" + "\n" +
-		"{" + "\n" +
-		"	public static void main (String[] args) throws java.lang.Exception"+ "\n"+
-		"	{" + "\n"+
-		"		// your code goes here" + "\n"+
-		"	}" + "\n"+
+		"import java.util.*;\n"+
+		"import java.lang.*;\n"+
+		"import java.io.*;\n" +
+		"import java.util.Scanner;\n" +
+		"class Code{\n" +
+		"	public static void main (String[] args){\n"+
+		"		// your code goes here\n"+
+		"	}\n"+
 		"}";
 		
 		codeArea.setText(t);
@@ -101,7 +108,7 @@ class CompileFrame extends JFrame{
 	
 
 	public static void main(String[] args) {
-		CompileFrame compile = new CompileFrame();
+		new CompileFrame();
 	}
 }
 
