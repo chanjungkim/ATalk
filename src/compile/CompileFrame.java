@@ -2,9 +2,10 @@ package compile;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 class CompileFrame extends JFrame{
+
 	//JFrame compile;
 	JPanel textPanel;
 	JPanel btnPanel;
@@ -32,9 +34,9 @@ class CompileFrame extends JFrame{
 		inputArea = new JTextArea();
 		outputArea = new JTextArea();
 		scroll1 = new JScrollPane(codeArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//codeArea에 스크롤 생성
+		//codeArea�뿉 �뒪�겕濡� �깮�꽦
 		scroll2 = new JScrollPane(inputArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//inputArea에 스크롤 생성
+		//inputArea�뿉 �뒪�겕濡� �깮�꽦
 
 		
 		this.getContentPane().add(scroll1);
@@ -42,14 +44,24 @@ class CompileFrame extends JFrame{
 		btn = new JButton("RUN");
 		btn.setBounds(300, 600, 100, 60);
 		btn.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Compile compile = new Compile(codeArea.getText());
-				//codeArea 부분의 code부분을 compile class로 넘겨서 컴파일 시킴
+				Compile compile = new Compile(codeArea.getText(), inputArea.getText());
+				
 				inputArea.setText(compile.getResult());
-				//실행 결과를 inputArea로 set
-				btn.setText("결과");
+				btn.setText("Done!");
+			}
+		});
+		codeArea.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(btn.getText().equals("Done!")){
+					btn.setText("RUN");
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
 			}
 		});
 		scroll1.setBounds(50, 50, 550, 450);
@@ -71,15 +83,14 @@ class CompileFrame extends JFrame{
 		btnPanel.add(btn);
 		
 		String t = 
-		"import java.util.*;" + "\n"+
-		"import java.lang.*;" + "\n"+
-		"import java.io.*;" + "\n" +
-		"class jinyoung" + "\n" +
-		"{" + "\n" +
-		"	public static void main (String[] args) throws java.lang.Exception"+ "\n"+
-		"	{" + "\n"+
-		"		// your code goes here" + "\n"+
-		"	}" + "\n"+
+		"import java.util.*;\n"+
+		"import java.lang.*;\n"+
+		"import java.io.*;\n" +
+		"import java.util.Scanner;\n" +
+		"class Code{\n" +
+		"	public static void main (String[] args){\n"+
+		"		// your code goes here\n"+
+		"	}\n"+
 		"}";
 		
 		codeArea.setText(t);
@@ -97,7 +108,7 @@ class CompileFrame extends JFrame{
 	
 
 	public static void main(String[] args) {
-		CompileFrame compile = new CompileFrame();
+		new CompileFrame();
 	}
 }
 

@@ -1,12 +1,13 @@
 package chat;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -15,11 +16,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import javafx.scene.layout.Border;
+import sun.net.www.content.image.jpeg;
+
 public class RoomList extends JFrame {
 	private JPanel panel;
 	private JPanel topPanel;
 	private JPanel listPanel;
-	private JButton currentRoom;
+	private JButton makeRoom;
 	private JButton roomList;
 	private JButton setting;
 	private JButton room;
@@ -28,7 +32,7 @@ public class RoomList extends JFrame {
 		panel = new JPanel();
 		topPanel = new JPanel();
 		listPanel = new JPanel();
-		currentRoom = new JButton("현재 방");
+		makeRoom = new JButton("방 생성");
 		roomList = new JButton("목록");
 		setting = new JButton("설정");
 		room = new JButton("안드로이드 스터디 방");
@@ -48,6 +52,7 @@ public class RoomList extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Setting set = new Setting();
+
 				set.logoutBtn.addActionListener(new ActionListener() { // 로그아웃 버튼
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -131,23 +136,90 @@ public class RoomList extends JFrame {
 		});
 		////////////////////////////////////////////////////////////////////////////////////
 
-		// Layout
-		panel.setLayout(new BoxLayout(panel, 1));
+		///////////////////////////////////////////////////////////////////////////////////
+		// 방 만들기
 
+		makeRoom.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RoomMake roomMake = new RoomMake();
+			}
+		});
+
+		//////////////////////////////////////////////////////////////////////////////////
+
+		// Layout
+		topPanel.setLayout(new BorderLayout(200, 10));
+		panel.setLayout(new BorderLayout(10, 20));
 		//
-		topPanel.add(roomList);
-		topPanel.add(currentRoom);
-		topPanel.add(setting);
+		topPanel.add(roomList, BorderLayout.WEST);
+		topPanel.add(makeRoom, BorderLayout.CENTER);
+		topPanel.add(setting, BorderLayout.EAST);
 		listPanel.add(room);
 
-		panel.add(topPanel);
-		panel.add(listPanel);
+		panel.add(topPanel, BorderLayout.NORTH);
+		panel.add(listPanel, BorderLayout.CENTER);
 
 		add(panel);
 
 		setSize(700, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Layout
+	public class RoomMake extends JFrame {
+		private JDialog roomMk;
+		private JLabel title;
+		private JLabel roomTitle;
+		private JLabel password;
+		private JPanel titlePn;
+		private JPanel titleTPn;
+		private JPanel passwordPn;
+		private JPanel btnPn;
+		private JTextField titleText;
+		private JTextField passwordText;
+		private JButton makeBtn;
+		private JButton cancleBtn;
+
+		public RoomMake() {
+			roomMk = new JDialog();
+			title = new JLabel("방 만들기");
+			roomTitle = new JLabel("제목");
+			password = new JLabel("비밀 번호");
+			titlePn = new JPanel();
+			titleTPn = new JPanel();
+			passwordPn = new JPanel();
+			btnPn = new JPanel();
+			titleText = new JTextField(15);
+			passwordText = new JTextField(15);
+			makeBtn = new JButton("생성");
+			cancleBtn = new JButton("취소");
+
+			roomMk.setLayout(new GridLayout(4, 1, 0, 10));
+			titleTPn.setLayout(new BorderLayout(5,0));
+			passwordPn.setLayout(new BorderLayout(5,0));
+
+			title.setBackground(Color.YELLOW);
+
+			titlePn.add(title);
+			titleTPn.add(roomTitle, BorderLayout.WEST);
+			titleTPn.add(titleText, BorderLayout.CENTER);
+			passwordPn.add(password, BorderLayout.WEST);
+			passwordPn.add(passwordText, BorderLayout.CENTER);
+			btnPn.add(makeBtn);
+			btnPn.add(cancleBtn);
+
+			roomMk.add(titlePn);
+			roomMk.add(titleTPn);
+			roomMk.add(passwordPn);
+			roomMk.add(btnPn);
+
+			roomMk.setSize(300, 200);
+			roomMk.setVisible(true);
+			setDefaultCloseOperation(roomMk.EXIT_ON_CLOSE);
+		}
 	}
 
 	public class Setting extends JFrame {
