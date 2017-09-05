@@ -155,7 +155,7 @@ public class LogIn extends JFrame{
 		});
 		
 		accountPanel.setLayout(new BoxLayout(accountPanel, 1));
-		panel.setLayout(new BorderLayout());
+		panel.setLayout(new GridLayout());
 
 		namePanel.add(lb);
 
