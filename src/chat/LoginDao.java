@@ -1,11 +1,19 @@
 package chat;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class LoginDao {
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
@@ -24,6 +32,7 @@ public class LoginDao {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
 			String sql = "SELECT * FROM JOINMEMBER";
+
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 
@@ -84,6 +93,69 @@ public class LoginDao {
 	}
 
 	//////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////
+	//현재 로그인 접속 방식
+	public void loginConnect(String id, String pw) {
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+			String sql = "SELECT * FROM JOINMEMBER WHERE ID=? AND PW=?";
+
+			ps = con.prepareStatement(sql);
+
+			ps.setString(1, id);
+			ps.setString(2, pw);
+
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				LoginVO lv = new LoginVO();
+				lv.setId(rs.getString(1));
+				lv.setPw(rs.getString(2));
+			}
+			
+			if(rs.wasNull()) {
+				Interrupt();
+			}else {
+				RoomList roomList = new RoomList();
+			}
+
+		} catch (SQLException e) {
+			JDialog dialog = new JDialog();
+			JPanel errorPanel = new JPanel();
+			JButton check = new JButton("확인");
+			JLabel message = new JLabel("아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주세요.");
+
+			check.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dialog.dispose();
+				}
+			});
+			errorPanel.setLayout(new BorderLayout());
+
+			errorPanel.add(message, "Center");
+			errorPanel.add(check, "South");
+
+			dialog.add(errorPanel);
+
+			dialog.pack();
+			dialog.setTitle("ERROR!!");
+			dialog.setVisible(true);
+			e.printStackTrace();
+		} finally {
+			closeRS();
+			closePstmt();
+			closeConnection();
+		}
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+
+	private void Interrupt() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void closeConnection() {
 		if (con != null) {
 			try {
