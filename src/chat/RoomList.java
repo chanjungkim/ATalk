@@ -24,11 +24,10 @@ import javax.swing.border.EtchedBorder;
 
 public class RoomList extends JFrame {
 	private JPanel panel;
-	private JPanel topPanel;
 	private JPanel listPanel;
-	private JButton makeRoom;
+	private JButton createRoomBtn;
 	private JButton roomList;
-	private JButton setting;
+	private JButton settingBtn;
 	private JButton room;
 
 	private JPanel panel1, panel2;
@@ -38,23 +37,23 @@ public class RoomList extends JFrame {
 	private JLabel count;
 	private JLabel master;
 
+
+	
 	public RoomList() {
 		panel = new JPanel();
-		topPanel = new JPanel();
 		listPanel = new JPanel();
-		
 
 		roomList = new JButton("목록");
 		room = new JButton("안드로이드 스터디 방");
 
-		makeRoom = new JButton(new ImageIcon("말풍선.PNG")); // 방생성
+		createRoomBtn = new JButton(new ImageIcon("말풍선.PNG")); // 방생성
 		menu = new JButton(new ImageIcon("메뉴.png"));
-		setting = new JButton(new ImageIcon("설정.PNG")); // 세팅
+		settingBtn = new JButton(new ImageIcon("설정.PNG")); // 세팅
 
-		makeRoom.setBounds(0, 0, 80, 80);
+		createRoomBtn.setBounds(0, 0, 80, 80);
 		menu.setBounds(300, 0, 80, 80);
-		setting.setBounds(600, 0, 80, 80);
-
+		settingBtn.setBounds(600, 0, 80, 80);
+	
 		// Fucntion
 		room.addActionListener(new ActionListener() {
 			@Override
@@ -62,32 +61,31 @@ public class RoomList extends JFrame {
 				dispose();
 				ChatClient chat = new ChatClient();
 			}
-		});
+		});// End of Function
 
-		////////////////////////////////////////////////////////////////////////
-		// 설정창 구현
-		setting.addActionListener(new ActionListener() {
+		// Setting Dialogue
+		settingBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Setting set = new Setting();
+				SettingDialogue settingDialogue = new SettingDialogue();
 
-				set.logoutBtn.addActionListener(new ActionListener() { // 로그아웃 버튼
+				settingDialogue.logoutBtn.addActionListener(new ActionListener() { // 로그아웃 버튼
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						int t = JOptionPane.showConfirmDialog(null, "이 계정을 로그아웃 하시겠습니까?", "",
 								JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 						if (t == 0) {
 							System.out.println("Go to the previous: frame.");
-							set.dispose();
+							settingDialogue.dispose();
 							dispose();
 							LogIn logInFrame = new LogIn();
 						}
 					}
 				});
 
-				set.blackBtn.addActionListener(new ActionListener() { // 블랙리스트 버튼
+				settingDialogue.blackBtn.addActionListener(new ActionListener() { // 블랙리스트 버튼
 					JFrame blackFm = new JFrame();
-					JPanel BtnPn = new JPanel();
+					JPanel bottomPn = new JPanel();
 					JLabel nameLb = new JLabel("닉네임");
 					JTextField nameText = new JTextField(7);
 					JButton addBtn = new JButton("추가");
@@ -119,12 +117,12 @@ public class RoomList extends JFrame {
 							}
 						});
 
-						BtnPn.add(nameLb);
-						BtnPn.add(nameText);
-						BtnPn.add(addBtn);
-						BtnPn.add(delBtn);
+						bottomPn.add(nameLb);
+						bottomPn.add(nameText);
+						bottomPn.add(addBtn);
+						bottomPn.add(delBtn);
 
-						blackFm.add(BtnPn, BorderLayout.NORTH);
+						blackFm.add(bottomPn, BorderLayout.NORTH);
 						blackFm.add(nameList, BorderLayout.CENTER);
 
 						blackFm.setTitle("블랙리스트");
@@ -134,7 +132,7 @@ public class RoomList extends JFrame {
 					}
 				});
 
-				set.alarmBtn.addActionListener(new ActionListener() { // 알람 버튼
+				settingDialogue.alarmBtn.addActionListener(new ActionListener() { // 알람 버튼
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
@@ -142,7 +140,7 @@ public class RoomList extends JFrame {
 					}
 				});
 
-				set.colorBtn.addActionListener(new ActionListener() { // 색상 변경 버튼
+				settingDialogue.colorBtn.addActionListener(new ActionListener() { // 색상 변경 버튼
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
@@ -152,22 +150,80 @@ public class RoomList extends JFrame {
 
 			}
 		});
-		////////////////////////////////////////////////////////////////////////////////////
-
-		///////////////////////////////////////////////////////////////////////////////////
-		// 방 만들기
-
-		makeRoom.addActionListener(new ActionListener() {
+		// End of Setting Dialogue
+		
+		// Create Room Dialogue
+		createRoomBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				RoomMake roomMake = new RoomMake();
+				CreateRoomDialogue createRoomDialogue = new CreateRoomDialogue();
+				createRoomDialogue.createBtn.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if(createRoomDialogue.titleField.getText().isEmpty()) {
+							JDialog dialog = new JDialog();
+							JPanel errorPanel = new JPanel();
+							JButton check = new JButton("확인");
+							JLabel message = new JLabel("제목을 입력해주세요.");
+							
+							check.addActionListener(new ActionListener(){
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									dialog.dispose();
+								}
+							});
+							errorPanel.setLayout(new BorderLayout());
+							
+							errorPanel.add(message, "Center");
+							errorPanel.add(check, "South");
+		
+							dialog.add(errorPanel);
+							
+							dialog.pack();
+							dialog.setTitle("ERROR!!");
+							dialog.setVisible(true);
+						}else if(createRoomDialogue.passwordField.getText().isEmpty() && createRoomDialogue.checkBtn.isSelected()){
+							JDialog dialog = new JDialog();
+							JPanel errorPanel = new JPanel();
+							JButton check = new JButton("확인");
+							JLabel message = new JLabel("비밀번호를 입력해주세요.");
+							
+							check.addActionListener(new ActionListener(){
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									dialog.dispose();
+								}
+							});
+							errorPanel.setLayout(new BorderLayout());
+							
+							errorPanel.add(message, "Center");
+							errorPanel.add(check, "South");
+		
+							dialog.add(errorPanel);
+							
+							dialog.pack();
+							dialog.setTitle("ERROR!!");
+							dialog.setVisible(true);
+						}else {
+							System.out.println("방이 생성되었습니다.");
+							createRoomDialogue.hide();
+						}
+					}
+				});
+				
+				createRoomDialogue.cancelBtn.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						createRoomDialogue.hide();
+					}
+				});
 			}
 		});
+		// End of Create Room Dialogue
 
-		//////////////////////////////////////////////////////////////////////////////////
 
+		
 		// Layout
-
 		EtchedBorder eborder;
 		eborder = new EtchedBorder(EtchedBorder.LOWERED);
 
@@ -185,15 +241,12 @@ public class RoomList extends JFrame {
 		count.setBounds(550, 80, 150, 60);
 		count.setFont(new Font("바탕", Font.BOLD, 25));
 
-
-		//
-
 		panel.setLayout(null);
 
 		panel.add(room);
 		panel.add(roomList);
-		panel.add(makeRoom);
-		panel.add(setting);
+		panel.add(createRoomBtn);
+		panel.add(settingBtn);
 		panel.add(master);
 		panel.add(count);
 
@@ -206,108 +259,104 @@ public class RoomList extends JFrame {
 		setVisible(true);
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// Layout
-	public class RoomMake extends JFrame implements ItemListener { //방 생성
-		private JDialog roomMk;
-		private JLabel titleLb;
-		private JLabel roomTitleLb;
-		private JLabel passwordLb;
-		private JLabel peopleNLb;
-		private JPanel titlePn;
+	// <--------------------- Inner Classes -------------------------->
+	class CreateRoomDialogue extends JFrame implements ItemListener { //방 생성
+		private JDialog createRoomDialogue = new JDialog(this, "방 만들기");
+		private JLabel roomTitleLb = new JLabel("제목");
+		private JTextField titleField;
+		
+		private JLabel passwordLb = new JLabel("비밀 번호");
+		private JTextField passwordField;
+		
+		private JLabel populationLb = new JLabel("인원");
+		private JComboBox<Integer> population; 
+		
+		private JPanel topPn;
 		private JPanel titleTPn;
 		private JPanel passwordPn;
-		private JPanel peopleNumPn;
-		private JPanel btnPn;
-		private JTextField titleText;
-		private JTextField passwordText;
-		private JButton makeBtn;
-		private JButton cancleBtn;
-		private JComboBox peopleNum; 
+		private JPanel populationPn;
+		private JPanel bottomPn;
 		private JCheckBox checkBtn;
-
-		public RoomMake() {               
-			roomMk = new JDialog();
-			titleLb = new JLabel("방 만들기");
-			roomTitleLb = new JLabel("제목");
-			passwordLb= new JLabel("비밀 번호");
-			peopleNLb = new JLabel("인원");
-			titlePn = new JPanel();
+		private JButton createBtn = new JButton("생성");
+		private JButton cancelBtn = new JButton("취소");
+		
+		public CreateRoomDialogue() {               
+			topPn = new JPanel();
 			titleTPn = new JPanel();
 			passwordPn = new JPanel();
-			peopleNumPn = new JPanel();
-			btnPn = new JPanel();
-			titleText = new JTextField(15);
-			passwordText = new JTextField(15);
-			makeBtn = new JButton("생성");
-			cancleBtn = new JButton("취소");
-			checkBtn = new JCheckBox();
+			populationPn = new JPanel();
+			bottomPn = new JPanel();
+			titleField = new JTextField(15);
+			passwordField = new JTextField(15);
 			
-		
-			String numberList[] = {"1","2","3","4","5","6","7","8"};   
-			peopleNum = new JComboBox(numberList); // 방 인원수
-			peopleNum.setEnabled(true);
-			peopleNum.addActionListener(new ActionListener() { //인원 수 선택 이벤트
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					int num = (int) ((JComboBox)e.getSource()).getSelectedItem();
-				}
-			});
-
-			roomMk.setLayout(new GridLayout(5, 1, 0, 10));
-			titleTPn.setLayout(null);
-			passwordPn.setLayout(null);
-			peopleNumPn.setLayout(null);
-			titleLb.setBackground(Color.YELLOW);
 			
-			roomTitleLb.setBounds(0, -10, 50, 50);
-			titleText.setBounds(60,0,280,30);
-			passwordLb.setBounds(0, -10, 55, 50);
-			passwordText.setBounds(60, 0, 280, 30);
-			checkBtn.setBounds(345, -30, 100, 100);
-			peopleNLb.setBounds(0, -10, 50, 50);
-			peopleNum.setBounds(60,0,50,30);
-			
-			passwordText.setEnabled(false);
+			checkBtn = new JCheckBox();	
+			Integer numberList[] = {1, 2, 3, 4, 5, 10};   
+			population = new JComboBox<>(numberList); // 방 인원수
+			population.setEnabled(true);
 			
 			checkBtn.addItemListener(this);
+//			population.addActionListener(new ActionListener() { //인원 수 선택 이벤트
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					int num = (int) ((JComboBox)e.getSource()).getSelectedItem();
+//				}
+//			});
 
-			titlePn.add(titleLb);
+			// Layout
+			createRoomDialogue.setLayout(new GridLayout(5, 1, 0, 10));
+			titleTPn.setLayout(null);
+			passwordPn.setLayout(null);
+			populationPn.setLayout(null);
+			passwordField.setBackground(Color.decode("#AAAAAA"));
+			
+			roomTitleLb.setBounds(0, -10, 50, 50);
+			titleField.setBounds(60,0,280,30);
+			passwordLb.setBounds(0, -10, 55, 50);
+			passwordField.setBounds(60, 0, 280, 30);
+			checkBtn.setBounds(345, -30, 100, 100);
+			populationLb.setBounds(0, -10, 50, 50);
+			population.setBounds(60,0,50,30);
+			
+			passwordField.setEnabled(false);
+			
 			titleTPn.add(roomTitleLb);
-			titleTPn.add(titleText);
+			titleTPn.add(titleField);
 			passwordPn.add(passwordLb);
-			passwordPn.add(passwordText);
+			passwordPn.add(passwordField);
 			passwordPn.add(checkBtn);
-			peopleNumPn.add(peopleNLb);
-			peopleNumPn.add(peopleNum);
-			btnPn.add(makeBtn);
-			btnPn.add(cancleBtn);
+			populationPn.add(populationLb);
+			populationPn.add(population);
+			bottomPn.add(createBtn);
+			bottomPn.add(cancelBtn);
 
-			roomMk.add(titlePn);
-			roomMk.add(titleTPn);
-			roomMk.add(passwordPn);
-			roomMk.add(peopleNumPn);
-			roomMk.add(btnPn);
-
-			roomMk.setSize(400, 250);
-			roomMk.setVisible(true);
-			setDefaultCloseOperation(roomMk.EXIT_ON_CLOSE);
-		}
-
+			createRoomDialogue.add(topPn);
+			createRoomDialogue.add(titleTPn);
+			createRoomDialogue.add(passwordPn);
+			createRoomDialogue.add(populationPn);
+			createRoomDialogue.add(bottomPn);
+			
+			createRoomDialogue.setSize(400, 250);
+			createRoomDialogue.setVisible(true);
+			setDefaultCloseOperation(createRoomDialogue.EXIT_ON_CLOSE);
+			// End of Layout
+		} // End of CreateRoom Constructor
+		
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			Object source = e.getItemSelectable();
 			if(source == checkBtn) {
-				passwordText.setEnabled(true);
+				passwordField.setEnabled(true);
+				passwordField.setBackground(Color.white);
 			}
 			if(e.getStateChange() == ItemEvent.DESELECTED) {
-				passwordText.setEnabled(false);
+				passwordField.setEnabled(false);
+				passwordField.setBackground(Color.decode("#AAAAAA"));
 			}		
 		}
 	}
 
-
-	public class Setting extends JFrame {
+	class SettingDialogue extends JFrame {
 		private JDialog set;
 		private JPanel alarmPn;
 		private JPanel backgroundPn;
@@ -318,7 +367,7 @@ public class RoomList extends JFrame {
 		private JButton blackBtn;
 		private JButton logoutBtn;
 
-		public Setting() {
+		public SettingDialogue() {
 			set = new JDialog(this, "설정");
 			alarmPn = new JPanel();
 			backgroundPn = new JPanel();

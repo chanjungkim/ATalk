@@ -45,7 +45,11 @@ public class Compile {
 				scanner.useDelimiter(System.getProperty("line.separator"));
 				
 				while (scanner.hasNext()) {
+<<<<<<< HEAD
+		//			System.out.println(scanner.next().toString());
+=======
 					//System.out.println(scanner.next().toString());
+>>>>>>> 340442c4cda518e8aa3c17379b4700bbef99467e
 					//super.setInputTextArea(scanner.next().toString());
 					result += scanner.next().toString() + "\n";
 				}
