@@ -106,6 +106,10 @@ public class LogIn extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (e.getKeyChar() == e.VK_ENTER) {
+					// Temporary Pass
+					dispose();
+					new RoomList();
+					// End of Temporary Pass
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////로그인 접속 기능 변경 전 (반복문으로 이클립스 상에서 리스트를 이용하여 비교)				
 //					for (int x = 0; x < dao.loginList.size(); x++) {  
