@@ -266,8 +266,10 @@ public class LogIn extends JFrame {
 						log.seteMail(emailField.getText());
 						log.setPhone(phoneField.getText());
 
-						dao.insertLogin(log);
-						hide();
+						int check = dao.insertLogin(log);
+						if(check == 1) {
+							hide();
+						}
 					} else {
 						System.out.println("동의하셔야합니다.");
 					}

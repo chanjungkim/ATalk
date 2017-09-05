@@ -8,12 +8,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import chat.LogIn.SignUpDialog;
 
 public class LoginDao {
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
@@ -63,7 +66,7 @@ public class LoginDao {
 
 	////////////////////////////////////////////////////////////////
 	// 삽입
-	public void insertLogin(LoginVO log) {
+	public int insertLogin(LoginVO log) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -78,18 +81,42 @@ public class LoginDao {
 			ps.setString(4, log.getBirth());
 			ps.setString(5, log.geteMail());
 			ps.setString(6, log.getPhone());
-
+		
 			loginList.add(new LoginVO(log.getId(), log.getPw(), log.getName(), log.getBirth(), log.geteMail(),
 					log.getPhone()));
 
 			result = ps.executeUpdate();
 			System.out.println("쿼리 수행 결과(1.수행됨): + result");
+		} catch(SQLIntegrityConstraintViolationException e) {
+			JDialog dialog = new JDialog();
+			JPanel errorPanel = new JPanel();
+			JButton check = new JButton("확인");
+			JLabel message = new JLabel("아이디가 중복됬습니다.");
+
+			check.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dialog.dispose();
+				}
+			});
+			errorPanel.setLayout(new BorderLayout());
+
+			errorPanel.add(message, "Center");
+			errorPanel.add(check, "South");
+
+			dialog.add(errorPanel);
+
+			dialog.pack();
+			dialog.setTitle("ERROR!!");
+			dialog.setVisible(true);
+			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
+		}finally {
 			closePstmt();
 			closeConnection();
 		}
+		return result;
 	}
 
 	//////////////////////////////////////////////////////////
