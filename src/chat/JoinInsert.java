@@ -15,7 +15,7 @@ public class JoinInsert {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// 2. 目池记 积己
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/MEMBER", "root", "sds1501");
+			con = DriverManager.getConnection("jdbc:mysql://70.12.115.81:3306/MEMBER", "root", "sds1501");
 			String sql = "INSERT INTO information (USER_ID, USER_PW, NAME, EMAIL, PHONE) VALUES (?,?,?,?,?)";
 			
 			pstmt = con.prepareStatement(sql);
