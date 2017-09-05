@@ -21,10 +21,13 @@ import javax.swing.JTextField;
 
 public class LogIn extends JFrame{
 	private JPanel panel;
-	private JPanel namePanel;
-	private JPanel accountPanel;
-	private JPanel anotherPanel;
-	private JLabel lb;
+	private JPanel titlePn;
+	private JPanel idPn;
+	private JPanel pwPn;
+	private JPanel accountPn;
+	private JLabel titleLb;
+	private JLabel idLb;
+	private JLabel pwLb;
 	private JTextField idField;
 	private JTextField pwField;
 	private String id="";
@@ -36,10 +39,12 @@ public class LogIn extends JFrame{
 	
 	public LogIn() {
 		panel = new JPanel();
-		namePanel = new JPanel();
-		accountPanel = new JPanel();
-		anotherPanel = new JPanel();
-
+		titlePn = new JPanel();
+		idPn = new JPanel();
+		pwPn = new JPanel();
+		accountPn = new JPanel();
+		
+		
 //		ImageIcon facebook = new ImageIcon("C:\\Users\\Public\\Pictures\\Sample Pictures\\Æë±Ï.jpg");
 //		JLabel fbLabel = new JLabel();
 //		fbLabel.setIcon(facebook);
@@ -52,10 +57,10 @@ public class LogIn extends JFrame{
 		idField.setToolTipText("id:atalk pw:1234¸¦ ÀÔ·ÂÇÏ¸é ·Î±×ÀÎ µË´Ï´Ù.");
 		pwField = new JTextField(15);
 		
-		lb = new JLabel("Atalk");
+		titleLb = new JLabel("Atalk");
 		Font font = new Font("µ¸¿ò", Font.PLAIN, 100);
 		
-		lb.setFont(font);
+		titleLb.setFont(font);
 		signUpBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -154,26 +159,41 @@ public class LogIn extends JFrame{
 			}
 		});
 		
-		accountPanel.setLayout(new BoxLayout(accountPanel, 1));
-		panel.setLayout(new GridLayout());
-
-		namePanel.add(lb);
-
-		accountPanel.add(idField);
-		accountPanel.add(pwField);
-		accountPanel.add(signUpBtn);
+		idLb = new JLabel("ID");
+		pwLb = new JLabel("PW");
+		
+	    
+		panel.setLayout(new GridLayout(4,1));
+		titlePn.setLayout(null);
+		idPn.setLayout(null);
+		pwPn.setLayout(null);
+		accountPn.setLayout(null);
+		
+		titleLb.setBounds(230, 20, 300, 110);
+		idLb.setBounds(160, 50, 50, 50);
+		idField.setBounds(200, 50, 300, 50);
+		pwLb.setBounds(160, 10, 50, 50);
+		pwField.setBounds(200, 10, 300, 50);
+		signUpBtn.setBounds(200, 0, 100, 30);
+		
+		titlePn.add(titleLb);
+		idPn.add(idLb);
+		idPn.add(idField);
+		pwPn.add(pwLb);
+		pwPn.add(pwField);
+		accountPn.add(signUpBtn);
 		
 //		anotherPanel.add(fbLabel);
 //		anotherPanel.add(ggLabel);
 
-		panel.add(namePanel, "North");
-		panel.add(accountPanel, "Center");
-		panel.add(anotherPanel, "South");
+		panel.add(titlePn);
+		panel.add(idPn);
+		panel.add(pwPn);
+		panel.add(accountPn);
 		
 		add(panel);
 		
 		setTitle("ATalk");
-		
 		setSize(700, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(true);
