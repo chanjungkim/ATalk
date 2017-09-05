@@ -18,6 +18,8 @@ public class Dialog {
 	public Dialog() {
 		JLabel lb1= new JLabel();
 		Icon icon=new ImageIcon("Penguins.jpg");
+		
+		
 		imo = new JDialog();
 		imo.setLayout(new GridLayout(0, 3));
 		btn1 = new JButton(new ImageIcon("Penguins.jpg"));
