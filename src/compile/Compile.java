@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Compile {
 	
 	String result = "";
-	public Compile(String code,String input) {
+	public Compile(String code,String input){
 		try {
 			File codeFile = new File("Code.java");
 			File inputFile = new File("input.txt");
@@ -32,33 +32,29 @@ public class Compile {
 		    position = position.replace((char)92, (char)47);
 	    	System.out.println(position);
 	    	
-			String command1 = "cmd.exe /c "+position+"/jdk1.8.0_111/bin/javac Code.java & "+position+"/jdk1.8.0_111/bin/java Code < input.txt";
+			String command1 = "cmd.exe /c cd "+position+" & " + position+"jdk1.8.0_111/bin/javac Code.java & "+position+"jdk1.8.0_111/bin/java Code < input.txt";
+			System.out.println(command1);
 
-			try {
 				// Runtime.getRuntime().exec(command2);
 				// String m = sc.next();
 				// Runtime.getRuntime().exec(m);
 
-				Process process = Runtime.getRuntime().exec(command1);
-				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				Scanner scanner = new Scanner(br);
-				scanner.useDelimiter(System.getProperty("line.separator"));
-				
-				while (scanner.hasNext()) {
-					System.out.println(scanner.next().toString());
-					//super.setInputTextArea(scanner.next().toString());
-					result += scanner.next().toString() + "\n";
-				}
-				setResult(result);
-				scanner.close();
-				br.close();
-
-			} catch (IOException e3) {
-				e3.printStackTrace();
+			Process process = Runtime.getRuntime().exec(command1);
+			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			Scanner scanner = new Scanner(br);
+			scanner.useDelimiter(System.getProperty("line.separator"));
+			
+			while (scanner.hasNext()) {
+				System.out.println(scanner.next().toString());
+				//super.setInputTextArea(scanner.next().toString());
+				result += scanner.next().toString() + "\n";
 			}
+			setResult(result);
+			scanner.close();	
+			br.close();
 
-		} catch (Exception e2) {
-			e2.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
