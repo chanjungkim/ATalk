@@ -50,10 +50,6 @@ public class RoomList extends JFrame {
 		menu = new JButton(new ImageIcon("메뉴.png"));
 		settingBtn = new JButton(new ImageIcon("설정.PNG")); // 세팅
 
-		createRoomBtn.setBounds(0, 0, 80, 80);
-		menu.setBounds(300, 0, 80, 80);
-		settingBtn.setBounds(600, 0, 80, 80);
-	
 		// Fucntion
 		room.addActionListener(new ActionListener() {
 			@Override
@@ -205,8 +201,9 @@ public class RoomList extends JFrame {
 							dialog.setTitle("ERROR!!");
 							dialog.setVisible(true);
 						}else {
-							System.out.println("방이 생성되었습니다.");
+							panel.add(room);
 							createRoomDialogue.hide();
+							repaint();
 						}
 					}
 				});
@@ -227,6 +224,10 @@ public class RoomList extends JFrame {
 		EtchedBorder eborder;
 		eborder = new EtchedBorder(EtchedBorder.LOWERED);
 
+		createRoomBtn.setBounds(0, 0, 80, 80);
+		menu.setBounds(300, 0, 80, 80);
+		settingBtn.setBounds(600, 0, 80, 80);
+		
 		room.setBorder(eborder);
 		room.setBounds(0, 80, 350, 60);
 		room.setFont(new Font("바탕", Font.BOLD, 25));
@@ -243,7 +244,6 @@ public class RoomList extends JFrame {
 
 		panel.setLayout(null);
 
-		panel.add(room);
 		panel.add(roomList);
 		panel.add(createRoomBtn);
 		panel.add(settingBtn);
