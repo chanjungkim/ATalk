@@ -106,6 +106,7 @@ public class LogIn extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (e.getKeyChar() == e.VK_ENTER) {
+					new RoomList();
 					for (int x = 0; x < dao.loginList.size(); x++) {
 						System.out.println(dao.loginList.get(x).getId()+"/"+loginField.getText());
 						System.out.println(dao.loginList.get(x).getPw()+"/"+new String(passwordField.getPassword()));
