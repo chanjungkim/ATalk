@@ -2,21 +2,22 @@ package chat;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EtchedBorder;
 
 public class RoomList extends JFrame {
 	private JPanel panel;
@@ -27,29 +28,14 @@ public class RoomList extends JFrame {
 	private JButton setting;
 	private JButton room;
 
-	private JPanel panel1, panel2;
-
-	private JButton menu;
-	private ImageIcon image, image2, image3;
-	private JLabel count;
-	private JLabel master;
-
 	public RoomList() {
 		panel = new JPanel();
 		topPanel = new JPanel();
 		listPanel = new JPanel();
-		
-
+		makeRoom = new JButton("방 생성");
 		roomList = new JButton("목록");
+		setting = new JButton("설정");
 		room = new JButton("안드로이드 스터디 방");
-
-		makeRoom = new JButton(new ImageIcon("말풍선.PNG")); // 방생성
-		menu = new JButton(new ImageIcon("메뉴.png"));
-		setting = new JButton(new ImageIcon("설정.PNG")); // 세팅
-
-		makeRoom.setBounds(0, 0, 80, 80);
-		menu.setBounds(300, 0, 80, 80);
-		setting.setBounds(600, 0, 80, 80);
 
 		// Fucntion
 		room.addActionListener(new ActionListener() {
@@ -163,37 +149,16 @@ public class RoomList extends JFrame {
 		//////////////////////////////////////////////////////////////////////////////////
 
 		// Layout
-
-		EtchedBorder eborder;
-		eborder = new EtchedBorder(EtchedBorder.LOWERED);
-
-		room.setBorder(eborder);
-		room.setBounds(0, 80, 350, 60);
-		room.setFont(new Font("바탕", Font.BOLD, 25));
-		
-		master = new JLabel("방장:");
-		master.setBorder(eborder);
-		master.setBounds(350, 80, 200, 60);
-		master.setFont(new Font("바탕", Font.BOLD, 25));
-		
-		count = new JLabel("인원:");
-		count.setBorder(eborder);
-		count.setBounds(550, 80, 150, 60);
-		count.setFont(new Font("바탕", Font.BOLD, 25));
-
-
+		topPanel.setLayout(new BorderLayout(200, 10));
+		panel.setLayout(new BorderLayout(10, 20));
 		//
+		topPanel.add(roomList, BorderLayout.WEST);
+		topPanel.add(makeRoom, BorderLayout.CENTER);
+		topPanel.add(setting, BorderLayout.EAST);
+		listPanel.add(room);
 
-		panel.setLayout(null);
-
-		panel.add(room);
-		panel.add(roomList);
-		panel.add(makeRoom);
-		panel.add(setting);
-		panel.add(master);
-		panel.add(count);
-
-		panel.add(menu);
+		panel.add(topPanel, BorderLayout.NORTH);
+		panel.add(listPanel, BorderLayout.CENTER);
 
 		add(panel);
 
@@ -204,56 +169,101 @@ public class RoomList extends JFrame {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// Layout
-	public class RoomMake extends JFrame {
+	public class RoomMake extends JFrame implements ItemListener { //방 생성
 		private JDialog roomMk;
-		private JLabel title;
-		private JLabel roomTitle;
-		private JLabel password;
+		private JLabel titleLb;
+		private JLabel roomTitleLb;
+		private JLabel passwordLb;
+		private JLabel peopleNLb;
 		private JPanel titlePn;
 		private JPanel titleTPn;
 		private JPanel passwordPn;
+		private JPanel peopleNumPn;
 		private JPanel btnPn;
 		private JTextField titleText;
 		private JTextField passwordText;
 		private JButton makeBtn;
 		private JButton cancleBtn;
+		private JComboBox peopleNum; 
+		private JCheckBox checkBtn;
 
-		public RoomMake() {
+		public RoomMake() {               
 			roomMk = new JDialog();
-			title = new JLabel("방 만들기");
-			roomTitle = new JLabel("제목");
-			password = new JLabel("비밀 번호");
+			titleLb = new JLabel("방 만들기");
+			roomTitleLb = new JLabel("제목");
+			passwordLb= new JLabel("비밀 번호");
+			peopleNLb = new JLabel("인원");
 			titlePn = new JPanel();
 			titleTPn = new JPanel();
 			passwordPn = new JPanel();
+			peopleNumPn = new JPanel();
 			btnPn = new JPanel();
 			titleText = new JTextField(15);
 			passwordText = new JTextField(15);
 			makeBtn = new JButton("생성");
 			cancleBtn = new JButton("취소");
+			checkBtn = new JCheckBox();
+			
+		
+			String numberList[] = {"1","2","3","4","5","6","7","8"};   
+			peopleNum = new JComboBox(numberList); // 방 인원수
+			peopleNum.setEnabled(true);
+			peopleNum.addActionListener(new ActionListener() { //인원 수 선택 이벤트
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int num = (int) ((JComboBox)e.getSource()).getSelectedItem();
+				}
+			});
 
-			roomMk.setLayout(new GridLayout(4, 1, 0, 10));
-			titleTPn.setLayout(new BorderLayout(5, 0));
-			passwordPn.setLayout(new BorderLayout(5, 0));
+			roomMk.setLayout(new GridLayout(5, 1, 0, 10));
+			titleTPn.setLayout(null);
+			passwordPn.setLayout(null);
+			peopleNumPn.setLayout(null);
+			titleLb.setBackground(Color.YELLOW);
+			
+			roomTitleLb.setBounds(0, -10, 50, 50);
+			titleText.setBounds(60,0,280,30);
+			passwordLb.setBounds(0, -10, 55, 50);
+			passwordText.setBounds(60, 0, 280, 30);
+			checkBtn.setBounds(345, -30, 100, 100);
+			peopleNLb.setBounds(0, -10, 50, 50);
+			peopleNum.setBounds(60,0,50,30);
+			
+			passwordText.setEnabled(false);
+			
+			checkBtn.addItemListener(this);
 
-			title.setBackground(Color.YELLOW);
-
-			titlePn.add(title);
-			titleTPn.add(roomTitle, BorderLayout.WEST);
-			titleTPn.add(titleText, BorderLayout.CENTER);
-			passwordPn.add(password, BorderLayout.WEST);
-			passwordPn.add(passwordText, BorderLayout.CENTER);
+			titlePn.add(titleLb);
+			titleTPn.add(roomTitleLb);
+			titleTPn.add(titleText);
+			passwordPn.add(passwordLb);
+			passwordPn.add(passwordText);
+			passwordPn.add(checkBtn);
+			peopleNumPn.add(peopleNLb);
+			peopleNumPn.add(peopleNum);
 			btnPn.add(makeBtn);
 			btnPn.add(cancleBtn);
 
 			roomMk.add(titlePn);
 			roomMk.add(titleTPn);
 			roomMk.add(passwordPn);
+			roomMk.add(peopleNumPn);
 			roomMk.add(btnPn);
 
-			roomMk.setSize(300, 200);
+			roomMk.setSize(400, 250);
 			roomMk.setVisible(true);
 			setDefaultCloseOperation(roomMk.EXIT_ON_CLOSE);
+		}
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			Object source = e.getItemSelectable();
+			if(source == checkBtn) {
+				passwordText.setEnabled(true);
+			}
+			if(e.getStateChange() == ItemEvent.DESELECTED) {
+				passwordText.setEnabled(false);
+			}		
 		}
 	}
 
@@ -298,4 +308,7 @@ public class RoomList extends JFrame {
 			setDefaultCloseOperation(set.EXIT_ON_CLOSE);
 		}
 	}
+//	public static void main(String[] args) {
+//		new RoomList();
+//	}
 }
