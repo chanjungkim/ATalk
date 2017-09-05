@@ -5,7 +5,3 @@ public class Main {
 		LogIn logInFrame = new LogIn();
 	}
 }
-
-
-
-
