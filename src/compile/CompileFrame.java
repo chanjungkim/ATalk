@@ -86,9 +86,9 @@ class CompileFrame extends JFrame{
 		"import java.util.*;\n"+
 		"import java.lang.*;\n"+
 		"import java.io.*;\n" +
-		"import java.util.Scanner;\n"+
+		"import java.util.Scanner;\n" +
 		"class Code{\n" +
-		"	public static void main (String[] args) {\n"+
+		"	public static void main (String[] args){\n"+
 		"		// your code goes here\n"+
 		"	}\n"+
 		"}";
