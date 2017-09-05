@@ -2,7 +2,6 @@ package chat;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
@@ -19,11 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister.Pack;
-
-import javafx.scene.layout.Border;
-import sun.net.www.content.image.jpeg;
 
 public class RoomList extends JFrame {
 	private JPanel panel;
@@ -314,4 +308,7 @@ public class RoomList extends JFrame {
 			setDefaultCloseOperation(set.EXIT_ON_CLOSE);
 		}
 	}
+//	public static void main(String[] args) {
+//		new RoomList();
+//	}
 }
