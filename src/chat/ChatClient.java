@@ -20,6 +20,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,6 +38,7 @@ public class ChatClient extends JFrame{
 	private JPanel chatSetPanel;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
+	private JButton btn123;
 	
 	private JButton backBtn = new JButton("<");
 	
@@ -100,7 +102,8 @@ public class ChatClient extends JFrame{
 					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight()-5);
 					//rightPanel.add(chatSetPanel, "Center");
 					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 5);
-					chatSetBtn.setText("-");
+					chatSetBtn.setText("이모티콘");
+					Dialog imo=new Dialog();
 					i = 1;
 				}
 				else{
@@ -108,8 +111,11 @@ public class ChatClient extends JFrame{
 					//rightPanel.add(chatSetPanel, "Center");
 					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 0);
 					chatSetBtn.setText("+");
+					
+				
 					i = 0;
 				}
+				
 			}
 		});
 		// Network
