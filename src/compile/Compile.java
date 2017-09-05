@@ -30,7 +30,7 @@ public class Compile {
 		    // 디렉토리 위치 구하기
 			String position = codeFile.getCanonicalPath().substring(0, codeFile.getCanonicalPath().length()-codeFile.getName().length());
 		    position = position.replace((char)92, (char)47);
-	    	System.out.println(position);
+	    	// System.out.println(position);
 	    	
 			String command1 = "cmd.exe /c "+position+"/jdk1.8.0_111/bin/javac Code.java & "+position+"/jdk1.8.0_111/bin/java Code < input.txt";
 
@@ -45,7 +45,7 @@ public class Compile {
 				scanner.useDelimiter(System.getProperty("line.separator"));
 				
 				while (scanner.hasNext()) {
-		//			System.out.println(scanner.next().toString());
+					//System.out.println(scanner.next().toString());
 					//super.setInputTextArea(scanner.next().toString());
 					result += scanner.next().toString() + "\n";
 				}

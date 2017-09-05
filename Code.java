@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.Scanner;
 class Code{
 	public static void main (String[] args){
-		System.out.println("daxxx");
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println(sc.nextInt()+sc.nextInt());
 	}
 }
