@@ -2,13 +2,14 @@ package chat;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,60 +20,56 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.border.EtchedBorder;
 
 public class RoomList extends JFrame {
 	private JPanel panel;
+	private JPanel menuPanel;
 	private JPanel listPanel;
+	private JScrollPane scrollFrame;
+	
 	private JButton createRoomBtn;
-	private JButton roomList;
+	private JButton roomListBtn;
 	private JButton settingBtn;
-	private JButton room;
+	
+	private ArrayList<RoomPanel> room = new ArrayList<>();
 
-	private JPanel panel1, panel2;
-
-	private JButton menu;
-	private ImageIcon image, image2, image3;
-	private JLabel count;
-	private JLabel master;
-
-
+	private JLabel 	master = new JLabel("ë°©ì¥:");
+	private JLabel count = new JLabel("ì¸ì›:");
 	
 	public RoomList() {
 		panel = new JPanel();
+		menuPanel = new JPanel();
+		menuPanel.setBackground(Color.DARK_GRAY);
 		listPanel = new JPanel();
+		listPanel.setBackground(Color.GREEN);
+		scrollFrame = new JScrollPane(listPanel);
+		scrollFrame.enable(true);
 
-		roomList = new JButton("¸ñ·Ï");
-		room = new JButton("¾Èµå·ÎÀÌµå ½ºÅÍµğ ¹æ");
+		roomListBtn = new JButton();
 
-		createRoomBtn = new JButton(new ImageIcon("¸»Ç³¼±.PNG")); // ¹æ»ı¼º
-		menu = new JButton(new ImageIcon("¸Ş´º.png"));
-		settingBtn = new JButton(new ImageIcon("¼³Á¤.PNG")); // ¼¼ÆÃ
+		createRoomBtn = new JButton(new ImageIcon("balloon.PNG")); // ë°©ìƒì„±
+		roomListBtn = new JButton(new ImageIcon("menu.png"));
+		settingBtn = new JButton(new ImageIcon("setting.PNG")); // ì„¸íŒ…
 
-		createRoomBtn.setBounds(0, 0, 80, 80);
-		menu.setBounds(300, 0, 80, 80);
-		settingBtn.setBounds(600, 0, 80, 80);
-	
-		// Fucntion
-		room.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				ChatClient chat = new ChatClient();
-			}
-		});// End of Function
+		listPanel.setAutoscrolls(true);
+		listPanel.setLayout(new FlowLayout());
+		panel.setLayout(new BorderLayout());
 
+//		EtchedBorder eborder;
+//		eborder = new EtchedBorder(EtchedBorder.LOWERED);
+		
 		// Setting Dialogue
 		settingBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SettingDialogue settingDialogue = new SettingDialogue();
 
-				settingDialogue.logoutBtn.addActionListener(new ActionListener() { // ·Î±×¾Æ¿ô ¹öÆ°
+				settingDialogue.logoutBtn.addActionListener(new ActionListener() { // ë¡œê·¸ì•„ì›ƒ ë²„íŠ¼
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						int t = JOptionPane.showConfirmDialog(null, "ÀÌ °èÁ¤À» ·Î±×¾Æ¿ô ÇÏ½Ã°Ú½À´Ï±î?", "",
+						int t = JOptionPane.showConfirmDialog(null, "ì´ ê³„ì •ì„ ë¡œê·¸ì•„ì›ƒ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "",
 								JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 						if (t == 0) {
 							System.out.println("Go to the previous: frame.");
@@ -83,13 +80,13 @@ public class RoomList extends JFrame {
 					}
 				});
 
-				settingDialogue.blackBtn.addActionListener(new ActionListener() { // ºí·¢¸®½ºÆ® ¹öÆ°
+				settingDialogue.blackBtn.addActionListener(new ActionListener() { // ë¸”ë™ë¦¬ìŠ¤íŠ¸ ë²„íŠ¼
 					JFrame blackFm = new JFrame();
 					JPanel bottomPn = new JPanel();
-					JLabel nameLb = new JLabel("´Ğ³×ÀÓ");
+					JLabel nameLb = new JLabel("ë‹‰ë„¤ì„");
 					JTextField nameText = new JTextField(7);
-					JButton addBtn = new JButton("Ãß°¡");
-					JButton delBtn = new JButton("»èÁ¦");
+					JButton addBtn = new JButton("ì¶”ê°€");
+					JButton delBtn = new JButton("ì‚­ì œ");
 					List nameList = new List();
 
 					@Override
@@ -100,14 +97,14 @@ public class RoomList extends JFrame {
 							public void actionPerformed(ActionEvent e) {
 								String name = nameText.getText();
 								nameList.add(name);
-								nameText.setText(""); // ÅØ½ºÆ® ÇÊµå³»¿ë Áö¿ì±â
-								nameText.requestFocus(); // ÅØ½ºÆ® ÇÊµå¿¡ Æ÷Ä¿½º ÁÖ±â
+								nameText.setText(""); // í…ìŠ¤íŠ¸ í•„ë“œë‚´ìš© ì§€ìš°ê¸°
+								nameText.requestFocus(); // í…ìŠ¤íŠ¸ í•„ë“œì— í¬ì»¤ìŠ¤ ì£¼ê¸°
 							}
 						});
 						delBtn.addActionListener(new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								int pos = nameList.getSelectedIndex(); // namelistÀÇ ¼±ÅÃÇÑ Ç×¸ñÀÇ ÀÎµ¦½º°ª ¾ò¾î¿À±â
+								int pos = nameList.getSelectedIndex(); // namelistì˜ ì„ íƒí•œ í•­ëª©ì˜ ì¸ë±ìŠ¤ê°’ ì–»ì–´ì˜¤ê¸°
 
 								if (pos == -1) {
 									
@@ -125,14 +122,14 @@ public class RoomList extends JFrame {
 						blackFm.add(bottomPn, BorderLayout.NORTH);
 						blackFm.add(nameList, BorderLayout.CENTER);
 
-						blackFm.setTitle("ºí·¢¸®½ºÆ®");
+						blackFm.setTitle("ë¸”ë™ë¦¬ìŠ¤íŠ¸");
 						blackFm.setSize(300, 400);
-						setDefaultCloseOperation(blackFm.EXIT_ON_CLOSE); // ÀÌ Ã¢¸¸ Á¾·á
+						setDefaultCloseOperation(blackFm.EXIT_ON_CLOSE); // ì´ ì°½ë§Œ ì¢…ë£Œ
 						blackFm.setVisible(true);
 					}
 				});
 
-				settingDialogue.alarmBtn.addActionListener(new ActionListener() { // ¾Ë¶÷ ¹öÆ°
+				settingDialogue.alarmBtn.addActionListener(new ActionListener() { // ì•ŒëŒ ë²„íŠ¼
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
@@ -140,7 +137,7 @@ public class RoomList extends JFrame {
 					}
 				});
 
-				settingDialogue.colorBtn.addActionListener(new ActionListener() { // »ö»ó º¯°æ ¹öÆ°
+				settingDialogue.colorBtn.addActionListener(new ActionListener() { // ìƒ‰ìƒ ë³€ê²½ ë²„íŠ¼
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
@@ -152,6 +149,8 @@ public class RoomList extends JFrame {
 		});
 		// End of Setting Dialogue
 		
+
+
 		// Create Room Dialogue
 		createRoomBtn.addActionListener(new ActionListener() {
 			@Override
@@ -163,8 +162,8 @@ public class RoomList extends JFrame {
 						if(createRoomDialogue.titleField.getText().isEmpty()) {
 							JDialog dialog = new JDialog();
 							JPanel errorPanel = new JPanel();
-							JButton check = new JButton("È®ÀÎ");
-							JLabel message = new JLabel("Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+							JButton check = new JButton("í™•ì¸");
+							JLabel message = new JLabel("ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 							
 							check.addActionListener(new ActionListener(){
 								@Override
@@ -185,8 +184,8 @@ public class RoomList extends JFrame {
 						}else if(createRoomDialogue.passwordField.getText().isEmpty() && createRoomDialogue.checkBtn.isSelected()){
 							JDialog dialog = new JDialog();
 							JPanel errorPanel = new JPanel();
-							JButton check = new JButton("È®ÀÎ");
-							JLabel message = new JLabel("ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+							JButton check = new JButton("í™•ì¸");
+							JLabel message = new JLabel("ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 							
 							check.addActionListener(new ActionListener(){
 								@Override
@@ -205,7 +204,17 @@ public class RoomList extends JFrame {
 							dialog.setTitle("ERROR!!");
 							dialog.setVisible(true);
 						}else {
-							System.out.println("¹æÀÌ »ı¼ºµÇ¾ú½À´Ï´Ù.");
+							room.add(new RoomPanel(createRoomDialogue.getTitleField(), "ì•„ë¬´ê°œ",  createRoomDialogue.getPopulation(), "Cì–¸ì–´", createRoomDialogue.getPasswordField()));
+							for(int i = 0 ; i < room.size(); i++) {
+
+								listPanel.add(room.get(i));
+								System.out.println(room.size());
+							}
+//							panel.add(listPanel);
+//							add(panel);
+							
+							validate();
+
 							createRoomDialogue.hide();
 						}
 					}
@@ -219,56 +228,42 @@ public class RoomList extends JFrame {
 				});
 			}
 		});
+		
+		roomListBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
 		// End of Create Room Dialogue
-
-
 		
-		// Layout
-		EtchedBorder eborder;
-		eborder = new EtchedBorder(EtchedBorder.LOWERED);
-
-		room.setBorder(eborder);
-		room.setBounds(0, 80, 350, 60);
-		room.setFont(new Font("¹ÙÅÁ", Font.BOLD, 25));
+		// Add Panels
+		menuPanel.add(createRoomBtn);
+		menuPanel.add(roomListBtn);
+		menuPanel.add(settingBtn);
 		
-		master = new JLabel("¹æÀå:");
-		master.setBorder(eborder);
-		master.setBounds(350, 80, 200, 60);
-		master.setFont(new Font("¹ÙÅÁ", Font.BOLD, 25));
+		//scrollFrame.add(listPanel);
+		panel.add(menuPanel, BorderLayout.NORTH);
+		panel.add(listPanel);
 		
-		count = new JLabel("ÀÎ¿ø:");
-		count.setBorder(eborder);
-		count.setBounds(550, 80, 150, 60);
-		count.setFont(new Font("¹ÙÅÁ", Font.BOLD, 25));
-
-		panel.setLayout(null);
-
-		panel.add(room);
-		panel.add(roomList);
-		panel.add(createRoomBtn);
-		panel.add(settingBtn);
-		panel.add(master);
-		panel.add(count);
-
-		panel.add(menu);
-
 		add(panel);
-
+		
 		setSize(700, 500);
+		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 
 	// <--------------------- Inner Classes -------------------------->
-	class CreateRoomDialogue extends JFrame implements ItemListener { //¹æ »ı¼º
-		private JDialog createRoomDialogue = new JDialog(this, "¹æ ¸¸µé±â");
-		private JLabel roomTitleLb = new JLabel("Á¦¸ñ");
+	class CreateRoomDialogue extends JFrame implements ItemListener { //ë°© ìƒì„±
+		private JDialog createRoomDialogue = new JDialog(this, "ë°© ë§Œë“¤ê¸°");
+		private JLabel roomTitleLb = new JLabel("ì œëª©");
 		private JTextField titleField;
 		
-		private JLabel passwordLb = new JLabel("ºñ¹Ğ ¹øÈ£");
+		private JLabel passwordLb = new JLabel("ë¹„ë°€ ë²ˆí˜¸");
 		private JTextField passwordField;
 		
-		private JLabel populationLb = new JLabel("ÀÎ¿ø");
+		private JLabel populationLb = new JLabel("ì¸ì›");
 		private JComboBox<Integer> population; 
 		
 		private JPanel topPn;
@@ -277,8 +272,8 @@ public class RoomList extends JFrame {
 		private JPanel populationPn;
 		private JPanel bottomPn;
 		private JCheckBox checkBtn;
-		private JButton createBtn = new JButton("»ı¼º");
-		private JButton cancelBtn = new JButton("Ãë¼Ò");
+		private JButton createBtn = new JButton("ìƒì„±");
+		private JButton cancelBtn = new JButton("ì·¨ì†Œ");
 		
 		public CreateRoomDialogue() {               
 			topPn = new JPanel();
@@ -292,11 +287,11 @@ public class RoomList extends JFrame {
 			
 			checkBtn = new JCheckBox();	
 			Integer numberList[] = {1, 2, 3, 4, 5, 10};   
-			population = new JComboBox<>(numberList); // ¹æ ÀÎ¿ø¼ö
+			population = new JComboBox<>(numberList); // ë°© ì¸ì›ìˆ˜
 			population.setEnabled(true);
 			
 			checkBtn.addItemListener(this);
-//			population.addActionListener(new ActionListener() { //ÀÎ¿ø ¼ö ¼±ÅÃ ÀÌº¥Æ®
+//			population.addActionListener(new ActionListener() { //ì¸ì› ìˆ˜ ì„ íƒ ì´ë²¤íŠ¸
 //				@Override
 //				public void actionPerformed(ActionEvent e) {
 //					int num = (int) ((JComboBox)e.getSource()).getSelectedItem();
@@ -354,6 +349,23 @@ public class RoomList extends JFrame {
 				passwordField.setBackground(Color.decode("#AAAAAA"));
 			}		
 		}
+
+		public String getTitleField() {
+			return titleField.getText();
+		}
+
+		public String getPasswordField() {
+			return passwordField.getText();
+		}
+		
+		public int getPopulation() {
+			return population.getItemCount();
+		}
+
+//		public void setPopulation(JComboBox<Integer> population) {
+//			this.population = population;
+//		}
+		
 	}
 
 	class SettingDialogue extends JFrame {
@@ -368,15 +380,15 @@ public class RoomList extends JFrame {
 		private JButton logoutBtn;
 
 		public SettingDialogue() {
-			set = new JDialog(this, "¼³Á¤");
+			set = new JDialog(this, "ì„¤ì •");
 			alarmPn = new JPanel();
 			backgroundPn = new JPanel();
-			alarmLb = new JLabel("¾Ë¶÷");
-			backgroundLb = new JLabel("¹è°æ »ö");
-			alarmBtn = new JButton("ÄÑ±â");
-			colorBtn = new JButton("»ö±ò");
-			blackBtn = new JButton("ºí·¢¸®½ºÆ®");
-			logoutBtn = new JButton("·Î±×¾Æ¿ô");
+			alarmLb = new JLabel("ì•ŒëŒ");
+			backgroundLb = new JLabel("ë°°ê²½ ìƒ‰");
+			alarmBtn = new JButton("ì¼œê¸°");
+			colorBtn = new JButton("ìƒ‰ê¹”");
+			blackBtn = new JButton("ë¸”ë™ë¦¬ìŠ¤íŠ¸");
+			logoutBtn = new JButton("ë¡œê·¸ì•„ì›ƒ");
 
 			set.setLayout(new GridLayout(4, 1));
 			alarmPn.setLayout(new BorderLayout());
@@ -396,5 +408,8 @@ public class RoomList extends JFrame {
 			set.setVisible(true);
 			setDefaultCloseOperation(set.EXIT_ON_CLOSE);
 		}
+	}
+	public static void main(String[] args) {
+		new RoomList();
 	}
 }
