@@ -102,7 +102,7 @@ public class LogIn extends JFrame {
 			public void keyReleased(KeyEvent e) {
 
 			}
-			
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (e.getKeyChar() == e.VK_ENTER) {
@@ -110,47 +110,49 @@ public class LogIn extends JFrame {
 					dispose();
 					new RoomList();
 					// End of Temporary Pass
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-////로그인 접속 기능 변경 전 (반복문으로 이클립스 상에서 리스트를 이용하여 비교)				
-//					for (int x = 0; x < dao.loginList.size(); x++) {  
-//						if (dao.loginList.get(x).getId().equals(loginField.getText())
-//								&& dao.loginList.get(x).getPw().equals(new String(passwordField.getPassword()))) {
-//							System.out.println("로그인 중...");
-//							dispose();
-//							RoomList roomList = new RoomList();
-//							break;
-//						} else if(x == dao.loginList.size() - 1
-//                            && dao.loginList.get(x).getPw() != new String(passwordField.getPassword())){
-//							JDialog dialog = new JDialog();
-//							JPanel errorPanel = new JPanel();
-//							JButton check = new JButton("확인");
-//							JLabel message = new JLabel("아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주세요.");
-//
-//							check.addActionListener(new ActionListener() {
-//								@Override
-//								public void actionPerformed(ActionEvent e) {
-//									dialog.dispose();
-//								}
-//							});
-//							errorPanel.setLayout(new BorderLayout());
-//
-//							errorPanel.add(message, "Center");
-//							errorPanel.add(check, "South");
-//
-//							dialog.add(errorPanel);
-//
-//							dialog.pack();
-//							dialog.setTitle("ERROR!!");
-//							dialog.setVisible(true);
-//						}
-//					}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//아래는 디비 상에서 비교 지금 사용하는 로그인 접속 방식
+					/////////////////////////////////////////////////////////////////////////////////////////////////////////
+					//// 로그인 접속 기능 변경 전 (반복문으로 이클립스 상에서 리스트를 이용하여 비교)
+					// for (int x = 0; x < dao.loginList.size(); x++) {
+					// if (dao.loginList.get(x).getId().equals(loginField.getText())
+					// && dao.loginList.get(x).getPw().equals(new
+					///////////////////////////////////////////////////////////////////////////////////////////////////////// String(passwordField.getPassword())))
+					///////////////////////////////////////////////////////////////////////////////////////////////////////// {
+					// System.out.println("로그인 중...");
+					// dispose();
+					// RoomList roomList = new RoomList();
+					// break;
+					// } else if(x == dao.loginList.size() - 1
+					// && dao.loginList.get(x).getPw() != new String(passwordField.getPassword())){
+					// JDialog dialog = new JDialog();
+					// JPanel errorPanel = new JPanel();
+					// JButton check = new JButton("확인");
+					// JLabel message = new JLabel("아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주세요.");
+					//
+					// check.addActionListener(new ActionListener() {
+					// @Override
+					// public void actionPerformed(ActionEvent e) {
+					// dialog.dispose();
+					// }
+					// });
+					// errorPanel.setLayout(new BorderLayout());
+					//
+					// errorPanel.add(message, "Center");
+					// errorPanel.add(check, "South");
+					//
+					// dialog.add(errorPanel);
+					//
+					// dialog.pack();
+					// dialog.setTitle("ERROR!!");
+					// dialog.setVisible(true);
+					// }
+					// }
+					//////////////////////////////////////////////////////////////////////////////////////////////////////////
+					// 아래는 디비 상에서 비교 지금 사용하는 로그인 접속 방식
 					dao.loginConnect(loginField.getText(), new String(passwordField.getPassword()));
 				} else if (e.getKeyChar() == e.VK_BACK_SPACE) {
 					pw = pw.substring(0, pw.length() - 1);
 					System.out.println("변경된 패스워드: " + pw);
-				} 
+				}
 			}
 		});
 
@@ -270,10 +272,37 @@ public class LogIn extends JFrame {
 						log.seteMail(emailField.getText());
 						log.setPhone(phoneField.getText());
 
-						int check = dao.insertLogin(log);
-						if(check == 1) {
-							hide();
+						if (idField.getText().equals("") || pwField.getText().equals("") || nameField.getText().equals("")
+								|| birthDayField.getText().equals("") || emailField.getText().equals("")
+								|| phoneField.getText().equals("")) {
+							JDialog dialog = new JDialog();
+							JPanel errorPanel = new JPanel();
+							JButton check = new JButton("확인");
+							JLabel message = new JLabel("전부 작성해주세요");
+
+							check.addActionListener(new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									dialog.dispose();
+								}
+							});
+							errorPanel.setLayout(new BorderLayout());
+
+							errorPanel.add(message, "Center");
+							errorPanel.add(check, "South");
+
+							dialog.add(errorPanel);
+
+							dialog.pack();
+							dialog.setTitle("ERROR!!");
+							dialog.setVisible(true);
+						} else {
+							int check = dao.insertLogin(log);
+							if (check == 1) {
+								hide();
+							}
 						}
+
 					} else {
 						System.out.println("동의하셔야합니다.");
 					}
@@ -297,6 +326,3 @@ public class LogIn extends JFrame {
 		}
 	}
 }
-
-
-
