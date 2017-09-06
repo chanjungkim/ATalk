@@ -16,7 +16,7 @@ public class RoomPanel extends JPanel{
 	private JPanel panel;
 	private JPanel titlePanel;
 	private JPanel rightPanel;
-	private JButton roomBtn;
+	public JButton roomBtn;
 	private JLabel masterLb;
 	private JLabel populationLb;
 	private JLabel lang;
@@ -54,13 +54,7 @@ public class RoomPanel extends JPanel{
 		populationLb.setFont(new Font("πŸ≈¡", Font.BOLD, 25));
 
 	
-		// Fucntion
-		roomBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				ChatClient chat = new ChatClient(masterID);
-			}
-		});// End of Function
+
 		
 		setBackground(Color.blue);
 		titlePanel.add(roomBtn);

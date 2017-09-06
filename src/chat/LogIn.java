@@ -151,7 +151,6 @@ public class LogIn extends JFrame {
 					if(dao.loginConnect(loginField.getText(), new String(passwordField.getPassword()))==1) {
 						dispose();
 					}
-					
 				} else if (e.getKeyChar() == e.VK_BACK_SPACE) {
 					pw = pw.substring(0, pw.length() - 1);
 					System.out.println("변경된 패스워드: " + pw);

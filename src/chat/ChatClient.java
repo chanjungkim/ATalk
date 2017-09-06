@@ -40,7 +40,7 @@ public class ChatClient extends JFrame {
 	private JPanel rightPanel;
 	private JButton btn123;
 
-	private JButton backBtn = new JButton("<");
+	public JButton backBtn = new JButton("<");
 
 	private JTextPane messageField = new JTextPane();
 	private JScrollPane scrollFrame;
@@ -77,15 +77,6 @@ public class ChatClient extends JFrame {
 
 		// Function
 		messageField.setEditable(false);
-
-		backBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Go to the previous frame.");
-				dispose();
-				RoomList roomList = new RoomList("");
-			}
-		});
 
 		typeField.addFocusListener(new FocusListener() {
 			@Override

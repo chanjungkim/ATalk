@@ -210,10 +210,28 @@ public class RoomList extends JFrame {
 
 								listPanel.add(room.get(i));
 								System.out.println(room.size());
+								
+								room.get(i).roomBtn.addActionListener(new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent arg0) {
+										ChatClient chat = new ChatClient(id);
+										hide();
+										chat.backBtn.addActionListener(new ActionListener() {
+											@Override
+											public void actionPerformed(ActionEvent e) {
+												show();
+												chat.dispose();
+											}
+										});
+									}
+								});// End of Function
 							}
+							
+
 //							panel.add(listPanel);
 //							add(panel);
-							
+							// Fucntion
+
 							validate();
 
 							createRoomDialogue.hide();
