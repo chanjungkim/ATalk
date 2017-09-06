@@ -139,36 +139,14 @@ public class LoginDao {
 				LoginVO lv = new LoginVO();
 				lv.setId(rs.getString(1));
 				lv.setPw(rs.getString(2));
+				System.out.println(lv.getId());
 			}
-			
 			if(rs.wasNull()) {
-				Interrupt();
 			}else {
 				RoomList roomList = new RoomList();
 			}
-
 		} catch (SQLException e) {
-			JDialog dialog = new JDialog();
-			JPanel errorPanel = new JPanel();
-			JButton check = new JButton("확인");
-			JLabel message = new JLabel("아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주세요.");
-
-			check.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					dialog.dispose();
-				}
-			});
-			errorPanel.setLayout(new BorderLayout());
-
-			errorPanel.add(message, "Center");
-			errorPanel.add(check, "South");
-
-			dialog.add(errorPanel);
-
-			dialog.pack();
-			dialog.setTitle("ERROR!!");
-			dialog.setVisible(true);
+			Interrupt();
 			e.printStackTrace();
 		} finally {
 			closeRS();
@@ -179,8 +157,27 @@ public class LoginDao {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	private void Interrupt() {
-		// TODO Auto-generated method stub
-		
+		JDialog dialog = new JDialog();
+		JPanel errorPanel = new JPanel();
+		JButton check = new JButton("확인");
+		JLabel message = new JLabel("아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주세요.");
+
+		check.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dialog.dispose();
+			}
+		});
+		errorPanel.setLayout(new BorderLayout());
+
+		errorPanel.add(message, "Center");
+		errorPanel.add(check, "South");
+
+		dialog.add(errorPanel);
+
+		dialog.pack();
+		dialog.setTitle("ERROR!!");
+		dialog.setVisible(true);
 	}
 
 	public void closeConnection() {
