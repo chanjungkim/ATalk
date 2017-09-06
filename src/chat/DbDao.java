@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 import chat.LogIn.SignUpDialog;
 
-public class dbDao {
+public class DbDao {
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
 	private static final String DB_ID = "atalk";
@@ -27,9 +27,9 @@ public class dbDao {
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet rs;
-	ArrayList<dbVO> loginList = new ArrayList<>();
+	ArrayList<DbVO> loginList = new ArrayList<>();
 
-	public dbDao() {
+	public DbDao() {
 		try {
 			Class.forName(DB_DRIVER);
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -40,7 +40,7 @@ public class dbDao {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				dbVO lv = new dbVO();
+				DbVO lv = new DbVO();
 				lv.setId(rs.getString(1));
 				lv.setPw(rs.getString(2));
 				lv.setName(rs.getString(3));
@@ -50,7 +50,7 @@ public class dbDao {
 
 				loginList.add(lv);
 			}
-			for (dbVO l : loginList) {
+			for (DbVO l : loginList) {
 				System.out.println(l);
 			}
 		} catch (SQLException e) {
@@ -66,7 +66,7 @@ public class dbDao {
 
 	////////////////////////////////////////////////////////////////
 	//회원가입 삽입
-	public int insertLogin(dbVO log) {
+	public int insertLogin(DbVO log) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -82,7 +82,7 @@ public class dbDao {
 			ps.setString(5, log.geteMail());
 			ps.setString(6, log.getPhone());
 		
-			loginList.add(new dbVO(log.getId(), log.getPw(), log.getName(), log.getBirth(), log.geteMail(),
+			loginList.add(new DbVO(log.getId(), log.getPw(), log.getName(), log.getBirth(), log.geteMail(),
 					log.getPhone()));
 
 			result = ps.executeUpdate();
@@ -146,7 +146,7 @@ public class dbDao {
 			rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				dbVO lv = new dbVO();
+				DbVO lv = new DbVO();
 				lv.setId(rs.getString(1));
 				lv.setPw(rs.getString(2));
 				System.out.println(lv.getId());

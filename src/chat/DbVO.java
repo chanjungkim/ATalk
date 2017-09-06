@@ -1,6 +1,6 @@
 package chat;
 
-public class dbVO {
+public class DbVO {
 	private String id;
 	private String pw;
 	private String name;
@@ -10,14 +10,14 @@ public class dbVO {
 	
 	private String blackId;//블랙리스트 테이블 
 	
-	public dbVO() {
+	public DbVO() {
 	}
 	
-	public dbVO(String blackId) { //블랙리스트 등록
+	public DbVO(String blackId) { //블랙리스트 등록
 		this.blackId = blackId;
 	}
 
-	public dbVO(String id, String pw, String name, String birth, String eMail, String phone) { //회원가입
+	public DbVO(String id, String pw, String name, String birth, String eMail, String phone) { //회원가입
 		this.id = id;
 		this.pw = pw;
 		this.name = name;
@@ -76,7 +76,7 @@ public class dbVO {
 
 	@Override
 	public String toString() {
-		return "dbVO [id=" + id + ", pw=" + pw + ", name=" + name + ", birth=" + birth + ", eMail=" + eMail
+		return "DbVO [id=" + id + ", pw=" + pw + ", name=" + name + ", birth=" + birth + ", eMail=" + eMail
 				+ ", phone=" + phone + "]";
 	}
 }
