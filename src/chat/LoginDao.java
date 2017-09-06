@@ -120,10 +120,14 @@ public class LoginDao {
 	}
 
 	//////////////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////
+	//블랙리스트 추가
+
 
 	//////////////////////////////////////////////////////////
 	//현재 로그인 접속 방식
-	public void loginConnect(String id, String pw) {
+	public int loginConnect(String id, String pw) {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 			String sql = "SELECT * FROM JOINMEMBER WHERE ID=? AND PW=?";
@@ -135,15 +139,19 @@ public class LoginDao {
 
 			rs = ps.executeQuery();
 			
-			while (rs.next()) {
+			if (rs.next()) {
 				LoginVO lv = new LoginVO();
 				lv.setId(rs.getString(1));
 				lv.setPw(rs.getString(2));
 				System.out.println(lv.getId());
+				System.out.println(lv.getPw());
+				RoomList roomList = new RoomList(id);
+				return 1;
 			}
 			if(rs.wasNull()) {
-			}else {
-				RoomList roomList = new RoomList();
+			}
+			else {
+			
 			}
 		} catch (SQLException e) {
 			Interrupt();
@@ -153,7 +161,9 @@ public class LoginDao {
 			closePstmt();
 			closeConnection();
 		}
+		return 0;
 	}
+	
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	private void Interrupt() {

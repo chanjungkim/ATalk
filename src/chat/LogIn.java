@@ -106,10 +106,10 @@ public class LogIn extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (e.getKeyChar() == e.VK_ENTER) {
-					// Temporary Pass
-					dispose();
-					new RoomList();
-					// End of Temporary Pass
+//					// Temporary Pass
+//					dispose();
+//					new RoomList();
+//					// End of Temporary Pass
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////
 					//// 로그인 접속 기능 변경 전 (반복문으로 이클립스 상에서 리스트를 이용하여 비교)
 					// for (int x = 0; x < dao.loginList.size(); x++) {
@@ -148,7 +148,10 @@ public class LogIn extends JFrame {
 					// }
 					//////////////////////////////////////////////////////////////////////////////////////////////////////////
 					// 아래는 디비 상에서 비교 지금 사용하는 로그인 접속 방식
-					dao.loginConnect(loginField.getText(), new String(passwordField.getPassword()));
+					if(dao.loginConnect(loginField.getText(), new String(passwordField.getPassword()))==1) {
+						dispose();
+					}
+					
 				} else if (e.getKeyChar() == e.VK_BACK_SPACE) {
 					pw = pw.substring(0, pw.length() - 1);
 					System.out.println("변경된 패스워드: " + pw);

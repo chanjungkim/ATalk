@@ -34,9 +34,9 @@ public class RoomPanel extends JPanel{
 		titlePanel = new JPanel();
 		rightPanel = new JPanel();
 		roomBtn = new JButton(title);
-		masterLb = new JLabel("Î∞©Ïû•: " + maker+" ");
-		populationLb = new JLabel("Ïù∏Ïõê: 1/" + maxPopulation);
-		lang = new JLabel("Ïñ∏Ïñ¥: " + language);
+		masterLb = new JLabel("πÊ¿Â: " + maker+" ");
+		populationLb = new JLabel("¿Œø¯: 1/" + maxPopulation);
+		lang = new JLabel("ææÓ: " + language);
 		++roomCounter;
 		
 		titlePanel.setLayout(new BorderLayout());
@@ -49,16 +49,16 @@ public class RoomPanel extends JPanel{
 		this.language=language;
 		this.roomPassword = password;
 		
-		roomBtn.setFont(new Font("Î∞îÌÉï", Font.BOLD, 25));	
-		masterLb.setFont(new Font("Î∞îÌÉï", Font.BOLD, 25));
-		populationLb.setFont(new Font("Î∞îÌÉï", Font.BOLD, 25));
+		roomBtn.setFont(new Font("πŸ≈¡", Font.BOLD, 25));	
+		masterLb.setFont(new Font("πŸ≈¡", Font.BOLD, 25));
+		populationLb.setFont(new Font("πŸ≈¡", Font.BOLD, 25));
 
 	
 		// Fucntion
 		roomBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				ChatClient chat = new ChatClient();
+				ChatClient chat = new ChatClient(masterID);
 			}
 		});// End of Function
 		
@@ -117,4 +117,3 @@ public class RoomPanel extends JPanel{
 	}
 	
 }
-

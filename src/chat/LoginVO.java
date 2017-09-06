@@ -7,6 +7,9 @@ public class LoginVO {
 	private String birth;
 	private String eMail;
 	private String phone;
+	
+	private String blackId;//블랙리스트 테이블 
+	
 
 	public LoginVO() {
 	}
