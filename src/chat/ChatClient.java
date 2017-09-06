@@ -48,16 +48,18 @@ public class ChatClient extends JFrame {
 	private JTextField typeField = new JTextField("Type");
 	private JButton chatSetBtn = new JButton("+");
 
-	private JButton user1 = new JButton("atalk");
+	private JButton user1;
 	private JButton user2 = new JButton("USER-1");
 	private JButton mic = new JButton("MIC");
 
 	private BufferedReader br;
 	private BufferedWriter bw;
 
-	private String nickname;
+	private String id;
 
-	public ChatClient() {
+	public ChatClient(String id) {
+		this.id = id;
+		user1 = new JButton(id);
 		panel = new JPanel();
 		userListPanel = new JPanel();
 		messagesAreaPanel = new JPanel();
@@ -81,7 +83,7 @@ public class ChatClient extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Go to the previous frame.");
 				dispose();
-				RoomList roomList = new RoomList();
+				RoomList roomList = new RoomList("");
 			}
 		});
 
@@ -132,9 +134,9 @@ public class ChatClient extends JFrame {
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// 서버와 연결한 후에 닉네임 입력해서 전송하기
-			nickname = JOptionPane.showInputDialog(this, "대화명 입력하세요.", JOptionPane.INFORMATION_MESSAGE);
+//			id = JOptionPane.showInputDialog(this, "대화명 입력하세요.", JOptionPane.INFORMATION_MESSAGE);
 
-			bw.write(nickname + "\n");
+			bw.write(id + "\n");
 			bw.flush();
 
 			// 닉네임 전송 후에는 서버가 보내는 메세지 받는 쓰레드
@@ -208,7 +210,6 @@ public class ChatClient extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-
 	// 이벤트 처리 클래스(채팅내용 서버에게 보내기)
 
 	class ChattingListener implements ActionListener {
@@ -309,7 +310,7 @@ public class ChatClient extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		new ChatClient();
-	}
+//	public static void main(String[] args) {
+//		new ChatClient();
+//	}
 }
