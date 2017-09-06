@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 import chat.LogIn.SignUpDialog;
 
-public class LoginDao {
+public class dbDao {
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
 	private static final String DB_ID = "atalk";
@@ -27,9 +27,9 @@ public class LoginDao {
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet rs;
-	ArrayList<LoginVO> loginList = new ArrayList<>();
+	ArrayList<dbVO> loginList = new ArrayList<>();
 
-	public LoginDao() {
+	public dbDao() {
 		try {
 			Class.forName(DB_DRIVER);
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -40,7 +40,7 @@ public class LoginDao {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				LoginVO lv = new LoginVO();
+				dbVO lv = new dbVO();
 				lv.setId(rs.getString(1));
 				lv.setPw(rs.getString(2));
 				lv.setName(rs.getString(3));
@@ -50,7 +50,7 @@ public class LoginDao {
 
 				loginList.add(lv);
 			}
-			for (LoginVO l : loginList) {
+			for (dbVO l : loginList) {
 				System.out.println(l);
 			}
 		} catch (SQLException e) {
@@ -65,8 +65,8 @@ public class LoginDao {
 	}
 
 	////////////////////////////////////////////////////////////////
-	// 삽입
-	public int insertLogin(LoginVO log) {
+	//회원가입 삽입
+	public int insertLogin(dbVO log) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -82,7 +82,7 @@ public class LoginDao {
 			ps.setString(5, log.geteMail());
 			ps.setString(6, log.getPhone());
 		
-			loginList.add(new LoginVO(log.getId(), log.getPw(), log.getName(), log.getBirth(), log.geteMail(),
+			loginList.add(new dbVO(log.getId(), log.getPw(), log.getName(), log.getBirth(), log.geteMail(),
 					log.getPhone()));
 
 			result = ps.executeUpdate();
@@ -123,7 +123,13 @@ public class LoginDao {
 	
 	////////////////////////////////////////////////////////////
 	//블랙리스트 추가
-
+	
+	////////////////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////
+	//방 추가
+	
+	////////////////////////////////////////////////////////////
 
 	//////////////////////////////////////////////////////////
 	//현재 로그인 접속 방식
@@ -140,7 +146,7 @@ public class LoginDao {
 			rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				LoginVO lv = new LoginVO();
+				dbVO lv = new dbVO();
 				lv.setId(rs.getString(1));
 				lv.setPw(rs.getString(2));
 				System.out.println(lv.getId());

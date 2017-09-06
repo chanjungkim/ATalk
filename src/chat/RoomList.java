@@ -283,7 +283,10 @@ public class RoomList extends JFrame {
 		private JTextField passwordField;
 		
 		private JLabel populationLb = new JLabel("인원");
-		private JComboBox<Integer> population; 
+		private JComboBox<Integer> population;
+		
+		private JLabel langaugeLb = new JLabel("언어");
+		private JComboBox<String> language;
 		
 		private JPanel topPn;
 		private JPanel titleTPn;
@@ -291,6 +294,7 @@ public class RoomList extends JFrame {
 		private JPanel populationPn;
 		private JPanel bottomPn;
 		private JCheckBox checkBtn;
+		
 		private JButton createBtn = new JButton("생성");
 		private JButton cancelBtn = new JButton("취소");
 		
@@ -305,9 +309,12 @@ public class RoomList extends JFrame {
 			
 			
 			checkBtn = new JCheckBox();	
-			Integer numberList[] = {1, 2, 3, 4, 5, 10};   
+			Integer numberList[] = {1, 2, 3, 4, 5, 6};   
 			population = new JComboBox<>(numberList); // 방 인원수
+			String languageList[] = {"JAVA","C","C++","C#","X"};
+			language = new JComboBox<>(languageList);
 			population.setEnabled(true);
+			language.setEnabled(true);
 			
 			checkBtn.addItemListener(this);
 //			population.addActionListener(new ActionListener() { //인원 수 선택 이벤트
@@ -331,6 +338,8 @@ public class RoomList extends JFrame {
 			checkBtn.setBounds(345, -30, 100, 100);
 			populationLb.setBounds(0, -10, 50, 50);
 			population.setBounds(60,0,50,30);
+			langaugeLb.setBounds(140, -10, 50, 50);
+			language.setBounds(180, 0, 80, 30);
 			
 			passwordField.setEnabled(false);
 			
@@ -341,6 +350,8 @@ public class RoomList extends JFrame {
 			passwordPn.add(checkBtn);
 			populationPn.add(populationLb);
 			populationPn.add(population);
+			populationPn.add(langaugeLb);
+			populationPn.add(language);
 			bottomPn.add(createBtn);
 			bottomPn.add(cancelBtn);
 

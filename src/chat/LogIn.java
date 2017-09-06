@@ -42,7 +42,7 @@ public class LogIn extends JFrame {
 	private JButton signUpBtn = new JButton("회원가입");
 
 	public LogIn() {
-		LoginDao dao = new LoginDao();
+		dbDao dao = new dbDao();
 		panel = new JPanel();
 		titlePn = new JPanel();
 		idPn = new JPanel();
@@ -222,8 +222,8 @@ public class LogIn extends JFrame {
 		private JButton okBtn = new JButton("가입");
 		private JButton cancelBtn = new JButton("취소");
 
-		LoginVO log = null;
-		LoginDao dao = new LoginDao();
+		dbVO log = null;
+		dbDao dao = new dbDao();
 
 		public SignUpDialog() {
 			topPanel.setLayout(new GridLayout(8, 2));
@@ -266,7 +266,7 @@ public class LogIn extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (confirmCheck.isSelected()) {
-						log = new LoginVO();
+						log = new dbVO();
 						log.setId(idField.getText());
 						log.setPw(pwField.getText());
 						log.setName(nameField.getText());
