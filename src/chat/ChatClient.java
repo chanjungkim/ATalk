@@ -44,11 +44,8 @@ public class ChatClient extends JFrame {
 	private JScrollPane scrollFrame;
 
 	private JTextField typeField = new JTextField("Type");
-	
-	private JButton compileBtn = new JButton("compile");
-	private JButton drawingBtn = new JButton("drawing");
-	private JButton emoticonBtn = new JButton("emoticon");
-	
+	private JButton chatSetBtn = new JButton("+");
+
 	private JButton user1;
 	private JButton user2 = new JButton("USER-1");
 	private JButton mic = new JButton("MIC");
@@ -57,14 +54,9 @@ public class ChatClient extends JFrame {
 	private BufferedWriter bw;
 
 	private String id;
-<<<<<<< HEAD
 	private String masterID;
 	
 	public ChatClient(String id, String masterID) {
-=======
-	private image.MyDrawing drawPane;
-	public ChatClient(String id) {
->>>>>>> 6e399f149217340983c3f8211fd59d0a81540345
 		this.id = id;
 		user1 = new JButton(id);
 		panel = new JPanel();
@@ -77,10 +69,10 @@ public class ChatClient extends JFrame {
 		chatSetPanel = new JPanel();
 
 		leftPanel = new JPanel();
-		leftPanel.setToolTipText("<å ì™ì˜™ å ìŒ˜ë¡œê³¤ì˜™å ì©ë¥¼ å ì™ì˜™å ìŒŒë‹ˆëŒì˜™. å ì™ì˜™å ì™ì˜™ å ì‹¸ê·¸ì•„ìš¸ì˜™ì²˜å ì™ì˜™ å ì‹¸ê¹ì˜™å ì™ì˜™í™”å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì‹¹ëŒì˜™. å ì™ì˜™å ì˜ë°å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™íŠ¸å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ìŒê³¤ì˜™ å ì™ì˜™ å ì‹¹ëŒì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™í¬ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ìŒ¥ë‹ˆëŒì˜™.");
+		leftPanel.setToolTipText("<´Â µÚ·Î°¡±â¸¦ ¶æÇÕ´Ï´Ù. ÇöÀç ·Î±×¾Æ¿ôÃ³·³ ·Î±×ÀÎÈ­¸éÀ¸·Î ºüÁ®³ª°©´Ï´Ù. °¡¿îµ¥´Â À¯Àú ¸®½ºÆ®¸¦ º¸¿©ÁÖ°í ¸Ç ÇÏ´ÜÀº ¸¶ÀÌÅ© ¼³Á¤À» º¸¿©Áİ´Ï´Ù.");
 		rightPanel = new JPanel();
 		messageField
-				.setToolTipText("å ìŒ¨ì™ì˜™å ì™ì˜™ ì°½å ì™ì˜™ Editå ì™ì˜™ å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì‹¹ëŒì˜™. Typingå ì‹¹ëŒì˜™ å ì™ì˜™å ì™ì˜™ /help í˜¹å ì™ì˜™ /codeå ì™ì˜™ ì¹˜å ì™ì˜™ Botå ì™ì˜™ å ì™ì˜™å ì™ì˜™çˆ›æ±‚å ï¿½. å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™í¬å ì™ì˜™å ì™ì˜™ í™œå ì™ì˜™í™”å ì‹¯ë‹ˆëŒì˜™.");
+				.setToolTipText("¸Ş½ÃÁö Ã¢Àº EditÇÒ ¼ö ¾ø½À´Ï´Ù. TypingÇÏ´Â °÷¿¡ /help È¤Àº /codeÀ» Ä¡¸é BotÀÌ ´ë´äÇÕ´Ï´Ù. ±ÛÀÌ ¸¹À¸¸é ½ºÅ©·ÑÀÌ È°¼ºÈ­µË´Ï´Ù.");
 
 		// Function
 		messageField.setEditable(false);
@@ -97,66 +89,57 @@ public class ChatClient extends JFrame {
 			}
 		});
 
-		compileBtn.addActionListener(new ActionListener() {
+		chatSetBtn.addActionListener(new ActionListener() {
+			int i = 0;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				compile.CompileFrame com = new compile.CompileFrame();
+				if (i == 0) {
+					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight() - 5);
+					// rightPanel.add(chatSetPanel, "Center");
+					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 5);
+					chatSetBtn.setText("ÀÌ¸ğÆ¼ÄÜ");
+					Dialog imo = new Dialog();
+					
+					i = 1;
+				} else {
+					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight() + 5);
+					// rightPanel.add(chatSetPanel, "Center");
+					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 0);
+					chatSetBtn.setText("+");
+
+					i = 0;
+				}
+
 			}
 		});
-<<<<<<< HEAD
 		
 		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				DbDao joinDao = new DbDao(id, masterID);
-				joinDao.deleteJoinedMember(id);
+				joinDao.deleteJoinedMember(masterID);
 				RoomList roomList = new RoomList(id);
 			}
 		});
-=======
-		drawingBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//image.MultiChattingServer serv = new image.MultiChattingServer();
-			
-				
-			}
-		});;
-		emoticonBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});;
-		
-		
-		
-		
-		
-<<<<<<< HEAD
->>>>>>> 6e399f149217340983c3f8211fd59d0a81540345
 		// Network
-		// å ì‹±ë¸ì˜™íŠ¸ ì²˜å ì™ì˜™å ì™ì˜™(å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ìŒ¨ì‡½ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ìŒœì–µì˜™) å ì™ì˜™å ï¿½
+		// ÀÌº¥Æ® Ã³¸®±â(¼­¹ö¿¡°Ô ¸Ş¼¼Áö º¸³»´Â ÀÛ¾÷) µî·Ï
 		ChattingListener listener = new ChattingListener();
 		/////////////////////////////////////////////////////
-		// å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ï¿½ å ì™ì˜™å ì™ì˜™ å ì™ì˜™íŠ¸å ì™ì˜™í¬ å ì™ì˜™å ì™ì˜™ å ì‹¸ë¸ì˜™
-=======
-		ChattingListener listener = new ChattingListener();
->>>>>>> 1ce664b8842f4b79d635042caee0e9464c0ad116
+		// ¼­¹ö¿ÍÀÇ Åë½ÅÀ» À§ÇÑ ³×Æ®¿öÅ© ¼³Á¤ ºÎºĞ
 		try {
 			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
-			//image.MyDrawing 
-			drawPane = new MyDrawing();
+
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			// å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì‹ìš¸ì˜™ å ì‹»ë†‚ì˜™å ì™ì˜™ å ìŒ‰ë¤„ì˜™å ìŒ”ì‡½ì˜™ å ì™ì˜™å ì™ì˜™å ì‹¹ê¹ì˜™
-//			id = JOptionPane.showInputDialog(this, "å ì™ì˜™í™”å ì™ì˜™ å ìŒ‰ë¤„ì˜™å ì‹¹ì‡½ì˜™å ì™ì˜™.", JOptionPane.INFORMATION_MESSAGE);
+			// ¼­¹ö¿Í ¿¬°áÇÑ ÈÄ¿¡ ´Ğ³×ÀÓ ÀÔ·ÂÇØ¼­ Àü¼ÛÇÏ±â
+//			id = JOptionPane.showInputDialog(this, "´ëÈ­¸í ÀÔ·ÂÇÏ¼¼¿ä.", JOptionPane.INFORMATION_MESSAGE);
 
 			bw.write(id + "\n");
 			bw.flush();
 
-			// å ì‹»ë†‚ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì‹ìš¸ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ìŒ¨ì‡½ì˜™å ì™ì˜™ å ìŒ¨ëŒì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™
+			// ´Ğ³×ÀÓ Àü¼Û ÈÄ¿¡´Â ¼­¹ö°¡ º¸³»´Â ¸Ş¼¼Áö ¹Ş´Â ¾²·¹µå
 			new ListenThread().start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -174,10 +157,10 @@ public class ChatClient extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (i == 0) {
-					System.out.println("å ì™ì˜™å ì™ì˜™í¬å ì™ì˜™ å ì™ì˜™å ìŒ€ê³¤ì˜™ å ì‹¤ì–µì˜™å ì™ì˜™å ì‹¹ëŒì˜™.");
+					System.out.println("¸¶ÀÌÅ©°¡ À½¼Ò°Å µÇ¾ú½À´Ï´Ù.");
 					i += 1;
 				} else {
-					System.out.println("å ì™ì˜™å ì™ì˜™í¬å ì™ì˜™ í™œå ì™ì˜™í™” å ì‹¤ì–µì˜™å ì™ì˜™å ì‹¹ëŒì˜™.");
+					System.out.println("¸¶ÀÌÅ©°¡ È°¼ºÈ­ µÇ¾ú½À´Ï´Ù.");
 					i = 0;
 				}
 			}
@@ -212,9 +195,7 @@ public class ChatClient extends JFrame {
 
 		messagesAreaPanel.add(scrollFrame);
 		typeAreaPanel.add(typeField);
-		typeAreaPanel.add(compileBtn);
-		typeAreaPanel.add(drawingBtn);
-		typeAreaPanel.add(emoticonBtn);
+		typeAreaPanel.add(chatSetBtn);
 
 		rightPanel.add(messagesAreaPanel, "Center");
 		rightPanel.add(typeAreaPanel, "South");
@@ -231,7 +212,7 @@ public class ChatClient extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-	// å ì‹±ë¸ì˜™íŠ¸ ì²˜å ì™ì˜™ í´å ì™ì˜™å ì™ì˜™(ì±„å ì‹œë†‚ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™)
+	// ÀÌº¥Æ® Ã³¸® Å¬·¡½º(Ã¤ÆÃ³»¿ë ¼­¹ö¿¡°Ô º¸³»±â)
 
 	class ChattingListener implements ActionListener {
 		@Override
@@ -248,7 +229,7 @@ public class ChatClient extends JFrame {
 		}
 	}
 
-	// å ì™ì˜™å ì™ì˜™å ì‹¸ë¸ì˜™å ì™ì˜™ å ìŒ¨ì‡½ì˜™å ì™ì˜™å ì™ì˜™ å ìŒ¨ëŒì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ í´å ì™ì˜™å ì™ì˜™
+	// ¼­¹ö·ÎºÎÅÍ ¸Ş¼¼Áö¸¦ ¹Ş´Â ³»ºÎ ¾²·¹µå Å¬·¡½º
 	class ListenThread extends Thread {
 		@Override
 		public void run() {
@@ -262,7 +243,7 @@ public class ChatClient extends JFrame {
 					String nickPart;
 					String commandChecker="";
 					if(receiveMsg.isEmpty()) {
-						nickPart = id+": "; //í˜¹å ì™ì˜™ ì±„å ì™ì˜™ å ì™ì˜™å ìˆë³´å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì‹œìš¸ì˜™ idå ì‹«ë†‚ì˜™å ì™ì˜™å ì™ì˜™ å ì‹¹ê³¤ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ìŒ•ê¾¸ëªŒì˜™å ï¿½		
+						nickPart = id+": "; //È¤½Ã Ã¤ÆÃ ³»¿ëº¸³»Áö ¾ÊÀ»½Ã¿¡ id¾È³ª¿À°Ô ÇÏ°í ½ÍÀ¸¸é ¿©±â ¹Ù²Ù¸éµÊ		
 					}else {
 						nickPart= st.nextToken();
 						if(st.hasMoreTokens()) {
@@ -338,7 +319,7 @@ public class ChatClient extends JFrame {
 		}
 	}
 
-//	public static void main(String[] args) {
-//		new ChatClient("±èÂùÁß", "¹æÀå");
-//	}
+	public static void main(String[] args) {
+		new ChatClient("±èÂùÁß", "¹æÀå");
+	}
 }
