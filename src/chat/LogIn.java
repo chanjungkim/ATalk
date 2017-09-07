@@ -9,13 +9,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -34,7 +28,7 @@ public class LogIn extends JFrame {
 	private JLabel titleLb;
 	private JLabel idLb;
 	private JLabel pwLb;
-	private JTextField loginField;
+	private JTextField userinField;
 	private JPasswordField passwordField;
 	private String id = "";
 	private String pw = "";
@@ -59,7 +53,7 @@ public class LogIn extends JFrame {
 		// JLabel ggLabel = new JLabel();
 		// fbLabel.setIcon(google);
 
-		loginField = new JTextField(15);
+		userinField = new JTextField(15);
 		passwordField = new JPasswordField(15);
 
 		titleLb = new JLabel("Atalk");
@@ -74,20 +68,20 @@ public class LogIn extends JFrame {
 			}
 		});
 
-		loginField.setText("Username");
-		loginField.addFocusListener(new FocusListener() {
+		userinField.setText("Username");
+		userinField.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (loginField.getText().equals("Username")) {
-					loginField.setText("");
+				if (userinField.getText().equals("Username")) {
+					userinField.setText("");
 				}
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				if (loginField.getText().equals("")) {
-					loginField.setText("Username");
+				if (userinField.getText().equals("")) {
+					userinField.setText("Username");
 				}
 			}
 		});
@@ -112,17 +106,17 @@ public class LogIn extends JFrame {
 //					// End of Temporary Pass
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////
 					//// 로그인 접속 기능 변경 전 (반복문으로 이클립스 상에서 리스트를 이용하여 비교)
-					// for (int x = 0; x < dao.loginList.size(); x++) {
-					// if (dao.loginList.get(x).getId().equals(loginField.getText())
-					// && dao.loginList.get(x).getPw().equals(new
+					// for (int x = 0; x < dao.userinList.size(); x++) {
+					// if (dao.userinList.get(x).getId().equals(userinField.getText())
+					// && dao.userinList.get(x).getPw().equals(new
 					///////////////////////////////////////////////////////////////////////////////////////////////////////// String(passwordField.getPassword())))
 					///////////////////////////////////////////////////////////////////////////////////////////////////////// {
 					// System.out.println("로그인 중...");
 					// dispose();
 					// RoomList roomList = new RoomList();
 					// break;
-					// } else if(x == dao.loginList.size() - 1
-					// && dao.loginList.get(x).getPw() != new String(passwordField.getPassword())){
+					// } else if(x == dao.userinList.size() - 1
+					// && dao.userinList.get(x).getPw() != new String(passwordField.getPassword())){
 					// JDialog dialog = new JDialog();
 					// JPanel errorPanel = new JPanel();
 					// JButton check = new JButton("확인");
@@ -148,7 +142,7 @@ public class LogIn extends JFrame {
 					// }
 					//////////////////////////////////////////////////////////////////////////////////////////////////////////
 					// 아래는 디비 상에서 비교 지금 사용하는 로그인 접속 방식
-					if(dao.loginConnect(loginField.getText(), new String(passwordField.getPassword()))==1) {
+					if(dao.userConnect(userinField.getText(), new String(passwordField.getPassword()))==1) {
 						dispose();
 					}
 				} else if (e.getKeyChar() == e.VK_BACK_SPACE) {
@@ -169,14 +163,14 @@ public class LogIn extends JFrame {
 
 		titleLb.setBounds(230, 20, 300, 110);
 		idLb.setBounds(160, 50, 50, 50);
-		loginField.setBounds(200, 50, 300, 50);
+		userinField.setBounds(200, 50, 300, 50);
 		pwLb.setBounds(160, 10, 50, 50);
 		passwordField.setBounds(200, 10, 300, 50);
 		signUpBtn.setBounds(200, 0, 100, 30);
 
 		titlePn.add(titleLb);
 		idPn.add(idLb);
-		idPn.add(loginField);
+		idPn.add(userinField);
 		pwPn.add(pwLb);
 		pwPn.add(passwordField);
 		accountPn.add(signUpBtn);
@@ -222,7 +216,7 @@ public class LogIn extends JFrame {
 		private JButton okBtn = new JButton("가입");
 		private JButton cancelBtn = new JButton("취소");
 
-		DbVO log = null;
+		UserVO user = null;
 		DbDao dao = new DbDao();
 
 		public SignUpDialog() {
@@ -266,13 +260,13 @@ public class LogIn extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (confirmCheck.isSelected()) {
-						log = new DbVO();
-						log.setId(idField.getText());
-						log.setPw(pwField.getText());
-						log.setName(nameField.getText());
-						log.setBirth(birthDayField.getText());
-						log.seteMail(emailField.getText());
-						log.setPhone(phoneField.getText());
+						user = new UserVO();
+						user.setId(idField.getText());
+						user.setPw(pwField.getText());
+						user.setName(nameField.getText());
+						user.setBirth(birthDayField.getText());
+						user.seteMail(emailField.getText());
+						user.setPhone(phoneField.getText());
 
 						if (idField.getText().equals("") || pwField.getText().equals("") || nameField.getText().equals("")
 								|| birthDayField.getText().equals("") || emailField.getText().equals("")
@@ -299,7 +293,7 @@ public class LogIn extends JFrame {
 							dialog.setTitle("ERROR!!");
 							dialog.setVisible(true);
 						} else {
-							int check = dao.insertLogin(log);
+							int check = dao.insertUserInfo(user);
 							if (check == 1) {
 								hide();
 							}
