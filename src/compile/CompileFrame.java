@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-class CompileFrame extends JFrame{
+public class CompileFrame extends JFrame{
 
 	//JFrame compile;
 	JPanel textPanel;

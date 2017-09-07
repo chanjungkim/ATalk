@@ -7,7 +7,9 @@ public class UserVO {
 	private String birth;
 	private String eMail;
 	private String phone;
-	
+	private String introduce;
+	private String github;
+	private String otherEmail;
 
 	
 	public UserVO() {
@@ -68,6 +70,30 @@ public class UserVO {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	
+	public String getIntroduce() {
+		return introduce;
+	}
+
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
+	}
+
+	public String getGithub() {
+		return github;
+	}
+
+	public void setGithub(String github) {
+		this.github = github;
+	}
+
+	public String getOtherEmail() {
+		return otherEmail;
+	}
+
+	public void setOtherEmail(String otherEmail) {
+		this.otherEmail = otherEmail;
 	}
 
 	@Override
