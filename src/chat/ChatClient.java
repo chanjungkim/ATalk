@@ -57,7 +57,7 @@ public class ChatClient extends JFrame {
 	private BufferedWriter bw;
 
 	private String id;
-	Socket socket;
+	private image.MyDrawing drawPane;
 	public ChatClient(String id) {
 		this.id = id;
 		user1 = new JButton(id);
@@ -101,7 +101,8 @@ public class ChatClient extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//image.MultiChattingServer serv = new image.MultiChattingServer();
-				image.MyDrawing drawPane = new image.MyDrawing(socket);
+			
+				
 			}
 		});;
 		emoticonBtn.addActionListener(new ActionListener() {
@@ -115,14 +116,19 @@ public class ChatClient extends JFrame {
 		
 		
 		
+<<<<<<< HEAD
 		// Network
 		// 占싱븝옙트 처占쏙옙占쏙옙(占쏙옙占쏙옙占쏙옙占쏙옙 占쌨쇽옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌜억옙) 占쏙옙占�
 		ChattingListener listener = new ChattingListener();
 		/////////////////////////////////////////////////////
 		// 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙占쏙옙 占쏙옙트占쏙옙크 占쏙옙占쏙옙 占싸븝옙
+=======
+		ChattingListener listener = new ChattingListener();
+>>>>>>> 1ce664b8842f4b79d635042caee0e9464c0ad116
 		try {
-			socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
-
+			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
+			//image.MyDrawing 
+			drawPane = new MyDrawing();
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占식울옙 占싻놂옙占쏙옙 占쌉뤄옙占쌔쇽옙 占쏙옙占쏙옙占싹깍옙

@@ -1,5 +1,4 @@
 package chat;
- 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,27 +13,24 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
  
-// ������ Ŭ���̾�Ʈ�� ����ŭ �����带 ����Ʈ�� �����ϰ�
-// Ŭ���̾�Ʈ�� �߰� �ɶ����� ������ �����Ͽ� �����忡�� ������.
 public class MultiChattingServer extends JFrame{
     private ServerSocket serverSocket;
     private List<ChattingThread> threadList;
     private JPanel panel = new JPanel();
     private JLabel lb = new JLabel("���� ������...");
-    // ���� ������
+  
     public MultiChattingServer() {
         threadList = new ArrayList<>();
         try {
             serverSocket = new ServerSocket(5555);
-            image.MultiChattingServer serv = new image.MultiChattingServer(serverSocket);
-            // imageSever에도 같은 서버 정보를 줍니당!;
+            image.MultiChattingServer serv = new image.MultiChattingServer();
+            		//serverSocket);
             while (true) {
-                System.out.println("Ŭ���̾�Ʈ�� ��ٸ��� ��..");
+                System.out.println("...");
                 Socket socket = serverSocket.accept();
-                System.out.println("������:" + socket.getInetAddress());
+                System.out.println("connected :" + socket.getInetAddress());
  
-                // ���ο� Ŭ���̾�Ʈ �����ϸ� ���ο�
-                // ������ ��ü�� �����ؼ� ����Ʈ�� �߰���.
+            
                 ChattingThread t = new ChattingThread(socket);
                 threadList.add(t);
                 t.start();
@@ -50,28 +46,22 @@ public class MultiChattingServer extends JFrame{
         setVisible(true);
     }
  
-    // ������ ����Ʈ�� �ִ� ��� �����忡�� �޼��� �߼� ����ؼ�
-    // ��� Ŭ���̾�Ʈ���� �޼��� ����ϱ� �޼ҵ�
     public void broadcast(String msg) {
         for (ChattingThread t : threadList) {
             t.speak(msg);
         }
     }
  
-    // ������ ��Ͽ��� Ư�� ������ �����ϱ�
     public void removeThread(ChattingThread t) {
         threadList.remove(t);
     }
  
-    // �ϳ��� Ŭ���̾�Ʈ�� �������� �� ��� ������ Ŭ����
     class ChattingThread extends Thread {
         private String nickname;
         private BufferedReader br;
         private BufferedWriter bw;
  
         public ChattingThread(Socket socket) {
-            // �����κ��� �ش� Ŭ���̾�Ʈ ���� ���޹޾Ƽ�
-            // ä�� �ʱ�ȭ �۾� �����ϱ�
             try {
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -98,7 +88,6 @@ public class MultiChattingServer extends JFrame{
             }
         }
  
-        // ���� �����尡 ����ϴ� Ŭ���̾�Ʈ���� �޼��� ������
         public void speak(String msg) {
             try {
                 bw.write(msg + "\n");
