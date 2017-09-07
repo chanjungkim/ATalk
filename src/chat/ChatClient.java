@@ -20,9 +20,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -56,8 +54,9 @@ public class ChatClient extends JFrame {
 	private BufferedWriter bw;
 
 	private String id;
-
-	public ChatClient(String id) {
+	private String masterID;
+	
+	public ChatClient(String id, String masterID) {
 		this.id = id;
 		user1 = new JButton(id);
 		panel = new JPanel();
@@ -114,6 +113,16 @@ public class ChatClient extends JFrame {
 
 			}
 		});
+		
+		backBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				DbDao joinDao = new DbDao(id, masterID);
+				joinDao.deleteJoinedMember(id);
+				RoomList roomList = new RoomList(id);
+			}
+		});
 		// Network
 		// 이벤트 처리기(서버에게 메세지 보내는 작업) 등록
 		ChattingListener listener = new ChattingListener();
@@ -139,6 +148,8 @@ public class ChatClient extends JFrame {
 		}
 
 		typeField.addActionListener(listener);
+
+		
 
 		mic.addActionListener(new ActionListener() {
 			int i = 0;
@@ -309,6 +320,6 @@ public class ChatClient extends JFrame {
 	}
 
 //	public static void main(String[] args) {
-//		new ChatClient();
+//		new ChatClient("김찬중", "방장");
 //	}
 }

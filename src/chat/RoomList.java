@@ -56,6 +56,7 @@ public class RoomList extends JFrame {
 		listPanel.setAutoscrolls(true);
 		listPanel.setLayout(new FlowLayout());
 		panel.setLayout(new BorderLayout());
+		DbDao user = new DbDao();
 
 //		EtchedBorder eborder;
 //		eborder = new EtchedBorder(EtchedBorder.LOWERED);
@@ -96,6 +97,13 @@ public class RoomList extends JFrame {
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								String name = nameText.getText();
+								
+								String idToBlock = nameText.getText();
+								
+								user.blockUser(id, idToBlock);
+								
+								nameList.add(idToBlock);
+								
 								nameList.add(name);
 								nameText.setText(""); // 텍스트 필드내용 지우기
 								nameText.requestFocus(); // 텍스트 필드에 포커스 주기
@@ -182,6 +190,7 @@ public class RoomList extends JFrame {
 							dialog.setTitle("ERROR!!");
 							dialog.setVisible(true);
 						}else if(createRoomDialogue.passwordField.getText().isEmpty() && createRoomDialogue.checkBtn.isSelected()){
+							// Start Dialog
 							JDialog dialog = new JDialog();
 							JPanel errorPanel = new JPanel();
 							JButton check = new JButton("확인");
@@ -203,38 +212,48 @@ public class RoomList extends JFrame {
 							dialog.pack();
 							dialog.setTitle("ERROR!!");
 							dialog.setVisible(true);
+							// Dialog
 						}else {
-							room.add(new RoomPanel(createRoomDialogue.getTitleField(), id,  createRoomDialogue.getPopulation()
-									, "C언어", createRoomDialogue.getPasswordField()));
-							for(int i = 0 ; i < room.size(); i++) {
+							DbDao roomDao = new DbDao(1);
 
+							String title = createRoomDialogue.getTitleField();
+							String masterID = id;
+							int population = createRoomDialogue.getPopulation();
+							String lang = createRoomDialogue.getLanguage();
+							String pw = createRoomDialogue.getPasswordField();
+							
+							RoomVO roomVo = new RoomVO(title, masterID, population, lang, pw);
+							roomDao.insertRoomInfo(roomVo);
+							
+							room.add(new RoomPanel(title, masterID, population, lang, pw));
+							for(int i = 0 ; i < room.size(); i++) {
 								listPanel.add(room.get(i));
 								System.out.println(room.size());
 								
 								room.get(i).roomBtn.addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent arg0) {
-										ChatClient chat = new ChatClient(id);
-										hide();
+										ChatClient chat = new ChatClient(id, masterID);
+										setVisible(false);
 										chat.backBtn.addActionListener(new ActionListener() {
-											@Override
-											public void actionPerformed(ActionEvent e) {
-												show();
-												chat.dispose();
-											}
+												@Override
+												public void actionPerformed(ActionEvent e) {
+													roomDao.deleteRoom(roomVo);
+												}
 										});
 									}
 								});// End of Function
 							}
 							
-
 //							panel.add(listPanel);
 //							add(panel);
 							// Fucntion
 
 							validate();
 
+							ChatClient chatRoom = new ChatClient(id, masterID);
 							createRoomDialogue.hide();
+							dispose();
 						}
 					}
 				});
@@ -379,7 +398,8 @@ public class RoomList extends JFrame {
 				passwordField.setBackground(Color.decode("#AAAAAA"));
 			}		
 		}
-
+		
+		
 		public String getTitleField() {
 			return titleField.getText();
 		}
@@ -389,7 +409,15 @@ public class RoomList extends JFrame {
 		}
 		
 		public int getPopulation() {
-			return population.getItemCount();
+			return Integer.parseInt(population.getSelectedItem().toString());
+		}
+		
+		public String getLanguage() {
+			String lang = language.getSelectedItem().toString();
+			if(lang.isEmpty()) {
+				lang = "JAVA";
+			}
+			return lang;
 		}
 
 //		public void setPopulation(JComboBox<Integer> population) {

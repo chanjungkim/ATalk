@@ -142,7 +142,7 @@ public class LogIn extends JFrame {
 					// }
 					//////////////////////////////////////////////////////////////////////////////////////////////////////////
 					// 아래는 디비 상에서 비교 지금 사용하는 로그인 접속 방식
-					if(dao.userConnect(userinField.getText(), new String(passwordField.getPassword()))==1) {
+					if(dao.userCheck(userinField.getText(), new String(passwordField.getPassword()))==1) {
 						dispose();
 					}
 				} else if (e.getKeyChar() == e.VK_BACK_SPACE) {
