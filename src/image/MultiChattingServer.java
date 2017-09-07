@@ -19,11 +19,12 @@ public class MultiChattingServer {
     private List<ChattingThread> threadList;
      
 
-    public MultiChattingServer() {
+    public MultiChattingServer(ServerSocket serv) {
         threadList = new ArrayList<>();
  
         try {
-            serverSocket = new ServerSocket(5555);
+            serverSocket =serv;
+            		//new ServerSocket(6666);
             while (true) {
                 System.out.println("클라이언트 접속중..");
                 Socket socket = serverSocket.accept();
@@ -87,7 +88,7 @@ public class MultiChattingServer {
         }
     }
      
-    public static void main(String[] args) {
-        MultiChattingServer server = new MultiChattingServer();
-    }
+    //public static void main(String[] args) {
+     //   MultiChattingServer server = new MultiChattingServer();
+   // }
 }

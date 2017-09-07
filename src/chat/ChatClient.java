@@ -20,13 +20,14 @@ import java.util.StringTokenizer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+
+import image.MultiChattingServer;
+import image.MyDrawing;
 
 public class ChatClient extends JFrame {
 	private JPanel panel;
@@ -46,8 +47,11 @@ public class ChatClient extends JFrame {
 	private JScrollPane scrollFrame;
 
 	private JTextField typeField = new JTextField("Type");
-	private JButton chatSetBtn = new JButton("+");
-
+	
+	private JButton compileBtn = new JButton("compile");
+	private JButton drawingBtn = new JButton("drawing");
+	private JButton emoticonBtn = new JButton("emoticon");
+	
 	private JButton user1;
 	private JButton user2 = new JButton("USER-1");
 	private JButton mic = new JButton("MIC");
@@ -56,7 +60,7 @@ public class ChatClient extends JFrame {
 	private BufferedWriter bw;
 
 	private String id;
-
+	Socket socket;
 	public ChatClient(String id) {
 		this.id = id;
 		user1 = new JButton(id);
@@ -70,10 +74,10 @@ public class ChatClient extends JFrame {
 		chatSetPanel = new JPanel();
 
 		leftPanel = new JPanel();
-		leftPanel.setToolTipText("<´Â µÚ·Î°¡±â¸¦ ¶æÇÕ´Ï´Ù. ÇöÀç ·Î±×¾Æ¿ôÃ³·³ ·Î±×ÀÎÈ­¸éÀ¸·Î ºüÁ®³ª°©´Ï´Ù. °¡¿îµ¥´Â À¯Àú ¸®½ºÆ®¸¦ º¸¿©ÁÖ°í ¸Ç ÇÏ´ÜÀº ¸¶ÀÌÅ© ¼³Á¤À» º¸¿©ÁÝ´Ï´Ù.");
+		leftPanel.setToolTipText("<ï¿½ï¿½ ï¿½Ú·Î°ï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½Õ´Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½ ï¿½Î±×¾Æ¿ï¿½Ã³ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½È­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½ï¿½îµ¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ ï¿½ï¿½ ï¿½Ï´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ý´Ï´ï¿½.");
 		rightPanel = new JPanel();
 		messageField
-				.setToolTipText("¸Þ½ÃÁö Ã¢Àº EditÇÒ ¼ö ¾ø½À´Ï´Ù. TypingÇÏ´Â °÷¿¡ /help È¤Àº /codeÀ» Ä¡¸é BotÀÌ ´ë´äÇÕ´Ï´Ù. ±ÛÀÌ ¸¹À¸¸é ½ºÅ©·ÑÀÌ È°¼ºÈ­µË´Ï´Ù.");
+				.setToolTipText("ï¿½Þ½ï¿½ï¿½ï¿½ Ã¢ï¿½ï¿½ Editï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. Typingï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ /help È¤ï¿½ï¿½ /codeï¿½ï¿½ Ä¡ï¿½ï¿½ Botï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½Ë´Ï´ï¿½.");
 
 		// Function
 		messageField.setEditable(false);
@@ -90,47 +94,47 @@ public class ChatClient extends JFrame {
 			}
 		});
 
-		chatSetBtn.addActionListener(new ActionListener() {
-			int i = 0;
-
+		compileBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (i == 0) {
-					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight() - 5);
-					// rightPanel.add(chatSetPanel, "Center");
-					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 5);
-					chatSetBtn.setText("ÀÌ¸ðÆ¼ÄÜ");
-					Dialog imo = new Dialog();
-					
-					i = 1;
-				} else {
-					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight() + 5);
-					// rightPanel.add(chatSetPanel, "Center");
-					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 0);
-					chatSetBtn.setText("+");
-
-					i = 0;
-				}
-
+				compile.CompileFrame com = new compile.CompileFrame();
 			}
 		});
+		drawingBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//image.MultiChattingServer serv = new image.MultiChattingServer();
+				image.MyDrawing drawPane = new image.MyDrawing(socket);
+			}
+		});;
+		emoticonBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});;
+		
+		
+		
+		
+		
 		// Network
-		// ÀÌº¥Æ® Ã³¸®±â(¼­¹ö¿¡°Ô ¸Þ¼¼Áö º¸³»´Â ÀÛ¾÷) µî·Ï
+		// ï¿½Ìºï¿½Æ® Ã³ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½) ï¿½ï¿½ï¿½
 		ChattingListener listener = new ChattingListener();
 		/////////////////////////////////////////////////////
-		// ¼­¹ö¿ÍÀÇ Åë½ÅÀ» À§ÇÑ ³×Æ®¿öÅ© ¼³Á¤ ºÎºÐ
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
 		try {
-			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
+			socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
 
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			// ¼­¹ö¿Í ¿¬°áÇÑ ÈÄ¿¡ ´Ð³×ÀÓ ÀÔ·ÂÇØ¼­ Àü¼ÛÇÏ±â
-//			id = JOptionPane.showInputDialog(this, "´ëÈ­¸í ÀÔ·ÂÇÏ¼¼¿ä.", JOptionPane.INFORMATION_MESSAGE);
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¿ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
+//			id = JOptionPane.showInputDialog(this, "ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.", JOptionPane.INFORMATION_MESSAGE);
 
 			bw.write(id + "\n");
 			bw.flush();
 
-			// ´Ð³×ÀÓ Àü¼Û ÈÄ¿¡´Â ¼­¹ö°¡ º¸³»´Â ¸Þ¼¼Áö ¹Þ´Â ¾²·¹µå
+			// ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			new ListenThread().start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -146,10 +150,10 @@ public class ChatClient extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (i == 0) {
-					System.out.println("¸¶ÀÌÅ©°¡ À½¼Ò°Å µÇ¾ú½À´Ï´Ù.");
+					System.out.println("ï¿½ï¿½ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½Ò°ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 					i += 1;
 				} else {
-					System.out.println("¸¶ÀÌÅ©°¡ È°¼ºÈ­ µÇ¾ú½À´Ï´Ù.");
+					System.out.println("ï¿½ï¿½ï¿½ï¿½Å©ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 					i = 0;
 				}
 			}
@@ -184,7 +188,9 @@ public class ChatClient extends JFrame {
 
 		messagesAreaPanel.add(scrollFrame);
 		typeAreaPanel.add(typeField);
-		typeAreaPanel.add(chatSetBtn);
+		typeAreaPanel.add(compileBtn);
+		typeAreaPanel.add(drawingBtn);
+		typeAreaPanel.add(emoticonBtn);
 
 		rightPanel.add(messagesAreaPanel, "Center");
 		rightPanel.add(typeAreaPanel, "South");
@@ -201,7 +207,7 @@ public class ChatClient extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-	// ÀÌº¥Æ® Ã³¸® Å¬·¡½º(Ã¤ÆÃ³»¿ë ¼­¹ö¿¡°Ô º¸³»±â)
+	// ï¿½Ìºï¿½Æ® Ã³ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½(Ã¤ï¿½Ã³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 
 	class ChattingListener implements ActionListener {
 		@Override
@@ -218,7 +224,7 @@ public class ChatClient extends JFrame {
 		}
 	}
 
-	// ¼­¹ö·ÎºÎÅÍ ¸Þ¼¼Áö¸¦ ¹Þ´Â ³»ºÎ ¾²·¹µå Å¬·¡½º
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
 	class ListenThread extends Thread {
 		@Override
 		public void run() {
@@ -232,7 +238,7 @@ public class ChatClient extends JFrame {
 					String nickPart;
 					String commandChecker="";
 					if(receiveMsg.isEmpty()) {
-						nickPart = id+": "; //È¤½Ã Ã¤ÆÃ ³»¿ëº¸³»Áö ¾ÊÀ»½Ã¿¡ id¾È³ª¿À°Ô ÇÏ°í ½ÍÀ¸¸é ¿©±â ¹Ù²Ù¸éµÊ		
+						nickPart = id+": "; //È¤ï¿½ï¿½ Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½ëº¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ idï¿½È³ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Ù¸ï¿½ï¿½		
 					}else {
 						nickPart= st.nextToken();
 						if(st.hasMoreTokens()) {

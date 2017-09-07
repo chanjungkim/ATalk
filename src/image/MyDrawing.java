@@ -34,15 +34,15 @@ public class MyDrawing extends JFrame {
 	JButton btR, btG, btB, btOpen;
 
 	PaintToolFrame pt;
-
+	Socket socket;
 
 	private ObjectOutputStream os;
 	private ObjectInputStream is;
 	
-	public MyDrawing() {
+	public MyDrawing(Socket socket) {
 		super("::MyDrawing::");
 		try {
-			Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), 5555);
+			this.socket = socket;
 
 			os = new ObjectOutputStream(socket.getOutputStream());
 			is = new ObjectInputStream(socket.getInputStream());
@@ -152,7 +152,7 @@ public class MyDrawing extends JFrame {
 
 	}
 
-	public static void main(String[] args) {
-		new MyDrawing(); // ������ �ҷ�����
-	}
+	//public static void main(String[] args) {
+	//	new MyDrawing(); // ������ �ҷ�����
+	//}
 }

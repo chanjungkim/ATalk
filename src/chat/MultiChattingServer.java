@@ -14,26 +14,27 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
  
-// ¼­¹ö´Â Å¬¶óÀÌ¾ğÆ®ÀÇ ¼ö¸¸Å­ ¾²·¹µå¸¦ ¸®½ºÆ®¿¡ À¯ÁöÇÏ°í
-// Å¬¶óÀÌ¾ğÆ®°¡ Ãß°¡ µÉ¶§¸¶´Ù ¼ÒÄÏÀ» »ı¼ºÇÏ¿© ¾²·¹µå¿¡°Ô Àü´ŞÇÔ.
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½
+// Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½É¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½å¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 public class MultiChattingServer extends JFrame{
     private ServerSocket serverSocket;
     private List<ChattingThread> threadList;
     private JPanel panel = new JPanel();
-    private JLabel lb = new JLabel("¼­¹ö ½ÇÇàÁß...");
-    // ¼­¹ö »ı¼ºÀÚ
+    private JLabel lb = new JLabel("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...");
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public MultiChattingServer() {
         threadList = new ArrayList<>();
- 
         try {
             serverSocket = new ServerSocket(5555);
+            image.MultiChattingServer serv = new image.MultiChattingServer(serverSocket);
+            // imageSeverì—ë„ ê°™ì€ ì„œë²„ ì •ë³´ë¥¼ ì¤ë‹ˆë‹¹!;
             while (true) {
-                System.out.println("Å¬¶óÀÌ¾ğÆ®¸¦ ±â´Ù¸®´Â Áß..");
+                System.out.println("Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½..");
                 Socket socket = serverSocket.accept();
-                System.out.println("Á¢¼ÓÇÔ:" + socket.getInetAddress());
+                System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:" + socket.getInetAddress());
  
-                // »õ·Î¿î Å¬¶óÀÌ¾ğÆ® Á¢¼ÓÇÏ¸é »õ·Î¿î
-                // ¾²·¹µå °´Ã¼¸¦ »ı¼ºÇØ¼­ ¸®½ºÆ®¿¡ Ãß°¡ÇÔ.
+                // ï¿½ï¿½ï¿½Î¿ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½.
                 ChattingThread t = new ChattingThread(socket);
                 threadList.add(t);
                 t.start();
@@ -43,34 +44,34 @@ public class MultiChattingServer extends JFrame{
         }
         panel.add(lb);
         add(panel);
-        setTitle("¼­¹ö");
+        setTitle("ï¿½ï¿½ï¿½ï¿½");
         setSize(200,100);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
  
-    // ¼­¹öÀÇ ¸®½ºÆ®¿¡ ÀÖ´Â ¸ğµç ¾²·¹µå¿¡°Ô ¸Ş¼¼Áö ¹ß¼Û ¸í·ÉÇØ¼­
-    // ¸ğµç Å¬¶óÀÌ¾ğÆ®¿¡°Ô ¸Ş¼¼Áö ¹æ¼ÛÇÏ±â ¸Ş¼Òµå
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½å¿¡ï¿½ï¿½ ï¿½Ş¼ï¿½ï¿½ï¿½ ï¿½ß¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½
+    // ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ş¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½Ş¼Òµï¿½
     public void broadcast(String msg) {
         for (ChattingThread t : threadList) {
             t.speak(msg);
         }
     }
  
-    // ¾²·¹µå ¸ñ·Ï¿¡¼­ Æ¯Á¤ ¾²·¹µå »èÁ¦ÇÏ±â
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
     public void removeThread(ChattingThread t) {
         threadList.remove(t);
     }
  
-    // ÇÏ³ªÀÇ Å¬¶óÀÌ¾ğÆ®°¡ Á¢¼ÓÇßÀ» ¶§ ´ã´ç ¾²·¹µå Å¬·¡½º
+    // ï¿½Ï³ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     class ChattingThread extends Thread {
         private String nickname;
         private BufferedReader br;
         private BufferedWriter bw;
  
         public ChattingThread(Socket socket) {
-            // ¼­¹ö·ÎºÎÅÍ ÇØ´ç Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏ Àü´Ş¹Ş¾Æ¼­
-            // Ã¤ÆÃ ÃÊ±âÈ­ ÀÛ¾÷ ¼öÇàÇÏ±â
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ş¹Ş¾Æ¼ï¿½
+            // Ã¤ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½Û¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
             try {
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -83,21 +84,21 @@ public class MultiChattingServer extends JFrame{
         public void run() {
             try {
                 nickname = br.readLine();
-                broadcast(nickname+"´ÔÀÌ ÀÔÀåÇÏ¼Ì½À´Ï´Ù.");
+                broadcast(nickname+"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼Ì½ï¿½ï¿½Ï´ï¿½.");
  
                 while (true) {
                     String msg = br.readLine();
                     broadcast(nickname + ": " + msg);
                 }
             } catch (IOException e) {
-                // ´ã´ç Å¬¶óÀÌ¾ğÆ®°¡ ÅğÀåÇßÀ» ¶§
+                // ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
                 removeThread(this);
-                broadcast("[" + nickname + "]´ÔÀÌ ÅğÀåÇÏ¿´½À´Ï´Ù.");
+                broadcast("[" + nickname + "]ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 //              e.printStackTrace();
             }
         }
  
-        // ÇöÀç ¾²·¹µå°¡ ´ã´çÇÏ´Â Å¬¶óÀÌ¾ğÆ®¿¡°Ô ¸Ş¼¼Áö º¸³»±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ş¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         public void speak(String msg) {
             try {
                 bw.write(msg + "\n");
