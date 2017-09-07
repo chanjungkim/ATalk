@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 public class PaintToolFrame extends JFrame {
 
-	JButton btPlus, btMinus, btClear, btClose, btColor;
+	JButton btPlus, btMinus, btClear, btAllClear, btClose, btColor;
 	JPanel p;
 
 	public PaintToolFrame() {

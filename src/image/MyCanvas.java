@@ -13,7 +13,7 @@ public class MyCanvas extends Canvas {
 	@Override
 	public void paint(Graphics g) {
 		g.setColor(cr);
-		g.fillOval(x, y, w, h); 
+		g.fillOval(x, y, w, h);
 	}
 
 	@Override
