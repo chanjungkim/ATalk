@@ -319,7 +319,7 @@ public class ChatClient extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		new ChatClient("김찬중", "방장");
-	}
+//	public static void main(String[] args) {
+//		new ChatClient("김찬중", "방장");
+//	}
 }
