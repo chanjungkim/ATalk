@@ -60,7 +60,7 @@ public class ChatClient extends JFrame {
 	private BufferedWriter bw;
 
 	private String id;
-	Socket socket;
+	private image.MyDrawing drawPane;
 	public ChatClient(String id) {
 		this.id = id;
 		user1 = new JButton(id);
@@ -104,7 +104,8 @@ public class ChatClient extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//image.MultiChattingServer serv = new image.MultiChattingServer();
-				image.MyDrawing drawPane = new image.MyDrawing(socket);
+			
+				
 			}
 		});;
 		emoticonBtn.addActionListener(new ActionListener() {
@@ -118,14 +119,11 @@ public class ChatClient extends JFrame {
 		
 		
 		
-		// Network
-		// �̺�Ʈ ó����(�������� �޼��� ������ �۾�) ���
 		ChattingListener listener = new ChattingListener();
-		/////////////////////////////////////////////////////
-		// �������� ����� ���� ��Ʈ��ũ ���� �κ�
 		try {
-			socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
-
+			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
+			//image.MyDrawing 
+			drawPane = new MyDrawing();
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// ������ ������ �Ŀ� �г��� �Է��ؼ� �����ϱ�
