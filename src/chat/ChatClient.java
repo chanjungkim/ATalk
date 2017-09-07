@@ -120,7 +120,7 @@ public class ChatClient extends JFrame {
 		/////////////////////////////////////////////////////
 		// 서버와의 통신을 위한 네트워크 설정 부분
 		try {
-			Socket socket = new Socket(InetAddress.getByName("70.12.115.56"), 5555);
+			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
 
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -229,12 +229,19 @@ public class ChatClient extends JFrame {
 
 					String receiveMsg = br.readLine();
 					StringTokenizer st = new StringTokenizer(receiveMsg);
-					String nickPart = st.nextToken();
-					String commandChecker = st.nextToken();
-
+					String nickPart;
+					String commandChecker="";
+					if(receiveMsg.isEmpty()) {
+						nickPart = id+": "; //혹시 채팅 내용보내지 않을시에 id안나오게 하고 싶으면 여기 바꾸면됨		
+					}else {
+						nickPart= st.nextToken();
+						if(st.hasMoreTokens()) {
+							commandChecker = st.nextToken();
+						}
+					}
 					String text = "";
 					System.out.println(commandChecker);
-					if (commandChecker.charAt(0) == '/') {
+					if (commandChecker.isEmpty()!=true && commandChecker.charAt(0) == '/') {
 						switch (commandChecker.substring(1, commandChecker.length())) {
 						case "help":
 							messageField.setText(messageField.getText()
