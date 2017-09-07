@@ -407,7 +407,9 @@ public class RoomList extends JFrame {
 		private JButton alarmBtn;
 		private JButton colorBtn;
 		private JButton blackBtn;
+		private JButton profileChangeBtn;
 		private JButton logoutBtn;
+		
 
 		public SettingDialogue() {
 			set = new JDialog(this, "설정");
@@ -418,9 +420,10 @@ public class RoomList extends JFrame {
 			alarmBtn = new JButton("켜기");
 			colorBtn = new JButton("색깔");
 			blackBtn = new JButton("블랙리스트");
+			profileChangeBtn = new JButton("프로필 수정");
 			logoutBtn = new JButton("로그아웃");
 
-			set.setLayout(new GridLayout(4, 1));
+			set.setLayout(new GridLayout(5, 1));
 			alarmPn.setLayout(new BorderLayout());
 			backgroundPn.setLayout(new BorderLayout());
 
@@ -431,8 +434,10 @@ public class RoomList extends JFrame {
 
 			set.add(alarmPn);
 			set.add(backgroundPn);
+			set.add(profileChangeBtn);
 			set.add(blackBtn);
 			set.add(logoutBtn);
+			
 
 			set.setSize(200, 200);
 			set.setVisible(true);

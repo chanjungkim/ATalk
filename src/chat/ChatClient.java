@@ -26,9 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-import image.MultiChattingServer;
-import image.MyDrawing;
-
 public class ChatClient extends JFrame {
 	private JPanel panel;
 	private JPanel userListPanel;
@@ -74,10 +71,10 @@ public class ChatClient extends JFrame {
 		chatSetPanel = new JPanel();
 
 		leftPanel = new JPanel();
-		leftPanel.setToolTipText("<�� �ڷΰ��⸦ ���մϴ�. ���� �α׾ƿ�ó�� �α���ȭ������ ���������ϴ�. ����� ���� ����Ʈ�� �����ְ� �� �ϴ��� ����ũ ������ �����ݴϴ�.");
+		leftPanel.setToolTipText("<占쏙옙 占쌘로곤옙占썩를 占쏙옙占쌌니댐옙. 占쏙옙占쏙옙 占싸그아울옙처占쏙옙 占싸깍옙占쏙옙화占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙占싹댐옙. 占쏙옙占쏘데占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙트占쏙옙 占쏙옙占쏙옙占쌍곤옙 占쏙옙 占싹댐옙占쏙옙 占쏙옙占쏙옙크 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쌥니댐옙.");
 		rightPanel = new JPanel();
 		messageField
-				.setToolTipText("�޽��� â�� Edit�� �� �����ϴ�. Typing�ϴ� ���� /help Ȥ�� /code�� ġ�� Bot�� ����մϴ�. ���� ������ ��ũ���� Ȱ��ȭ�˴ϴ�.");
+				.setToolTipText("占쌨쏙옙占쏙옙 창占쏙옙 Edit占쏙옙 占쏙옙 占쏙옙占쏙옙占싹댐옙. Typing占싹댐옙 占쏙옙占쏙옙 /help 혹占쏙옙 /code占쏙옙 치占쏙옙 Bot占쏙옙 占쏙옙占쏙옙爛求占�. 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙크占쏙옙占쏙옙 활占쏙옙화占싯니댐옙.");
 
 		// Function
 		messageField.setEditable(false);
@@ -119,22 +116,22 @@ public class ChatClient extends JFrame {
 		
 		
 		// Network
-		// �̺�Ʈ ó����(�������� �޼��� ������ �۾�) ���
+		// 占싱븝옙트 처占쏙옙占쏙옙(占쏙옙占쏙옙占쏙옙占쏙옙 占쌨쇽옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌜억옙) 占쏙옙占�
 		ChattingListener listener = new ChattingListener();
 		/////////////////////////////////////////////////////
-		// �������� ����� ���� ��Ʈ��ũ ���� �κ�
+		// 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙占쏙옙 占쏙옙트占쏙옙크 占쏙옙占쏙옙 占싸븝옙
 		try {
 			socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
 
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			// ������ ������ �Ŀ� �г��� �Է��ؼ� �����ϱ�
-//			id = JOptionPane.showInputDialog(this, "��ȭ�� �Է��ϼ���.", JOptionPane.INFORMATION_MESSAGE);
+			// 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占식울옙 占싻놂옙占쏙옙 占쌉뤄옙占쌔쇽옙 占쏙옙占쏙옙占싹깍옙
+//			id = JOptionPane.showInputDialog(this, "占쏙옙화占쏙옙 占쌉뤄옙占싹쇽옙占쏙옙.", JOptionPane.INFORMATION_MESSAGE);
 
 			bw.write(id + "\n");
 			bw.flush();
 
-			// �г��� ���� �Ŀ��� ������ ������ �޼��� �޴� ������
+			// 占싻놂옙占쏙옙 占쏙옙占쏙옙 占식울옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌨쇽옙占쏙옙 占쌨댐옙 占쏙옙占쏙옙占쏙옙
 			new ListenThread().start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -150,10 +147,10 @@ public class ChatClient extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (i == 0) {
-					System.out.println("����ũ�� ���Ұ� �Ǿ����ϴ�.");
+					System.out.println("占쏙옙占쏙옙크占쏙옙 占쏙옙占쌀곤옙 占실억옙占쏙옙占싹댐옙.");
 					i += 1;
 				} else {
-					System.out.println("����ũ�� Ȱ��ȭ �Ǿ����ϴ�.");
+					System.out.println("占쏙옙占쏙옙크占쏙옙 활占쏙옙화 占실억옙占쏙옙占싹댐옙.");
 					i = 0;
 				}
 			}
@@ -207,7 +204,7 @@ public class ChatClient extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-	// �̺�Ʈ ó�� Ŭ����(ä�ó��� �������� ������)
+	// 占싱븝옙트 처占쏙옙 클占쏙옙占쏙옙(채占시놂옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙)
 
 	class ChattingListener implements ActionListener {
 		@Override
@@ -224,7 +221,7 @@ public class ChatClient extends JFrame {
 		}
 	}
 
-	// �����κ��� �޼����� �޴� ���� ������ Ŭ����
+	// 占쏙옙占쏙옙占싸븝옙占쏙옙 占쌨쇽옙占쏙옙占쏙옙 占쌨댐옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 클占쏙옙占쏙옙
 	class ListenThread extends Thread {
 		@Override
 		public void run() {
@@ -238,7 +235,7 @@ public class ChatClient extends JFrame {
 					String nickPart;
 					String commandChecker="";
 					if(receiveMsg.isEmpty()) {
-						nickPart = id+": "; //Ȥ�� ä�� ���뺸���� �����ÿ� id�ȳ����� �ϰ� ������ ���� �ٲٸ��		
+						nickPart = id+": "; //혹占쏙옙 채占쏙옙 占쏙옙占쎈보占쏙옙占쏙옙 占쏙옙占쏙옙占시울옙 id占싫놂옙占쏙옙占쏙옙 占싹곤옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쌕꾸몌옙占�		
 					}else {
 						nickPart= st.nextToken();
 						if(st.hasMoreTokens()) {
