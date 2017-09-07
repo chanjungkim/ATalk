@@ -12,14 +12,6 @@ public class UserVO {
 	
 	public UserVO() {
 	}
-<<<<<<< HEAD:src/chat/DbVO.java
-
-=======
-	
-	public UserVO(String blackId) { //블랙리스트 등록
-		this.blackId = blackId;
-	}
->>>>>>> 5c0a4bdfc66bcab3ddfabf1efae19f3fe6b40138:src/chat/UserVO.java
 
 	public UserVO(String id, String pw, String name, String birth, String eMail, String phone) { //회원가입
 		this.id = id;
