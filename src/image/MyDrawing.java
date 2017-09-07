@@ -32,13 +32,11 @@ public class MyDrawing extends JFrame {
 	JPanel p1;
 	PaintPanel p2;
 	JButton btR, btG, btB, btOpen;
-
 	PaintToolFrame pt;
-
 
 	private ObjectOutputStream os;
 	private ObjectInputStream is;
-	
+
 	public MyDrawing() {
 		super("::MyDrawing::");
 		try {
@@ -51,11 +49,9 @@ public class MyDrawing extends JFrame {
 
 			pt = new PaintToolFrame();
 			p1 = new JPanel();
-			
 			add(p1, "North");
 			p2 = new PaintPanel(os);
-		
-			
+
 			add(p2, "Center");
 			p2.setBackground(Color.white);
 
@@ -71,21 +67,18 @@ public class MyDrawing extends JFrame {
 			btOpen = new JButton("Paint Tool");
 			p1.add(btOpen);
 
-
 			MyHandler my = new MyHandler();
-
 			btR.addActionListener(my);
 			btG.addActionListener(my);
 			btB.addActionListener(my);
 			btOpen.addActionListener(my);
 
-
 			pt.btPlus.addActionListener(my);
 			pt.btMinus.addActionListener(my);
 			pt.btClear.addActionListener(my);
+
 			pt.btColor.addActionListener(my);
 			pt.btClose.addActionListener(my);
-
 
 			setSize(500, 500);
 			setVisible(true);
@@ -118,7 +111,6 @@ public class MyDrawing extends JFrame {
 
 	class MyHandler implements ActionListener {
 
-		
 		public void mouseMoved(MouseEvent e) {
 
 		}
@@ -133,20 +125,21 @@ public class MyDrawing extends JFrame {
 			} else if (o == btB) {
 				p2.setCurrentColor(Color.BLUE);
 			} else if (o == btOpen) {
-				pt.pack(); 
-				pt.setLocation(getWidth(), 0); 
+				pt.pack();
+				pt.setLocation(getWidth(), 0);
 				pt.setVisible(true);
 			} else if (o == pt.btPlus) {
 				p2.plusCurrentWidthline();
 			} else if (o == pt.btMinus) {
 				p2.minusCurrentWidthline();
+
 			} else if (o == pt.btClear) {
-				p2.setCurrentColor(Color.WHITE);
-			}  else if (o == pt.btColor) {
-				Color selCr = JColorChooser.showDialog(null, "BLUE", Color.blue); 
+				p2.setCurrentColor(Color.white);
+			} else if (o == pt.btColor) {
+				Color selCr = JColorChooser.showDialog(null, "", Color.blue);
 				p2.setCurrentColor(selCr);
 			} else if (o == pt.btClose) {
-				pt.dispose(); 
+				pt.dispose();
 			}
 		}
 
