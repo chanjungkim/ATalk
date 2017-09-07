@@ -8,14 +8,11 @@ public class DbVO {
 	private String eMail;
 	private String phone;
 	
-	private String blackId;//블랙리스트 테이블 
+
 	
 	public DbVO() {
 	}
-	
-	public DbVO(String blackId) { //블랙리스트 등록
-		this.blackId = blackId;
-	}
+
 
 	public DbVO(String id, String pw, String name, String birth, String eMail, String phone) { //회원가입
 		this.id = id;
