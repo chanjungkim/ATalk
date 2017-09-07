@@ -32,7 +32,7 @@ public class DbDao {
 			Class.forName(DB_DRIVER);
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "SELECT * FROM JOINMEMBER";
+			String sql = "SELECT * FROM MEMBER";
 
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
@@ -69,7 +69,7 @@ public class DbDao {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "INSERT INTO JOINMEMBER(ID,PW,NAME,BIRTHDAY,EMAIL,PHONE) VALUES(?,?,?,?,?,?)";
+			String sql = "INSERT INTO MEMBER(ID,PW,NAME,BIRTHDAY,EMAIL,PHONE) VALUES(?,?,?,?,?,?)";
 
 			ps = con.prepareStatement(sql);
 
@@ -149,7 +149,7 @@ public class DbDao {
 	public int userConnect(String id, String pw) {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			String sql = "SELECT * FROM JOINMEMBER WHERE ID=? AND PW=?";
+			String sql = "SELECT * FROM MEMBER WHERE ID=? AND PW=?";
 
 			ps = con.prepareStatement(sql);
 
