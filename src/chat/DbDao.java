@@ -16,8 +16,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import chat.LogIn.SignUpDialog;
-
 public class DbDao {
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String DB_URL = "jdbc:oracle:thin:@70.12.115.61:1521:xe";
@@ -27,7 +25,7 @@ public class DbDao {
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet rs;
-	ArrayList<DbVO> loginList = new ArrayList<>();
+	ArrayList<UserVO> userList = new ArrayList<>();
 
 	public DbDao() {
 		try {
@@ -40,7 +38,7 @@ public class DbDao {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				DbVO lv = new DbVO();
+				UserVO lv = new UserVO();
 				lv.setId(rs.getString(1));
 				lv.setPw(rs.getString(2));
 				lv.setName(rs.getString(3));
@@ -48,9 +46,9 @@ public class DbDao {
 				lv.seteMail(rs.getString(5));
 				lv.setPhone(rs.getString(6));
 
-				loginList.add(lv);
+				userList.add(lv);
 			}
-			for (DbVO l : loginList) {
+			for (UserVO l : userList) {
 				System.out.println(l);
 			}
 		} catch (SQLException e) {
@@ -66,7 +64,7 @@ public class DbDao {
 
 	////////////////////////////////////////////////////////////////
 	// 회원가입 삽입
-	public int insertLogin(DbVO log) {
+	public int insertUserInfo(UserVO user) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -75,15 +73,15 @@ public class DbDao {
 
 			ps = con.prepareStatement(sql);
 
-			ps.setString(1, log.getId());
-			ps.setString(2, log.getPw());
-			ps.setString(3, log.getName());
-			ps.setString(4, log.getBirth());
-			ps.setString(5, log.geteMail());
-			ps.setString(6, log.getPhone());
+			ps.setString(1, user.getId());
+			ps.setString(2, user.getPw());
+			ps.setString(3, user.getName());
+			ps.setString(4, user.getBirth());
+			ps.setString(5, user.geteMail());
+			ps.setString(6, user.getPhone());
 
-			loginList.add(
-					new DbVO(log.getId(), log.getPw(), log.getName(), log.getBirth(), log.geteMail(), log.getPhone()));
+			userList.add(
+					new UserVO(user.getId(), user.getPw(), user.getName(), user.getBirth(), user.geteMail(), user.getPhone()));
 
 			result = ps.executeUpdate();
 			System.out.println("쿼리 수행 결과(1.수행됨): + result");
@@ -148,7 +146,7 @@ public class DbDao {
 
 	//////////////////////////////////////////////////////////
 	// 현재 로그인 접속 방식
-	public int loginConnect(String id, String pw) {
+	public int userConnect(String id, String pw) {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 			String sql = "SELECT * FROM JOINMEMBER WHERE ID=? AND PW=?";
@@ -161,7 +159,7 @@ public class DbDao {
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
-				DbVO lv = new DbVO();
+				UserVO lv = new UserVO();
 				lv.setId(rs.getString(1));
 				lv.setPw(rs.getString(2));
 				System.out.println(lv.getId());
