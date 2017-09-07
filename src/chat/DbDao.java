@@ -20,7 +20,7 @@ import chat.LogIn.SignUpDialog;
 
 public class DbDao {
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
+	private static final String DB_URL = "jdbc:oracle:thin:@70.12.115.61:1521:xe";
 	private static final String DB_ID = "atalk";
 	private static final String DB_PW = "sds1501";
 
@@ -65,7 +65,7 @@ public class DbDao {
 	}
 
 	////////////////////////////////////////////////////////////////
-	//회원가입 삽입
+	// 회원가입 삽입
 	public int insertLogin(DbVO log) {
 		int result = 0;
 		try {
@@ -81,13 +81,13 @@ public class DbDao {
 			ps.setString(4, log.getBirth());
 			ps.setString(5, log.geteMail());
 			ps.setString(6, log.getPhone());
-		
-			loginList.add(new DbVO(log.getId(), log.getPw(), log.getName(), log.getBirth(), log.geteMail(),
-					log.getPhone()));
+
+			loginList.add(
+					new DbVO(log.getId(), log.getPw(), log.getName(), log.getBirth(), log.geteMail(), log.getPhone()));
 
 			result = ps.executeUpdate();
 			System.out.println("쿼리 수행 결과(1.수행됨): + result");
-		} catch(SQLIntegrityConstraintViolationException e) {
+		} catch (SQLIntegrityConstraintViolationException e) {
 			JDialog dialog = new JDialog();
 			JPanel errorPanel = new JPanel();
 			JButton check = new JButton("확인");
@@ -112,7 +112,7 @@ public class DbDao {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			closePstmt();
 			closeConnection();
 		}
@@ -120,19 +120,34 @@ public class DbDao {
 	}
 
 	//////////////////////////////////////////////////////////
-	
+
 	////////////////////////////////////////////////////////////
-	//블랙리스트 추가
-	
+	// 블랙리스트 추가
+
 	////////////////////////////////////////////////////////////
-	
+
 	////////////////////////////////////////////////////////////
-	//방 추가
-	
+	// 방 추가
+//	public int insertRoom(String) {
+//		try {
+//			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+//			
+//			String sql = "INSERT INTO ROOMLIST(TITLE,ID,PEOPLENUM,LANGUAGE) VALUES(?,?,?,?)";
+//			
+//			ps = con.prepareStatement(sql);
+//			
+//			ps.setString(1, log.getId());
+//			ps.setString(2, log.getPw());
+//			ps.setString(3, log.getName());
+//			ps.setString(4, log.getBirth());
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	////////////////////////////////////////////////////////////
 
 	//////////////////////////////////////////////////////////
-	//현재 로그인 접속 방식
+	// 현재 로그인 접속 방식
 	public int loginConnect(String id, String pw) {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -144,7 +159,7 @@ public class DbDao {
 			ps.setString(2, pw);
 
 			rs = ps.executeQuery();
-			
+
 			if (rs.next()) {
 				DbVO lv = new DbVO();
 				lv.setId(rs.getString(1));
@@ -154,10 +169,9 @@ public class DbDao {
 				RoomList roomList = new RoomList(id);
 				return 1;
 			}
-			if(rs.wasNull()) {
-			}
-			else {
-			
+			if (rs.wasNull()) {
+			} else {
+
 			}
 		} catch (SQLException e) {
 			Interrupt();
@@ -169,7 +183,7 @@ public class DbDao {
 		}
 		return 0;
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	private void Interrupt() {
