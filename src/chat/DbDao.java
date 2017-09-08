@@ -68,12 +68,11 @@ public class DbDao {
 		}
 	}
 
-<<<<<<< HEAD
+
 	//////////////////////////////////////////////////////////////////////
 	// 회원가입 삽입
-=======
 	// INSERT MEMBER
->>>>>>> 7ce5ae3e4fac8696771b6427138a2d259d9e057e
+
 	public int insertUserInfo(UserVO user) {
 		int result = 0;
 		try {
@@ -127,11 +126,9 @@ public class DbDao {
 		return result;
 	}
 
-<<<<<<< HEAD
-	//////////////////////////////////////////////////////////
 
+	//////////////////////////////////////////////////////////
 	// 현재 로그인 접속 방식
-=======
 	// UPDATE MEMBER
 	public int updateProfile(String introduce, String github, String otherEmail) {
 		try {
@@ -150,7 +147,6 @@ public class DbDao {
 	}
 
 	// USER CHECK
->>>>>>> 7ce5ae3e4fac8696771b6427138a2d259d9e057e
 	public int userCheck(String id, String pw) {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -188,9 +184,8 @@ public class DbDao {
 	}
 // End of MEMBER
 
-<<<<<<< HEAD
+
 	// Start ROOM
-=======
 // Start BLACKLIST
 	// INSERT BLACK_ID
 	public int blockUser(String id, String idToBlock) {
@@ -243,7 +238,6 @@ public class DbDao {
 // END of BLACKLIST
 
 // Start ROOM
->>>>>>> 7ce5ae3e4fac8696771b6427138a2d259d9e057e
 	// ROOM DAO CONSTRUCTOR
 	public DbDao(int number) {
 		try {
@@ -453,7 +447,6 @@ public class DbDao {
 	}
 // END JOIN
 
-<<<<<<< HEAD
 	//////////////////////////////////////////////////////////
 	// START 프로필 업데이트
 	public void updateProfile(UserVO user) {
@@ -501,9 +494,8 @@ public class DbDao {
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
-=======
 // OTHER ----------------------------------------------------------------------------
->>>>>>> 7ce5ae3e4fac8696771b6427138a2d259d9e057e
+
 	private void Interrupt() {
 		JDialog dialog = new JDialog();
 		JPanel errorPanel = new JPanel();
