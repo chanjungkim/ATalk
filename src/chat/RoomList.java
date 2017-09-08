@@ -4,12 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.awt.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -124,6 +124,11 @@ public class RoomList extends JFrame {
 
 							}
 						});
+						java.util.List<UserVO> black = user.blockUserSelect(id);
+						for (UserVO u : black) {
+							String x = u.getBlackId();
+							nameList.add(x);
+						}
 
 						bottomPn.add(nameLb);
 						bottomPn.add(nameText);

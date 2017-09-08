@@ -10,6 +10,8 @@ public class UserVO {
 	private String introduce;
 	private String github;
 	private String otherEmail;
+	
+	private String blackId;
 
 	
 	public UserVO() {
@@ -94,6 +96,14 @@ public class UserVO {
 
 	public void setOtherEmail(String otherEmail) {
 		this.otherEmail = otherEmail;
+	}
+
+	public String getBlackId() {
+		return blackId;
+	}
+
+	public void setBlackId(String blackId) {
+		this.blackId = blackId;
 	}
 
 	@Override

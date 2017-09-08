@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -276,6 +277,35 @@ public class DbDao {
 		}
 		return result;
 	}
+
+	public List blockUserSelect(String id) {
+		ArrayList<UserVO> blackList = new ArrayList<>();
+		
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+
+			String sql = "SELECT BLACK_ID FROM BLACKLIST WHERE ID = ?";
+
+			ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				UserVO b = new UserVO();
+				b.setBlackId(rs.getString(1));
+				blackList.add(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeRS();
+			closePstmt();
+			closeConnection();
+		}
+		return blackList;
+	}
+
 
 	// END of BLACKLIST
 
