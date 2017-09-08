@@ -186,9 +186,10 @@ public class DbDao {
 
 			ps.setString(1, id);
 			ps.setString(2, idToBlock);
-
 			result = ps.executeUpdate();
-			System.out.println("블랙 처리 쿼리 수행 결과(1: 수행, 2: 실패): + result");
+			
+			
+			System.out.println("블랙 처리 쿼리 수행 결과(1: 수행, 2: 실패): "+ result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -197,8 +198,33 @@ public class DbDao {
 		}
 		return result;
 	}
-// END of BLACKLIST
+	public int blockUserDelete(String id, String idToBlock) {
+		int result = 0;
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+			String sql = "DELETE FROM BLACKLIST WHERE BLACK_ID=?";
+			
+
+			ps = con.prepareStatement(sql);
+
+			ps.setString(1, idToBlock);
 	
+
+			result = ps.executeUpdate();
+			
+			System.out.println("블랙 삭제 처리 쿼리 수행 결과(1: 수행, 2: 실패):" +result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closePstmt();
+			closeConnection();
+			
+		}
+		return result;
+	}
+
+// END of BLACKLIST
+
 // Start ROOM
 	// ROOM DAO CONSTRUCTOR
 	public DbDao(int number) {

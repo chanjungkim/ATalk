@@ -28,16 +28,16 @@ public class RoomList extends JFrame {
 	private JPanel menuPanel;
 	private JPanel listPanel;
 	private JScrollPane scrollFrame;
-	
+
 	private JButton createRoomBtn;
 	private JButton roomListBtn;
 	private JButton settingBtn;
-	
+
 	private ArrayList<RoomPanel> room = new ArrayList<>();
 
-	private JLabel 	master = new JLabel("방장:");
+	private JLabel master = new JLabel("방장:");
 	private JLabel count = new JLabel("인원:");
-	
+
 	public RoomList(String id) {
 		panel = new JPanel();
 		menuPanel = new JPanel();
@@ -58,9 +58,9 @@ public class RoomList extends JFrame {
 		panel.setLayout(new BorderLayout());
 		DbDao user = new DbDao();
 
-//		EtchedBorder eborder;
-//		eborder = new EtchedBorder(EtchedBorder.LOWERED);
-		
+		// EtchedBorder eborder;
+		// eborder = new EtchedBorder(EtchedBorder.LOWERED);
+
 		// Setting Dialogue
 		settingBtn.addActionListener(new ActionListener() {
 			@Override
@@ -98,25 +98,29 @@ public class RoomList extends JFrame {
 							public void actionPerformed(ActionEvent e) {
 
 								String idToBlock = nameText.getText();
-								
+
 								user.blockUser(id, idToBlock);
-								
+
 								nameList.add(idToBlock);
-								
+
 								nameText.setText(""); // 텍스트 필드내용 지우기
 								nameText.requestFocus(); // 텍스트 필드에 포커스 주기
 							}
 						});
+
 						delBtn.addActionListener(new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								int pos = nameList.getSelectedIndex(); // namelist의 선택한 항목의 인덱스값 얻어오기
 
+								String idToBlock = nameList.getSelectedItem();
 								if (pos == -1) {
-									
+
 									return;
 								}
-								nameList.remove(pos);
+								user.blockUserDelete(id, idToBlock);
+								nameList.remove(idToBlock);
+								
 							}
 						});
 
@@ -154,8 +158,6 @@ public class RoomList extends JFrame {
 			}
 		});
 		// End of Setting Dialogue
-		
-
 
 		// Create Room Dialogue
 		createRoomBtn.addActionListener(new ActionListener() {
@@ -165,53 +167,54 @@ public class RoomList extends JFrame {
 				createRoomDialogue.createBtn.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						if(createRoomDialogue.titleField.getText().isEmpty()) {
+						if (createRoomDialogue.titleField.getText().isEmpty()) {
 							JDialog dialog = new JDialog();
 							JPanel errorPanel = new JPanel();
 							JButton check = new JButton("확인");
 							JLabel message = new JLabel("제목을 입력해주세요.");
-							
-							check.addActionListener(new ActionListener(){
+
+							check.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
 									dialog.dispose();
 								}
 							});
 							errorPanel.setLayout(new BorderLayout());
-							
+
 							errorPanel.add(message, "Center");
 							errorPanel.add(check, "South");
-		
+
 							dialog.add(errorPanel);
-							
+
 							dialog.pack();
 							dialog.setTitle("ERROR!!");
 							dialog.setVisible(true);
-						}else if(createRoomDialogue.passwordField.getText().isEmpty() && createRoomDialogue.checkBtn.isSelected()){
+						} else if (createRoomDialogue.passwordField.getText().isEmpty()
+								&& createRoomDialogue.checkBtn.isSelected()) {
 							// Start Dialog
 							JDialog dialog = new JDialog();
 							JPanel errorPanel = new JPanel();
 							JButton check = new JButton("확인");
 							JLabel message = new JLabel("비밀번호를 입력해주세요.");
-							
-							check.addActionListener(new ActionListener(){
+
+							check.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
 									dialog.dispose();
 								}
 							});
 							errorPanel.setLayout(new BorderLayout());
-							
+
 							errorPanel.add(message, "Center");
 							errorPanel.add(check, "South");
-		
+
 							dialog.add(errorPanel);
-							
+
 							dialog.pack();
 							dialog.setTitle("ERROR!!");
 							dialog.setVisible(true);
 							// Dialog
-						}else {
+						} else {
 							DbDao roomDao = new DbDao(1);
 
 							String title = createRoomDialogue.getTitleField();
@@ -219,32 +222,32 @@ public class RoomList extends JFrame {
 							int population = createRoomDialogue.getPopulation();
 							String lang = createRoomDialogue.getLanguage();
 							String pw = createRoomDialogue.getPasswordField();
-							
+
 							RoomVO roomVo = new RoomVO(title, masterID, population, lang, pw);
 							roomDao.insertRoomInfo(roomVo);
-							
+
 							room.add(new RoomPanel(title, masterID, population, lang, pw));
-							for(int i = 0 ; i < room.size(); i++) {
+							for (int i = 0; i < room.size(); i++) {
 								listPanel.add(room.get(i));
 								System.out.println(room.size());
-								
+
 								room.get(i).roomBtn.addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent arg0) {
 										ChatClient chat = new ChatClient(id, masterID);
 										setVisible(false);
 										chat.backBtn.addActionListener(new ActionListener() {
-												@Override
-												public void actionPerformed(ActionEvent e) {
-													roomDao.deleteRoom(roomVo);
-												}
+											@Override
+											public void actionPerformed(ActionEvent e) {
+												roomDao.deleteRoom(roomVo);
+											}
 										});
 									}
 								});// End of Function
 							}
-							
-//							panel.add(listPanel);
-//							add(panel);
+
+							// panel.add(listPanel);
+							// add(panel);
 							// Fucntion
 
 							validate();
@@ -255,7 +258,7 @@ public class RoomList extends JFrame {
 						}
 					}
 				});
-				
+
 				createRoomDialogue.cancelBtn.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
@@ -264,7 +267,7 @@ public class RoomList extends JFrame {
 				});
 			}
 		});
-		
+
 		roomListBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -272,18 +275,18 @@ public class RoomList extends JFrame {
 			}
 		});
 		// End of Create Room Dialogue
-		
+
 		// Add Panels
 		menuPanel.add(createRoomBtn);
 		menuPanel.add(roomListBtn);
 		menuPanel.add(settingBtn);
-		
-		//scrollFrame.add(listPanel);
+
+		// scrollFrame.add(listPanel);
 		panel.add(menuPanel, BorderLayout.NORTH);
 		panel.add(listPanel);
-		
+
 		add(panel);
-		
+
 		setSize(700, 500);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -291,31 +294,31 @@ public class RoomList extends JFrame {
 	}
 
 	// <--------------------- Inner Classes -------------------------->
-	class CreateRoomDialogue extends JFrame implements ItemListener { //방 생성
+	class CreateRoomDialogue extends JFrame implements ItemListener { // 방 생성
 		private JDialog createRoomDialogue = new JDialog(this, "방 만들기");
 		private JLabel roomTitleLb = new JLabel("제목");
 		private JTextField titleField;
-		
+
 		private JLabel passwordLb = new JLabel("비밀 번호");
 		private JTextField passwordField;
-		
+
 		private JLabel populationLb = new JLabel("인원");
 		private JComboBox<Integer> population;
-		
+
 		private JLabel langaugeLb = new JLabel("언어");
 		private JComboBox<String> language;
-		
+
 		private JPanel topPn;
 		private JPanel titleTPn;
 		private JPanel passwordPn;
 		private JPanel populationPn;
 		private JPanel bottomPn;
 		private JCheckBox checkBtn;
-		
+
 		private JButton createBtn = new JButton("생성");
 		private JButton cancelBtn = new JButton("취소");
-		
-		public CreateRoomDialogue() {               
+
+		public CreateRoomDialogue() {
 			topPn = new JPanel();
 			titleTPn = new JPanel();
 			passwordPn = new JPanel();
@@ -323,23 +326,22 @@ public class RoomList extends JFrame {
 			bottomPn = new JPanel();
 			titleField = new JTextField(15);
 			passwordField = new JTextField(15);
-			
-			
-			checkBtn = new JCheckBox();	
-			Integer numberList[] = {1, 2, 3, 4, 5, 6};   
+
+			checkBtn = new JCheckBox();
+			Integer numberList[] = { 1, 2, 3, 4, 5, 6 };
 			population = new JComboBox<>(numberList); // 방 인원수
-			String languageList[] = {"JAVA","C","C++","C#","X"};
+			String languageList[] = { "JAVA", "C", "C++", "C#", "X" };
 			language = new JComboBox<>(languageList);
 			population.setEnabled(true);
 			language.setEnabled(true);
-			
+
 			checkBtn.addItemListener(this);
-//			population.addActionListener(new ActionListener() { //인원 수 선택 이벤트
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					int num = (int) ((JComboBox)e.getSource()).getSelectedItem();
-//				}
-//			});
+			// population.addActionListener(new ActionListener() { //인원 수 선택 이벤트
+			// @Override
+			// public void actionPerformed(ActionEvent e) {
+			// int num = (int) ((JComboBox)e.getSource()).getSelectedItem();
+			// }
+			// });
 
 			// Layout
 			createRoomDialogue.setLayout(new GridLayout(5, 1, 0, 10));
@@ -347,19 +349,19 @@ public class RoomList extends JFrame {
 			passwordPn.setLayout(null);
 			populationPn.setLayout(null);
 			passwordField.setBackground(Color.decode("#AAAAAA"));
-			
+
 			roomTitleLb.setBounds(0, -10, 50, 50);
-			titleField.setBounds(60,0,280,30);
+			titleField.setBounds(60, 0, 280, 30);
 			passwordLb.setBounds(0, -10, 55, 50);
 			passwordField.setBounds(60, 0, 280, 30);
 			checkBtn.setBounds(345, -30, 100, 100);
 			populationLb.setBounds(0, -10, 50, 50);
-			population.setBounds(60,0,50,30);
+			population.setBounds(60, 0, 50, 30);
 			langaugeLb.setBounds(140, -10, 50, 50);
 			language.setBounds(180, 0, 80, 30);
-			
+
 			passwordField.setEnabled(false);
-			
+
 			titleTPn.add(roomTitleLb);
 			titleTPn.add(titleField);
 			passwordPn.add(passwordLb);
@@ -377,27 +379,26 @@ public class RoomList extends JFrame {
 			createRoomDialogue.add(passwordPn);
 			createRoomDialogue.add(populationPn);
 			createRoomDialogue.add(bottomPn);
-			
+
 			createRoomDialogue.setSize(400, 250);
 			createRoomDialogue.setVisible(true);
 			setDefaultCloseOperation(createRoomDialogue.EXIT_ON_CLOSE);
 			// End of Layout
 		} // End of CreateRoom Constructor
-		
+
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			Object source = e.getItemSelectable();
-			if(source == checkBtn) {
+			if (source == checkBtn) {
 				passwordField.setEnabled(true);
 				passwordField.setBackground(Color.white);
 			}
-			if(e.getStateChange() == ItemEvent.DESELECTED) {
+			if (e.getStateChange() == ItemEvent.DESELECTED) {
 				passwordField.setEnabled(false);
 				passwordField.setBackground(Color.decode("#AAAAAA"));
-			}		
+			}
 		}
-		
-		
+
 		public String getTitleField() {
 			return titleField.getText();
 		}
@@ -405,23 +406,23 @@ public class RoomList extends JFrame {
 		public String getPasswordField() {
 			return passwordField.getText();
 		}
-		
+
 		public int getPopulation() {
 			return Integer.parseInt(population.getSelectedItem().toString());
 		}
-		
+
 		public String getLanguage() {
 			String lang = language.getSelectedItem().toString();
-			if(lang.isEmpty()) {
+			if (lang.isEmpty()) {
 				lang = "JAVA";
 			}
 			return lang;
 		}
 
-//		public void setPopulation(JComboBox<Integer> population) {
-//			this.population = population;
-//		}
-		
+		// public void setPopulation(JComboBox<Integer> population) {
+		// this.population = population;
+		// }
+
 	}
 
 	class SettingDialogue extends JFrame {
@@ -435,7 +436,6 @@ public class RoomList extends JFrame {
 		private JButton blackBtn;
 		private JButton profileChangeBtn;
 		private JButton logoutBtn;
-		
 
 		public SettingDialogue() {
 			set = new JDialog(this, "설정");
@@ -463,7 +463,6 @@ public class RoomList extends JFrame {
 			set.add(profileChangeBtn);
 			set.add(blackBtn);
 			set.add(logoutBtn);
-			
 
 			set.setSize(200, 200);
 			set.setVisible(true);
