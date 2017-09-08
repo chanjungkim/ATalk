@@ -47,6 +47,9 @@ public class DbDao {
 				lv.setBirth(rs.getString(4));
 				lv.seteMail(rs.getString(5));
 				lv.setPhone(rs.getString(6));
+				lv.setIntroduce(rs.getString(7));
+				lv.setGithub(rs.getString(8));
+				lv.setOtherEmail(rs.getString(9));
 
 				userList.add(lv);
 			}
@@ -64,6 +67,7 @@ public class DbDao {
 		}
 	}
 
+	//////////////////////////////////////////////////////////////////////
 	// 회원가입 삽입
 	public int insertUserInfo(UserVO user) {
 		int result = 0;
@@ -119,24 +123,6 @@ public class DbDao {
 	}
 
 	//////////////////////////////////////////////////////////
-	// 프로필 업데이트
-	public int updateProfile(String introduce, String github, String otherEmail) {
-		try {
-			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			String sql = "UPDATE MEMBER SET INTRODUCTION=?,GITHUB=?,OTHEREMAIL=?";
-			ps = con.prepareStatement(sql);
-			
-			ps.setString(1, introduce);
-			ps.setString(2, github);
-			ps.setString(3, otherEmail);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	//////////////////////////////////////////////////////////
 
 	// 현재 로그인 접속 방식
 	public int userCheck(String id, String pw) {
@@ -174,11 +160,6 @@ public class DbDao {
 		}
 		return 0;
 	}
-
-	////////////////////////////////////////////////////////////
-	// 블랙리스트 추가
-
-	////////////////////////////////////////////////////////////
 
 	// Start ROOM
 	// ROOM DAO CONSTRUCTOR
@@ -405,6 +386,53 @@ public class DbDao {
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//////////////////////////////////////////////////////////
+	// START 프로필 업데이트
+	public void updateProfile(UserVO user) {
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+
+			for (int x = 0; x < userList.size(); x++)
+				if (userList.get(x).getId().equals(user.getId())) {
+					if (user.getIntroduce().length() == 0) {
+						user.setIntroduce(userList.get(x).getIntroduce());
+					}
+					if (user.getGithub().length() == 0) {
+						user.setGithub(userList.get(x).getGithub());
+					}
+					if (user.getOtherEmail().length() == 0) {
+						user.setOtherEmail(userList.get(x).getOtherEmail());
+					}
+					if (user.getPw().length() == 0) {
+						user.setPw(userList.get(x).getPw());
+					}
+					if (user.getPhone().length() == 0) {
+						user.setPhone(userList.get(x).getPhone());
+					}
+				}
+			
+			String sql = "UPDATE MEMBER SET INTRODUCTION=?,GITHUB=?,OTHEREMAIL=?,PW=?,PHONE=? WHERE ID=?";
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1, user.getIntroduce());
+			ps.setString(2, user.getGithub());
+			ps.setString(3, user.getOtherEmail());
+			ps.setString(4, user.getPw());
+			ps.setString(5, user.getPhone());
+			ps.setString(6, user.getId());
+
+			int result = ps.executeUpdate();
+			System.out.println("쿼리 수행 결과(1.수행됨): + result");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closePstmt();
+			closeConnection();
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 	private void Interrupt() {
 		JDialog dialog = new JDialog();
 		JPanel errorPanel = new JPanel();

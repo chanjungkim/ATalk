@@ -134,6 +134,13 @@ public class RoomList extends JFrame {
 						blackFm.setVisible(true);
 					}
 				});
+				
+				settingDialogue.profileChangeBtn.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						ProfileChange p = new ProfileChange(id);
+					}
+				});
 
 				settingDialogue.alarmBtn.addActionListener(new ActionListener() { // 알람 버튼
 					@Override
@@ -446,7 +453,7 @@ public class RoomList extends JFrame {
 			alarmBtn = new JButton("켜기");
 			colorBtn = new JButton("색깔");
 			blackBtn = new JButton("블랙리스트");
-			profileChangeBtn = new JButton("프로필 수정");
+			profileChangeBtn = new JButton("회원정보 수정");
 			logoutBtn = new JButton("로그아웃");
 
 			set.setLayout(new GridLayout(5, 1));
