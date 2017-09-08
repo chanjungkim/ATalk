@@ -23,8 +23,8 @@ public class MultiChattingServer extends JFrame{
         threadList = new ArrayList<>();
         try {
             serverSocket = new ServerSocket(5555);
-            image.MultiChattingServer serv = new image.MultiChattingServer();
-            		//serverSocket);
+            drawing.drawingServer serv = new drawing.drawingServer();
+            serv.start();
             while (true) {
                 System.out.println("...");
                 Socket socket = serverSocket.accept();
