@@ -46,11 +46,8 @@ public class ChatClient extends JFrame {
 	private JScrollPane scrollFrame;
 
 	private JTextField typeField = new JTextField("Type");
-	
-	private JButton compileBtn = new JButton("compile");
-	private JButton drawingBtn = new JButton("drawing");
-	private JButton emoticonBtn = new JButton("emoticon");
-	
+	private JButton chatSetBtn = new JButton("+");
+
 	private JButton user1;
 	private JButton user2 = new JButton("USER-1");
 	private JButton mic = new JButton("MIC");
@@ -59,8 +56,9 @@ public class ChatClient extends JFrame {
 	private BufferedWriter bw;
 
 	private String id;
-	private image.MyDrawing drawPane;
-	public ChatClient(String id) {
+	private String masterID;
+	
+	public ChatClient(String id, String masterID) {
 		this.id = id;
 		user1 = new JButton(id);
 		panel = new JPanel();
@@ -73,10 +71,10 @@ public class ChatClient extends JFrame {
 		chatSetPanel = new JPanel();
 
 		leftPanel = new JPanel();
-		leftPanel.setToolTipText("<占쏙옙 占쌘로곤옙占썩를 占쏙옙占쌌니댐옙. 占쏙옙占쏙옙 占싸그아울옙처占쏙옙 占싸깍옙占쏙옙화占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙占싹댐옙. 占쏙옙占쏘데占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙트占쏙옙 占쏙옙占쏙옙占쌍곤옙 占쏙옙 占싹댐옙占쏙옙 占쏙옙占쏙옙크 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쌥니댐옙.");
+		leftPanel.setToolTipText("<는 뒤로가기를 뜻합니다. 현재 로그아웃처럼 로그인화면으로 빠져나갑니다. 가운데는 유저 리스트를 보여주고 맨 하단은 마이크 설정을 보여줍니다.");
 		rightPanel = new JPanel();
 		messageField
-				.setToolTipText("占쌨쏙옙占쏙옙 창占쏙옙 Edit占쏙옙 占쏙옙 占쏙옙占쏙옙占싹댐옙. Typing占싹댐옙 占쏙옙占쏙옙 /help 혹占쏙옙 /code占쏙옙 치占쏙옙 Bot占쏙옙 占쏙옙占쏙옙爛求占�. 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙크占쏙옙占쏙옙 활占쏙옙화占싯니댐옙.");
+				.setToolTipText("메시지 창은 Edit할 수 없습니다. Typing하는 곳에 /help 혹은 /code을 치면 Bot이 대답합니다. 글이 많으면 스크롤이 활성화됩니다.");
 
 		// Function
 		messageField.setEditable(false);
@@ -93,48 +91,60 @@ public class ChatClient extends JFrame {
 			}
 		});
 
-		compileBtn.addActionListener(new ActionListener() {
+		chatSetBtn.addActionListener(new ActionListener() {
+			int i = 0;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				compile.CompileFrame com = new compile.CompileFrame();
+				if (i == 0) {
+					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight() - 5);
+					// rightPanel.add(chatSetPanel, "Center");
+					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 5);
+					chatSetBtn.setText("이모티콘");
+					Dialog imo = new Dialog();
+					
+					i = 1;
+				} else {
+					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight() + 5);
+					// rightPanel.add(chatSetPanel, "Center");
+					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 0);
+					chatSetBtn.setText("+");
+
+					i = 0;
+				}
+
 			}
 		});
-		drawingBtn.addActionListener(new ActionListener() {
+		
+		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//image.MultiChattingServer serv = new image.MultiChattingServer();
-			
-				
+				dispose();
+				DbDao joinDao = new DbDao(id, masterID);
+				joinDao.deleteJoinedMember(masterID);
+				RoomList roomList = new RoomList(id);
 			}
-		});;
-		emoticonBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});;
-		
-		
-		
+		});
+
 		// Network
-		// 占싱븝옙트 처占쏙옙占쏙옙(占쏙옙占쏙옙占쏙옙占쏙옙 占쌨쇽옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌜억옙) 占쏙옙占�
+		// 이벤트 처리기(서버에게 메세지 보내는 작업) 등록
 		ChattingListener listener = new ChattingListener();
 		/////////////////////////////////////////////////////
-		// 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙占쏙옙 占쏙옙트占쏙옙크 占쏙옙占쏙옙 占싸븝옙
+		// �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕�뜝占� �뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�듃�뜝�룞�삕�겕 �뜝�룞�삕�뜝�룞�삕 �뜝�떥釉앹삕
+		// 서버와의 통신을 위한 네트워크 설정 부분
 
 		try {
 			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
-			//image.MyDrawing 
-			drawPane = new MyDrawing();
+
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			// 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占식울옙 占싻놂옙占쏙옙 占쌉뤄옙占쌔쇽옙 占쏙옙占쏙옙占싹깍옙
-//			id = JOptionPane.showInputDialog(this, "占쏙옙화占쏙옙 占쌉뤄옙占싹쇽옙占쏙옙.", JOptionPane.INFORMATION_MESSAGE);
+			// 서버와 연결한 후에 닉네임 입력해서 전송하기
+//			id = JOptionPane.showInputDialog(this, "대화명 입력하세요.", JOptionPane.INFORMATION_MESSAGE);
 
 			bw.write(id + "\n");
 			bw.flush();
 
-			// 占싻놂옙占쏙옙 占쏙옙占쏙옙 占식울옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌨쇽옙占쏙옙 占쌨댐옙 占쏙옙占쏙옙占쏙옙
+			// 닉네임 전송 후에는 서버가 보내는 메세지 받는 쓰레드
 			new ListenThread().start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -144,16 +154,18 @@ public class ChatClient extends JFrame {
 
 		typeField.addActionListener(listener);
 
+		
+
 		mic.addActionListener(new ActionListener() {
 			int i = 0;
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (i == 0) {
-					System.out.println("占쏙옙占쏙옙크占쏙옙 占쏙옙占쌀곤옙 占실억옙占쏙옙占싹댐옙.");
+					System.out.println("마이크가 음소거 되었습니다.");
 					i += 1;
 				} else {
-					System.out.println("占쏙옙占쏙옙크占쏙옙 활占쏙옙화 占실억옙占쏙옙占싹댐옙.");
+					System.out.println("마이크가 활성화 되었습니다.");
 					i = 0;
 				}
 			}
@@ -188,9 +200,7 @@ public class ChatClient extends JFrame {
 
 		messagesAreaPanel.add(scrollFrame);
 		typeAreaPanel.add(typeField);
-		typeAreaPanel.add(compileBtn);
-		typeAreaPanel.add(drawingBtn);
-		typeAreaPanel.add(emoticonBtn);
+		typeAreaPanel.add(chatSetBtn);
 
 		rightPanel.add(messagesAreaPanel, "Center");
 		rightPanel.add(typeAreaPanel, "South");
@@ -207,7 +217,7 @@ public class ChatClient extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-	// 占싱븝옙트 처占쏙옙 클占쏙옙占쏙옙(채占시놂옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙)
+	// 이벤트 처리 클래스(채팅내용 서버에게 보내기)
 
 	class ChattingListener implements ActionListener {
 		@Override
@@ -224,7 +234,7 @@ public class ChatClient extends JFrame {
 		}
 	}
 
-	// 占쏙옙占쏙옙占싸븝옙占쏙옙 占쌨쇽옙占쏙옙占쏙옙 占쌨댐옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 클占쏙옙占쏙옙
+	// 서버로부터 메세지를 받는 내부 쓰레드 클래스
 	class ListenThread extends Thread {
 		@Override
 		public void run() {
@@ -238,7 +248,7 @@ public class ChatClient extends JFrame {
 					String nickPart;
 					String commandChecker="";
 					if(receiveMsg.isEmpty()) {
-						nickPart = id+": "; //혹占쏙옙 채占쏙옙 占쏙옙占쎈보占쏙옙占쏙옙 占쏙옙占쏙옙占시울옙 id占싫놂옙占쏙옙占쏙옙 占싹곤옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쌕꾸몌옙占�		
+						nickPart = id+": "; //혹시 채팅 내용보내지 않을시에 id안나오게 하고 싶으면 여기 바꾸면됨		
 					}else {
 						nickPart= st.nextToken();
 						if(st.hasMoreTokens()) {
@@ -315,6 +325,6 @@ public class ChatClient extends JFrame {
 	}
 
 //	public static void main(String[] args) {
-//		new ChatClient();
+//		new ChatClient("김찬중", "방장");
 //	}
 }

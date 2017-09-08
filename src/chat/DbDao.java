@@ -27,7 +27,7 @@ public class DbDao {
 	private ResultSet rs;
 	ArrayList<UserVO> userList = new ArrayList<>();
 	ArrayList<RoomVO> roomList = new ArrayList<>();
-	
+
 	// MEMBER DAO CONSTRUCTOR
 	public DbDao() {
 		try {
@@ -63,7 +63,7 @@ public class DbDao {
 			closeConnection();
 		}
 	}
-	
+
 	// 회원가입 삽입
 	public int insertUserInfo(UserVO user) {
 		int result = 0;
@@ -81,8 +81,8 @@ public class DbDao {
 			ps.setString(5, user.geteMail());
 			ps.setString(6, user.getPhone());
 
-			userList.add(
-					new UserVO(user.getId(), user.getPw(), user.getName(), user.getBirth(), user.geteMail(), user.getPhone()));
+			userList.add(new UserVO(user.getId(), user.getPw(), user.getName(), user.getBirth(), user.geteMail(),
+					user.getPhone()));
 
 			result = ps.executeUpdate();
 			System.out.println("회원 가입 쿼리 수행 결과(1: 수행됨, 0: 실패): + result");
@@ -117,44 +117,27 @@ public class DbDao {
 		}
 		return result;
 	}
-<<<<<<< HEAD
 
 	//////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////
-	// 블랙리스트 추가
-
-	////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////
-	// 방 추가
-//	public int insertRoom(String) {
-//		try {
-//			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-//			
-//			String sql = "INSERT INTO ROOMLIST(TITLE,ID,PEOPLENUM,LANGUAGE) VALUES(?,?,?,?)";
-//			
-//			ps = con.prepareStatement(sql);
-//			
-//			ps.setString(1, log.getId());
-//			ps.setString(2, log.getPw());
-//			ps.setString(3, log.getName());
-//			ps.setString(4, log.getBirth());
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////
-//	//프로필 업데이트
+	// 프로필 업데이트
 	public int updateProfile(String introduce, String github, String otherEmail) {
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+			String sql = "UPDATE MEMBER SET INTRODUCTION=?,GITHUB=?,OTHEREMAIL=?";
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1, introduce);
+			ps.setString(2, github);
+			ps.setString(3, otherEmail);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
 	//////////////////////////////////////////////////////////
-=======
->>>>>>> 00f4bf4d7ec94a4b2f3bd6dd8437f7f321514d01
+
 	// 현재 로그인 접속 방식
 	public int userCheck(String id, String pw) {
 		try {
@@ -192,13 +175,12 @@ public class DbDao {
 		return 0;
 	}
 
-
 	////////////////////////////////////////////////////////////
 	// 블랙리스트 추가
 
 	////////////////////////////////////////////////////////////
 
-// Start ROOM
+	// Start ROOM
 	// ROOM DAO CONSTRUCTOR
 	public DbDao(int number) {
 		try {
@@ -211,7 +193,8 @@ public class DbDao {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				RoomVO room = new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4) ,rs.getString(5));
+				RoomVO room = new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4),
+						rs.getString(5));
 				roomList.add(room);
 			}
 			for (RoomVO l : roomList) {
@@ -227,25 +210,27 @@ public class DbDao {
 			closeConnection();
 		}
 	}
+
 	// INSERT ROOM
 	public int insertRoomInfo(RoomVO room) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			
+
 			String sql = "INSERT INTO ROOM(TITLE, MASTERID, POPULATION, LANGUAGE, PW) VALUES(?, ?, ?, ?, ?)";
-			
+
 			ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, room.getTitle());
 			ps.setString(2, room.getMasterID());
 			ps.setInt(3, room.getPopulation());
 			ps.setString(4, room.getLanguage());
 			ps.setString(5, room.getPassword());
-			roomList.add(new RoomVO(room.getTitle(), room.getMasterID(), room.getPopulation(), room.getLanguage(), room.getPassword()));
+			roomList.add(new RoomVO(room.getTitle(), room.getMasterID(), room.getPopulation(), room.getLanguage(),
+					room.getPassword()));
 
 			result = ps.executeUpdate();
-			System.out.println("방 생성 쿼리 수행 결과(1: 수행됨, 0: 실패): "+ result);
+			System.out.println("방 생성 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			JDialog dialog = new JDialog();
 			JPanel errorPanel = new JPanel();
@@ -277,25 +262,26 @@ public class DbDao {
 		}
 		return result;
 	}
+
 	public int deleteRoom(RoomVO room) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			
+
 			String sql = "DELETE FROM ROOM WHERE ID=?";
-			
+
 			ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, room.getMasterID());
-			
-			for(RoomVO l : roomList) {
-				if(l.getMasterID().equals(room.getMasterID())) {
+
+			for (RoomVO l : roomList) {
+				if (l.getMasterID().equals(room.getMasterID())) {
 					roomList.remove(l);
 				}
 			}
-			
+
 			result = ps.executeUpdate();
-			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 0: 실패): "+ result);
+			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			JDialog dialog = new JDialog();
 			JPanel errorPanel = new JPanel();
@@ -327,38 +313,40 @@ public class DbDao {
 		}
 		return result;
 	}
+
 	public int updateRoom() {
 		System.out.println("Unbuilt");
 		return 0;
 	}
-// End of ROOM
+	// End of ROOM
 
-// Start JOIN
+	// Start JOIN
 	// ROOM DAO CONSTRUCTOR
 	public DbDao(String id, String masterID) {
-			try {
-				Class.forName(DB_DRIVER);
-				insertJoinedMember(id, masterID);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			Class.forName(DB_DRIVER);
+			insertJoinedMember(id, masterID);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
 	// INSERT ROOM
 	public int insertJoinedMember(String id, String masterID) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			
+
 			String sql = "INSERT INTO JOIN(ID, MASTERID) VALUES(?, ?)";
-			
+
 			ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, id);
 			ps.setString(2, masterID);
 
 			result = ps.executeUpdate();
-			System.out.println("방 생성 쿼리 수행 결과(1: 수행됨, 0: 실패): "+ result);
+			System.out.println("방 생성 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -367,19 +355,20 @@ public class DbDao {
 		}
 		return result;
 	}
+
 	public int deleteJoinedMember(String id) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			
+
 			String sql = "DELETE FROM JOIN WHERE ID=?";
-			
+
 			ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, id);
-			
+
 			result = ps.executeUpdate();
-			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 0: 실패): "+ result);
+			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -388,9 +377,9 @@ public class DbDao {
 		}
 		return result;
 	}
-// END JOIN
+	// END JOIN
 
-// Start BLACKLIST
+	// Start BLACKLIST
 	public int blockUser(String id, String idToBlock) {
 		int result = 0;
 		try {
@@ -412,8 +401,8 @@ public class DbDao {
 		}
 		return result;
 	}
-// END of BLACKLIST
-	
+	// END of BLACKLIST
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	private void Interrupt() {

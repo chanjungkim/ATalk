@@ -96,15 +96,13 @@ public class RoomList extends JFrame {
 						addBtn.addActionListener(new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								String name = nameText.getText();
-								
+
 								String idToBlock = nameText.getText();
 								
 								user.blockUser(id, idToBlock);
 								
 								nameList.add(idToBlock);
 								
-								nameList.add(name);
 								nameText.setText(""); // 텍스트 필드내용 지우기
 								nameText.requestFocus(); // 텍스트 필드에 포커스 주기
 							}

@@ -45,6 +45,7 @@ public class ProfileChange extends JFrame {
 		emailtextField.setBounds(80, 160, 300, 30);
 		addBtn.setBounds(105, 220, 80, 30);
 		closeBtn.setBounds(205, 220, 80, 30);
+		
 		profilePanel.add(introduceLb);
 		profilePanel.add(introduceTextArea);
 		profilePanel.add(githubLb);
