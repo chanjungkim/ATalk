@@ -28,7 +28,7 @@ public class DbDao {
 	ArrayList<UserVO> userList = new ArrayList<>();
 	ArrayList<RoomVO> roomList = new ArrayList<>();
 
-// START MEMBER
+	// START MEMBER
 	// MEMBER DAO CONSTRUCTOR
 	public DbDao() {
 		try {
@@ -67,7 +67,6 @@ public class DbDao {
 			closeConnection();
 		}
 	}
-
 
 	//////////////////////////////////////////////////////////////////////
 	// 회원가입 삽입
@@ -126,7 +125,6 @@ public class DbDao {
 		return result;
 	}
 
-
 	//////////////////////////////////////////////////////////
 	// 현재 로그인 접속 방식
 	// UPDATE MEMBER
@@ -135,11 +133,11 @@ public class DbDao {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 			String sql = "UPDATE MEMBER SET INTRODUCTION=?,GITHUB=?,OTHEREMAIL=?";
 			ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, introduce);
 			ps.setString(2, github);
 			ps.setString(3, otherEmail);
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -182,11 +180,10 @@ public class DbDao {
 		}
 		return 0;
 	}
-// End of MEMBER
-
+	// End of MEMBER
 
 	// Start ROOM
-// Start BLACKLIST
+	// Start BLACKLIST
 	// INSERT BLACK_ID
 	public int blockUser(String id, String idToBlock) {
 		int result = 0;
@@ -197,47 +194,92 @@ public class DbDao {
 			ps = con.prepareStatement(sql);
 
 			ps.setString(1, id);
-			ps.setString(2, idToBlock);
+			for (int x = 0; x < userList.size(); x++) {
+				if (userList.get(x).getId().equals(idToBlock)) {
+					ps.setString(2, idToBlock);
+					break;
+				}
+			}
 			result = ps.executeUpdate();
-			
-			
-			System.out.println("블랙 처리 쿼리 수행 결과(1: 수행, 2: 실패): "+ result);
+
+			System.out.println("블랙 처리 쿼리 수행 결과(1: 수행, 2: 실패): " + result);
+		} catch (SQLIntegrityConstraintViolationException e) {
+			JDialog dialog = new JDialog();
+			JPanel errorPanel = new JPanel();
+			JButton check = new JButton("확인");
+			JLabel message = new JLabel("중복된 아이디 입니다.");
+
+			check.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dialog.dispose();
+				}
+			});
+			errorPanel.setLayout(new BorderLayout());
+
+			errorPanel.add(message, "Center");
+			errorPanel.add(check, "South");
+
+			dialog.add(errorPanel);
+
+			dialog.pack();
+			dialog.setTitle("ERROR!!");
+			dialog.setVisible(true);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			JDialog dialog = new JDialog();
+			JPanel errorPanel = new JPanel();
+			JButton check = new JButton("확인");
+			JLabel message = new JLabel("없는 아이디 입니다.");
+
+			check.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dialog.dispose();
+				}
+			});
+			errorPanel.setLayout(new BorderLayout());
+
+			errorPanel.add(message, "Center");
+			errorPanel.add(check, "South");
+
+			dialog.add(errorPanel);
+
+			dialog.pack();
+			dialog.setTitle("ERROR!!");
+			dialog.setVisible(true);
 		} finally {
 			closePstmt();
 			closeConnection();
 		}
 		return result;
 	}
+
 	public int blockUserDelete(String id, String idToBlock) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 			String sql = "DELETE FROM BLACKLIST WHERE BLACK_ID=?";
-			
 
 			ps = con.prepareStatement(sql);
 
 			ps.setString(1, idToBlock);
-	
 
 			result = ps.executeUpdate();
-			
-			System.out.println("블랙 삭제 처리 쿼리 수행 결과(1: 수행, 2: 실패):" +result);
+
+			System.out.println("블랙 삭제 처리 쿼리 수행 결과(1: 수행, 2: 실패):" + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			closePstmt();
 			closeConnection();
-			
+
 		}
 		return result;
 	}
 
-// END of BLACKLIST
+	// END of BLACKLIST
 
-// Start ROOM
+	// Start ROOM
 	// ROOM DAO CONSTRUCTOR
 	public DbDao(int number) {
 		try {
@@ -287,7 +329,7 @@ public class DbDao {
 					room.getPassword()));
 
 			result = ps.executeUpdate();
-			
+
 			// Add master into JOIN when he creates a room
 			insertJoinedMember(room.getMasterID(), room.getMasterID());
 
@@ -335,7 +377,6 @@ public class DbDao {
 			ps = con.prepareStatement(sql);
 
 			ps.setString(1, room.getMasterID());
-
 
 			for (RoomVO l : roomList) {
 				if (l.getMasterID().equals(room.getMasterID())) {
@@ -385,9 +426,9 @@ public class DbDao {
 		System.out.println("Unbuilt");
 		return 0;
 	}
-// End of ROOM
+	// End of ROOM
 
-// Start JOIN
+	// Start JOIN
 	// JOIN DAO CONSTRUCTOR
 	public DbDao(String id, String masterID) {
 		try {
@@ -413,7 +454,7 @@ public class DbDao {
 			ps.setString(2, masterID);
 
 			result = ps.executeUpdate();
-			System.out.println(id+"방 들어감 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
+			System.out.println(id + "방 들어감 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -436,7 +477,7 @@ public class DbDao {
 			ps.setString(1, id);
 
 			result = ps.executeUpdate();
-			System.out.println(id+"방 떠남 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
+			System.out.println(id + "방 떠남 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -445,7 +486,7 @@ public class DbDao {
 		}
 		return result;
 	}
-// END JOIN
+	// END JOIN
 
 	//////////////////////////////////////////////////////////
 	// START 프로필 업데이트
@@ -471,10 +512,10 @@ public class DbDao {
 						user.setPhone(userList.get(x).getPhone());
 					}
 				}
-			
+
 			String sql = "UPDATE MEMBER SET INTRODUCTION=?,GITHUB=?,OTHEREMAIL=?,PW=?,PHONE=? WHERE ID=?";
 			ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, user.getIntroduce());
 			ps.setString(2, user.getGithub());
 			ps.setString(3, user.getOtherEmail());
@@ -484,7 +525,6 @@ public class DbDao {
 
 			int result = ps.executeUpdate();
 			System.out.println("쿼리 수행 결과(1.수행됨): + result");
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -494,7 +534,8 @@ public class DbDao {
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
-// OTHER ----------------------------------------------------------------------------
+	// OTHER
+	// ----------------------------------------------------------------------------
 
 	private void Interrupt() {
 		JDialog dialog = new JDialog();

@@ -40,7 +40,7 @@ public class MyDrawing extends JFrame {
 	public MyDrawing() {
 		super("::MyDrawing::");
 		try {
-			Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), 6666);
+			Socket socket = new Socket(InetAddress.getByName("120.0.0.1"), 6666);
 
 			os = new ObjectOutputStream(socket.getOutputStream());
 			is = new ObjectInputStream(socket.getInputStream());

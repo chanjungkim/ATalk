@@ -99,10 +99,11 @@ public class RoomList extends JFrame {
 
 								String idToBlock = nameText.getText();
 
-								user.blockUser(id, idToBlock);
+								int x = user.blockUser(id, idToBlock);
 
-								nameList.add(idToBlock);
-
+								if (x == 1) {
+									nameList.add(idToBlock);
+								}
 								nameText.setText(""); // 텍스트 필드내용 지우기
 								nameText.requestFocus(); // 텍스트 필드에 포커스 주기
 							}
@@ -120,7 +121,7 @@ public class RoomList extends JFrame {
 								}
 								user.blockUserDelete(id, idToBlock);
 								nameList.remove(idToBlock);
-								
+
 							}
 						});
 
@@ -138,7 +139,7 @@ public class RoomList extends JFrame {
 						blackFm.setVisible(true);
 					}
 				});
-				
+
 				settingDialogue.profileChangeBtn.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
