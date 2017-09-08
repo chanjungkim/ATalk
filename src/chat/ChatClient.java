@@ -26,7 +26,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-import image.MyDrawing;
+import compile.CompileFrame;
+import drawing.MyDrawing;
 
 public class ChatClient extends JFrame {
 	private JPanel panel;
@@ -38,7 +39,8 @@ public class ChatClient extends JFrame {
 	private JPanel chatSetPanel;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
-	private JButton btn123;
+	private JButton compile;
+	private JButton drawing;
 
 	public JButton backBtn = new JButton("<");
 
@@ -126,20 +128,33 @@ public class ChatClient extends JFrame {
 			}
 		});
 
+		compile = new JButton("compile");
+		compile.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				compile.CompileFrame com = new compile.CompileFrame(); 
+			}
+		});
+		drawing = new JButton("drawing");
+		drawing.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				drawing.MyDrawing draw = new drawing.MyDrawing();
+			}
+		});
+		
 		// Network
 		// 이벤트 처리기(서버에게 메세지 보내는 작업) 등록
 		ChattingListener listener = new ChattingListener();
-		/////////////////////////////////////////////////////
-		// �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕�뜝占� �뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�듃�뜝�룞�삕�겕 �뜝�룞�삕�뜝�룞�삕 �뜝�떥釉앹삕
 		// 서버와의 통신을 위한 네트워크 설정 부분
 
 		try {
-			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
+			Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), 5555);
 
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// 서버와 연결한 후에 닉네임 입력해서 전송하기
-//			id = JOptionPane.showInputDialog(this, "대화명 입력하세요.", JOptionPane.INFORMATION_MESSAGE);
 
 			bw.write(id + "\n");
 			bw.flush();
@@ -201,7 +216,9 @@ public class ChatClient extends JFrame {
 		messagesAreaPanel.add(scrollFrame);
 		typeAreaPanel.add(typeField);
 		typeAreaPanel.add(chatSetBtn);
-
+		typeAreaPanel.add(compile);
+		typeAreaPanel.add(drawing);
+		
 		rightPanel.add(messagesAreaPanel, "Center");
 		rightPanel.add(typeAreaPanel, "South");
 

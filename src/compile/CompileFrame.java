@@ -103,7 +103,7 @@ public class CompileFrame extends JFrame{
 		setBackground(Color.DARK_GRAY);
 		setVisible(true);
 		setSize(700, 700);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
 

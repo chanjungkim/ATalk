@@ -28,6 +28,7 @@ public class DbDao {
 	ArrayList<UserVO> userList = new ArrayList<>();
 	ArrayList<RoomVO> roomList = new ArrayList<>();
 
+// START MEMBER
 	// MEMBER DAO CONSTRUCTOR
 	public DbDao() {
 		try {
@@ -67,8 +68,12 @@ public class DbDao {
 		}
 	}
 
+<<<<<<< HEAD
 	//////////////////////////////////////////////////////////////////////
 	// 회원가입 삽입
+=======
+	// INSERT MEMBER
+>>>>>>> 7ce5ae3e4fac8696771b6427138a2d259d9e057e
 	public int insertUserInfo(UserVO user) {
 		int result = 0;
 		try {
@@ -122,9 +127,30 @@ public class DbDao {
 		return result;
 	}
 
+<<<<<<< HEAD
 	//////////////////////////////////////////////////////////
 
 	// 현재 로그인 접속 방식
+=======
+	// UPDATE MEMBER
+	public int updateProfile(String introduce, String github, String otherEmail) {
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+			String sql = "UPDATE MEMBER SET INTRODUCTION=?,GITHUB=?,OTHEREMAIL=?";
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1, introduce);
+			ps.setString(2, github);
+			ps.setString(3, otherEmail);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	// USER CHECK
+>>>>>>> 7ce5ae3e4fac8696771b6427138a2d259d9e057e
 	public int userCheck(String id, String pw) {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -160,8 +186,64 @@ public class DbDao {
 		}
 		return 0;
 	}
+// End of MEMBER
 
+<<<<<<< HEAD
 	// Start ROOM
+=======
+// Start BLACKLIST
+	// INSERT BLACK_ID
+	public int blockUser(String id, String idToBlock) {
+		int result = 0;
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+			String sql = "INSERT INTO BLACKLIST(ID,BLACK_ID) VALUES(?,?)";
+
+			ps = con.prepareStatement(sql);
+
+			ps.setString(1, id);
+			ps.setString(2, idToBlock);
+			result = ps.executeUpdate();
+			
+			
+			System.out.println("블랙 처리 쿼리 수행 결과(1: 수행, 2: 실패): "+ result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closePstmt();
+			closeConnection();
+		}
+		return result;
+	}
+	public int blockUserDelete(String id, String idToBlock) {
+		int result = 0;
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+			String sql = "DELETE FROM BLACKLIST WHERE BLACK_ID=?";
+			
+
+			ps = con.prepareStatement(sql);
+
+			ps.setString(1, idToBlock);
+	
+
+			result = ps.executeUpdate();
+			
+			System.out.println("블랙 삭제 처리 쿼리 수행 결과(1: 수행, 2: 실패):" +result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closePstmt();
+			closeConnection();
+			
+		}
+		return result;
+	}
+
+// END of BLACKLIST
+
+// Start ROOM
+>>>>>>> 7ce5ae3e4fac8696771b6427138a2d259d9e057e
 	// ROOM DAO CONSTRUCTOR
 	public DbDao(int number) {
 		try {
@@ -198,7 +280,7 @@ public class DbDao {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "INSERT INTO ROOM(TITLE, MASTERID, POPULATION, LANGUAGE, PW) VALUES(?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO ROOM(TITLE, MASTER_ID, POPULATION, LANGUAGE, PW) VALUES(?, ?, ?, ?, ?)";
 
 			ps = con.prepareStatement(sql);
 
@@ -211,6 +293,10 @@ public class DbDao {
 					room.getPassword()));
 
 			result = ps.executeUpdate();
+			
+			// Add master into JOIN when he creates a room
+			insertJoinedMember(room.getMasterID(), room.getMasterID());
+
 			System.out.println("방 생성 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			JDialog dialog = new JDialog();
@@ -244,6 +330,7 @@ public class DbDao {
 		return result;
 	}
 
+	// DELETE ROOM
 	public int deleteRoom(RoomVO room) {
 		int result = 0;
 		try {
@@ -255,6 +342,7 @@ public class DbDao {
 
 			ps.setString(1, room.getMasterID());
 
+
 			for (RoomVO l : roomList) {
 				if (l.getMasterID().equals(room.getMasterID())) {
 					roomList.remove(l);
@@ -262,6 +350,10 @@ public class DbDao {
 			}
 
 			result = ps.executeUpdate();
+
+			// Delete master from JOIN when he leaves a room
+			deleteJoinedMember(room.getMasterID());
+
 			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			JDialog dialog = new JDialog();
@@ -299,10 +391,10 @@ public class DbDao {
 		System.out.println("Unbuilt");
 		return 0;
 	}
-	// End of ROOM
+// End of ROOM
 
-	// Start JOIN
-	// ROOM DAO CONSTRUCTOR
+// Start JOIN
+	// JOIN DAO CONSTRUCTOR
 	public DbDao(String id, String masterID) {
 		try {
 			Class.forName(DB_DRIVER);
@@ -313,13 +405,13 @@ public class DbDao {
 		}
 	}
 
-	// INSERT ROOM
+	// INSERT JOIN
 	public int insertJoinedMember(String id, String masterID) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "INSERT INTO JOIN(ID, MASTERID) VALUES(?, ?)";
+			String sql = "INSERT INTO JOIN(ID, MASTER_ID) VALUES(?, ?)";
 
 			ps = con.prepareStatement(sql);
 
@@ -327,7 +419,7 @@ public class DbDao {
 			ps.setString(2, masterID);
 
 			result = ps.executeUpdate();
-			System.out.println("방 생성 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
+			System.out.println(id+"방 들어감 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -337,6 +429,7 @@ public class DbDao {
 		return result;
 	}
 
+	// DELETE JOIN
 	public int deleteJoinedMember(String id) {
 		int result = 0;
 		try {
@@ -349,7 +442,7 @@ public class DbDao {
 			ps.setString(1, id);
 
 			result = ps.executeUpdate();
-			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
+			System.out.println(id+"방 떠남 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -358,34 +451,9 @@ public class DbDao {
 		}
 		return result;
 	}
-	// END JOIN
+// END JOIN
 
-	// Start BLACKLIST
-	public int blockUser(String id, String idToBlock) {
-		int result = 0;
-		try {
-			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			String sql = "INSERT INTO BLACKLIST(ID,BLACKID) VALUES(?,?)";
-
-			ps = con.prepareStatement(sql);
-
-			ps.setString(1, id);
-			ps.setString(2, idToBlock);
-
-			result = ps.executeUpdate();
-			System.out.println("블랙 처리 쿼리 수행 결과(1: 수행, 2: 실패): + result");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closePstmt();
-			closeConnection();
-		}
-		return result;
-	}
-	// END of BLACKLIST
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
+<<<<<<< HEAD
 	//////////////////////////////////////////////////////////
 	// START 프로필 업데이트
 	public void updateProfile(UserVO user) {
@@ -433,6 +501,9 @@ public class DbDao {
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
+=======
+// OTHER ----------------------------------------------------------------------------
+>>>>>>> 7ce5ae3e4fac8696771b6427138a2d259d9e057e
 	private void Interrupt() {
 		JDialog dialog = new JDialog();
 		JPanel errorPanel = new JPanel();

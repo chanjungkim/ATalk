@@ -1,4 +1,4 @@
-package image;
+package drawing;
 
 import java.awt.Color;
 import java.io.Serializable;

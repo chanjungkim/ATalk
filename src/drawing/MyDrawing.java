@@ -1,4 +1,4 @@
-package image;
+package drawing;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -40,7 +40,7 @@ public class MyDrawing extends JFrame {
 	public MyDrawing() {
 		super("::MyDrawing::");
 		try {
-			Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), 5555);
+			Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), 6666);
 
 			os = new ObjectOutputStream(socket.getOutputStream());
 			is = new ObjectInputStream(socket.getInputStream());
@@ -82,7 +82,7 @@ public class MyDrawing extends JFrame {
 
 			setSize(500, 500);
 			setVisible(true);
-			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
