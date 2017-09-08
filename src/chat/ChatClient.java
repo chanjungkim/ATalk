@@ -24,10 +24,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
-
-import compile.CompileFrame;
-import drawing.MyDrawing;
 
 public class ChatClient extends JFrame {
 	private JPanel panel;
@@ -44,7 +40,7 @@ public class ChatClient extends JFrame {
 
 	public JButton backBtn = new JButton("<");
 
-	private JTextPane messageField = new JTextPane();
+	private AutoTextToImagePanel messageField = new AutoTextToImagePanel();
 	private JScrollPane scrollFrame;
 
 	private JTextField typeField = new JTextField("Type");
@@ -150,7 +146,7 @@ public class ChatClient extends JFrame {
 		// 서버와의 통신을 위한 네트워크 설정 부분
 
 		try {
-			Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), 5555);
+			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
 
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -328,7 +324,7 @@ public class ChatClient extends JFrame {
 							messageField.setText(messageField.getText() + text + "\n");
 						}
 					} else {
-						messageField.setText(messageField.getText() + receiveMsg + "\n");
+							messageField.setText(messageField.getText() + receiveMsg + "\n");
 					}
 					messageField.setCaretPosition(messageField.getText().length());
 				}
@@ -340,7 +336,6 @@ public class ChatClient extends JFrame {
 			}
 		}
 	}
-
 //	public static void main(String[] args) {
 //		new ChatClient("김찬중", "방장");
 //	}
