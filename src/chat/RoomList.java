@@ -268,7 +268,7 @@ public class RoomList extends JFrame {
 								roomPanel.get(i).roomBtn.addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent arg0) {
-										ChatClient chat = new ChatClient(id, masterID);
+										ChatRoom chat = new ChatRoom(id, masterID);
 										setVisible(false);
 										chat.backBtn.addActionListener(new ActionListener() {
 											@Override
@@ -286,7 +286,7 @@ public class RoomList extends JFrame {
 
 							validate();
 
-							ChatClient chatRoom = new ChatClient(id, masterID);
+							ChatRoom chatRoom = new ChatRoom(id, masterID);
 							createRoomDialogue.hide();
 							dispose();
 						}

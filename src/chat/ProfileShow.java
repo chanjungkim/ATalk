@@ -80,7 +80,9 @@ public class ProfileShow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (url.contains("http://")) {
 					openWebpage(url);
-				} 
+				} else {
+					openWebpage("http://"+url);
+				}
 			}
 		});
 
