@@ -1,8 +1,12 @@
 package chat;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,7 +14,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class ProfileShow extends JFrame {
@@ -39,21 +42,22 @@ public class ProfileShow extends JFrame {
 				ProfileDialog.dispose();
 			}
 		});
-		
+
 		UserVO memberInfo = new UserVO();
 		memberInfo = dao.selectProfile(id);
-		
+
 		introduceTextArea.setLineWrap(true);
 		introduceTextArea.setColumns(20);
 		introduceTextArea.setRows(20);
-		
+
 		nameLb.setText(memberInfo.getName());
 		birthLb.setText(memberInfo.getBirth());
 		emailLb.setText(memberInfo.geteMail());
 		phoneLb.setText(memberInfo.getPhone());
 		introduceTextArea.setText(memberInfo.getIntroduce());
 		otherEmailLb.setText(memberInfo.getOtherEmail());
-		
+		String url = memberInfo.getGithub();
+
 		introduceTextArea.setEditable(false);
 
 		profilePanel.setLayout(null);
@@ -71,7 +75,15 @@ public class ProfileShow extends JFrame {
 		introduceTextArea.setBounds(65, 136, 320, 90);
 		githubBtn.setBounds(300, 10, 80, 80);
 		closeBtn.setBounds(155, 233, 80, 40);
-		
+
+		githubBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (url.contains("http://")) {
+					openWebpage(url);
+				} 
+			}
+		});
+
 		profilePanel.add(nameTLb);
 		profilePanel.add(nameLb);
 		profilePanel.add(birthTLb);
@@ -88,12 +100,20 @@ public class ProfileShow extends JFrame {
 		profilePanel.add(closeBtn);
 		profilePanel.setBackground(Color.yellow);
 		ProfileDialog.add(profilePanel);
-		
+
 		ProfileDialog.setUndecorated(true);
 		ProfileDialog.setLocation(400, 300);
 		ProfileDialog.setTitle("Profile");
 		ProfileDialog.setSize(400, 280);
 		ProfileDialog.setVisible(true);
+	}
+
+	public static void openWebpage(String urlString) {
+		try {
+			Desktop.getDesktop().browse(new URL(urlString).toURI());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
