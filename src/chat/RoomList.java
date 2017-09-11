@@ -33,8 +33,9 @@ public class RoomList extends JFrame {
 	private JButton roomListBtn;
 	private JButton settingBtn;
 
-	private ArrayList<RoomPanel> room = new ArrayList<>();
-
+	private ArrayList<RoomPanel> roomPanel = new ArrayList<>();
+	private ArrayList<RoomVO> rooms = new ArrayList<>();
+	
 	private JLabel master = new JLabel("방장:");
 	private JLabel count = new JLabel("인원:");
 
@@ -61,6 +62,26 @@ public class RoomList extends JFrame {
 		// EtchedBorder eborder;
 		// eborder = new EtchedBorder(EtchedBorder.LOWERED);
 
+		// Load Rooms from ROOM TABLE
+
+		rooms = user.getRoomList();
+		
+		for(int i = 0 ; i < rooms.size() ; i++) {
+			String title = rooms.get(i).title;
+			String masterID = rooms.get(i).masterID;
+			int population = rooms.get(i).population;
+			String lang = rooms.get(i).language;
+			String pw = rooms.get(i).password;
+			
+			roomPanel.add(new RoomPanel(title, masterID, population, lang, pw));
+			
+			System.out.println(title+" "+masterID+" "+population+" "+lang+" "+pw);
+		}
+		for (int j = 0; j < roomPanel.size(); j++) {
+			listPanel.add(roomPanel.get(j));
+		}
+
+		// End of loading Rooms
 		// Setting Dialogue
 		settingBtn.addActionListener(new ActionListener() {
 			@Override
@@ -239,12 +260,12 @@ public class RoomList extends JFrame {
 							RoomVO roomVo = new RoomVO(title, masterID, population, lang, pw);
 							roomDao.insertRoomInfo(roomVo);
 
-							room.add(new RoomPanel(title, masterID, population, lang, pw));
-							for (int i = 0; i < room.size(); i++) {
-								listPanel.add(room.get(i));
-								System.out.println(room.size());
+							roomPanel.add(new RoomPanel(title, masterID, population, lang, pw));
+							for (int i = 0; i < roomPanel.size(); i++) {
+								listPanel.add(roomPanel.get(i));
+								System.out.println(roomPanel.size());
 
-								room.get(i).roomBtn.addActionListener(new ActionListener() {
+								roomPanel.get(i).roomBtn.addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent arg0) {
 										ChatClient chat = new ChatClient(id, masterID);

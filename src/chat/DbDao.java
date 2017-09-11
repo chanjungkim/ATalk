@@ -339,6 +339,37 @@ public class DbDao {
 		}
 	}
 
+	// getRoom
+	public ArrayList<RoomVO> getRoomList() {
+		try {
+			Class.forName(DB_DRIVER);
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+
+			String sql = "SELECT * FROM ROOM";
+
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			roomList.clear();
+			
+			while (rs.next()) {
+				roomList.add(new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5)));
+			}
+			for (RoomVO l : roomList) {
+				System.out.println(l);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			closeRS();
+			closePstmt();
+			closeConnection();
+		}
+		return roomList;
+	}
+	//End of getRoom
 	// INSERT ROOM
 	public int insertRoomInfo(RoomVO room) {
 		int result = 0;
