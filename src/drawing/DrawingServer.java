@@ -1,22 +1,23 @@
 package drawing;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class drawingServer extends Thread {
+public class DrawingServer extends Thread {
 	private ServerSocket serverSocket;
 	private List<ChattingThread> threadList;
 
-	public drawingServer() {
+
+	public static void main(String[] args) {
+		DrawingServer server = new DrawingServer();
+	}
+	
+	public DrawingServer() {
 		threadList = new ArrayList<>();
 	}
 
@@ -96,7 +97,4 @@ public class drawingServer extends Thread {
 		// }
 	}
 
-	public static void main(String[] args) {
-		drawingServer server = new drawingServer();
-	}
 }

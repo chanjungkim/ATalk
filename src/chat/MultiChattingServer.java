@@ -17,13 +17,13 @@ public class MultiChattingServer extends JFrame{
     private ServerSocket serverSocket;
     private List<ChattingThread> threadList;
     private JPanel panel = new JPanel();
-    private JLabel lb = new JLabel("���� ������...");
+    private JLabel lb = new JLabel("占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙...");
   
     public MultiChattingServer() {
         threadList = new ArrayList<>();
         try {
             serverSocket = new ServerSocket(5555);
-            drawing.drawingServer serv = new drawing.drawingServer();
+            drawing.DrawingServer serv = new drawing.DrawingServer();
             serv.start();
             while (true) {
                 System.out.println("...");
@@ -40,7 +40,7 @@ public class MultiChattingServer extends JFrame{
         }
         panel.add(lb);
         add(panel);
-        setTitle("����");
+        setTitle("占쏙옙占쏙옙");
         setSize(200,100);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -74,16 +74,16 @@ public class MultiChattingServer extends JFrame{
         public void run() {
             try {
                 nickname = br.readLine();
-                broadcast(nickname+"���� �����ϼ̽��ϴ�.");
+                broadcast(nickname+"占쏙옙占쏙옙 占쏙옙占쏙옙占싹셨쏙옙占싹댐옙.");
  
                 while (true) {
                     String msg = br.readLine();
                     broadcast(nickname + ": " + msg);
                 }
             } catch (IOException e) {
-                // ��� Ŭ���̾�Ʈ�� �������� ��
+                // 占쏙옙占� 클占쏙옙占싱억옙트占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙
                 removeThread(this);
-                broadcast("[" + nickname + "]���� �����Ͽ����ϴ�.");
+                broadcast("[" + nickname + "]占쏙옙占쏙옙 占쏙옙占쏙옙占싹울옙占쏙옙占싹댐옙.");
 //              e.printStackTrace();
             }
         }
