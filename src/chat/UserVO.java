@@ -26,6 +26,7 @@ public class UserVO {
 		this.phone = phone;
 	}
 
+
 	public String getId() {
 		return id;
 	}

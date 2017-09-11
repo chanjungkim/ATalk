@@ -129,7 +129,7 @@ public class RoomList extends JFrame {
 							String x = u.getBlackId();
 							nameList.add(x);
 						}
-
+						
 						bottomPn.add(nameLb);
 						bottomPn.add(nameText);
 						bottomPn.add(addBtn);

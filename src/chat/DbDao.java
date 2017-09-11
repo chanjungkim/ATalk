@@ -254,7 +254,7 @@ public class DbDao {
 		}
 		return result;
 	}
-
+	//블랙리스트 삭제
 	public int blockUserDelete(String id, String idToBlock) {
 		int result = 0;
 		try {
@@ -277,7 +277,8 @@ public class DbDao {
 		}
 		return result;
 	}
-
+	
+	//블랙리스트 검색
 	public List blockUserSelect(String id) {
 		ArrayList<UserVO> blackList = new ArrayList<>();
 		
@@ -305,8 +306,6 @@ public class DbDao {
 		}
 		return blackList;
 	}
-
-
 	// END of BLACKLIST
 
 	// Start ROOM
@@ -562,6 +561,40 @@ public class DbDao {
 			closeConnection();
 		}
 	}
+	
+	//프로필 검색 후 화면에 출력
+	public UserVO selectProfile(String id) {
+		UserVO lv = new UserVO();
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+			
+			String sql = "SELECT NAME,BIRTHDATE,EMAIL,PHONE,INTRODUCTION,GITHUB,OTHEREMAIL FROM MEMBER "
+					+ "WHERE ID = ?";
+			
+			ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				lv.setName(rs.getString(1));
+				lv.setBirth(rs.getString(2));
+				lv.seteMail(rs.getString(3));
+				lv.setPhone(rs.getString(4));
+				lv.setIntroduce(rs.getString(5));
+				lv.setGithub(rs.getString(6));
+				lv.setOtherEmail(rs.getString(7));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeRS();
+			closePstmt();
+			closeConnection();
+		}
+		return lv;
+	}
+	
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// OTHER
