@@ -66,6 +66,7 @@ public class RoomList extends JFrame {
 
 		rooms = user.getRoomList();
 		
+		// make roomPanels and add into roomPanel ArrayList.
 		for(int i = 0 ; i < rooms.size() ; i++) {
 			String title = rooms.get(i).title;
 			String masterID = rooms.get(i).masterID;
@@ -77,8 +78,27 @@ public class RoomList extends JFrame {
 			
 			System.out.println(title+" "+masterID+" "+population+" "+lang+" "+pw);
 		}
+		
+		// Add rooms into listPanel & Clickable(functionally) Rooms
 		for (int j = 0; j < roomPanel.size(); j++) {
+			int k = j;
 			listPanel.add(roomPanel.get(j));
+			
+			roomPanel.get(j).roomBtn.addActionListener(new ActionListener() {
+				ChatRoom chat;
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					setVisible(false);
+					chat = new ChatRoom(id, rooms.get(k).getMasterID());
+					chat.backBtn.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							chat.hide();
+						}
+					});
+				}
+			});// End of Function
 		}
 
 		// End of loading Rooms

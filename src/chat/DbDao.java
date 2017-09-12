@@ -441,6 +441,8 @@ public class DbDao {
 			for (RoomVO l : roomList) {
 				if (l.getMasterID().equals(room.getMasterID())) {
 					roomList.remove(l);
+				}else {
+					// Just leave the room.
 				}
 			}
 
