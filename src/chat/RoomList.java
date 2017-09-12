@@ -53,8 +53,8 @@ public class RoomList extends JFrame {
 		createRoomBtn = new JButton(new ImageIcon("balloon.PNG")); // 방생성
 		roomListBtn = new JButton(new ImageIcon("menu.png"));
 		settingBtn = new JButton(new ImageIcon("setting.PNG")); // 세팅
-
-		listPanel.setAutoscrolls(true);
+		
+		listPanel.setAutoscrolls(true);				
 		listPanel.setLayout(new FlowLayout());
 		panel.setLayout(new BorderLayout());
 		DbDao user = new DbDao();
@@ -259,7 +259,7 @@ public class RoomList extends JFrame {
 							dialog.setTitle("ERROR!!");
 							dialog.setVisible(true);
 							// Dialog
-						} else {
+						} else { // All field is filled.
 							DbDao roomDao = new DbDao(1);
 
 							String title = createRoomDialogue.getTitleField();
@@ -267,39 +267,15 @@ public class RoomList extends JFrame {
 							int population = createRoomDialogue.getPopulation();
 							String lang = createRoomDialogue.getLanguage();
 							String pw = createRoomDialogue.getPasswordField();
-
+							
+							roomDao.insertJoinedMember(id, masterID); //조인테이블에 값 저장 방 생성자 및 참가자
 							RoomVO roomVo = new RoomVO(title, masterID, population, lang, pw);
 							roomDao.insertRoomInfo(roomVo);
 
-							roomPanel.add(new RoomPanel(title, masterID, population, lang, pw));
-							for (int i = 0; i < roomPanel.size(); i++) {
-								listPanel.add(roomPanel.get(i));
-								System.out.println(roomPanel.size());
-
-								roomPanel.get(i).roomBtn.addActionListener(new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent arg0) {
-										ChatRoom chat = new ChatRoom(id, masterID);
-										setVisible(false);
-										chat.backBtn.addActionListener(new ActionListener() {
-											@Override
-											public void actionPerformed(ActionEvent e) {
-												roomDao.deleteRoom(roomVo);
-											}
-										});
-									}
-								});// End of Function
-							}
-
-							// panel.add(listPanel);
-							// add(panel);
-							// Fucntion
-
-							validate();
-
-							ChatRoom chatRoom = new ChatRoom(id, masterID);
 							createRoomDialogue.hide();
 							dispose();
+							ChatRoom chatRoom = new ChatRoom(id, masterID);
+
 						}
 					}
 				});

@@ -44,9 +44,6 @@ public class ChatRoom extends JFrame {
 	private JScrollPane scrollFrame;
 
 	private JTextField typeField = new JTextField("Type");
-
-	private JButton user1;
-	private JButton user2 = new JButton("USER-1");
 	private JButton mic = new JButton("MIC");
 
 	private BufferedReader br;
@@ -54,10 +51,10 @@ public class ChatRoom extends JFrame {
 
 	private String id;
 	private String masterID;
-	
+
 	public ChatRoom(String id, String masterID) {
 		this.id = id;
-		user1 = new JButton(id);
+		
 		panel = new JPanel();
 		userListPanel = new JPanel();
 		messagesAreaPanel = new JPanel();
@@ -84,12 +81,12 @@ public class ChatRoom extends JFrame {
 
 			}
 		});
-		
+
 		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				DbDao joinDao = new DbDao(id, masterID);
+				DbDao joinDao = new DbDao();
 				joinDao.deleteJoinedMember(masterID);
 				RoomList roomList = new RoomList(id);
 			}
@@ -97,10 +94,10 @@ public class ChatRoom extends JFrame {
 
 		compile = new JButton("compile");
 		compile.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				compile.CompileFrame com = new compile.CompileFrame(); 
+				compile.CompileFrame com = new compile.CompileFrame();
 			}
 		});
 		drawing = new JButton("drawing");
@@ -110,21 +107,21 @@ public class ChatRoom extends JFrame {
 				drawing.MyDrawing draw = new drawing.MyDrawing();
 			}
 		});
-		
+
 		// Network
-		// 
+		//
 		ChattingListener listener = new ChattingListener();
-		// 
+		//
 		try {
 			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
 
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			// 
+			//
 			bw.write(id + "\n");
 			bw.flush();
 
-			// 
+			//
 			new ListenThread().start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -133,8 +130,6 @@ public class ChatRoom extends JFrame {
 		}
 
 		typeField.addActionListener(listener);
-
-		
 
 		mic.addActionListener(new ActionListener() {
 			int i = 0;
@@ -168,8 +163,6 @@ public class ChatRoom extends JFrame {
 
 		// Add
 
-		userListPanel.add(user1);
-		userListPanel.add(user2);
 
 		leftBottomPanel.add(mic);
 
@@ -182,7 +175,7 @@ public class ChatRoom extends JFrame {
 		typeAreaPanel.add(typeField);
 		typeAreaPanel.add(compile);
 		typeAreaPanel.add(drawing);
-		
+
 		rightPanel.add(messagesAreaPanel, "Center");
 		rightPanel.add(typeAreaPanel, "South");
 
@@ -227,18 +220,18 @@ public class ChatRoom extends JFrame {
 					String receiveMsg = br.readLine();
 					StringTokenizer st = new StringTokenizer(receiveMsg);
 					String nickPart;
-					String commandChecker="";
-					if(receiveMsg.isEmpty()) {
-						nickPart = id+": "; // Show id in the messageArea	
-					}else {
-						nickPart= st.nextToken();
-						if(st.hasMoreTokens()) {
+					String commandChecker = "";
+					if (receiveMsg.isEmpty()) {
+						nickPart = id + ": "; // Show id in the messageArea
+					} else {
+						nickPart = st.nextToken();
+						if (st.hasMoreTokens()) {
 							commandChecker = st.nextToken();
 						}
 					}
 					String text = "";
 					System.out.println(commandChecker);
-					if (commandChecker.isEmpty()!=true && commandChecker.charAt(0) == '/') {
+					if (commandChecker.isEmpty() != true && commandChecker.charAt(0) == '/') {
 						switch (commandChecker.substring(1, commandChecker.length())) {
 						case "help":
 							messageField.setText(messageField.getText()
@@ -292,7 +285,7 @@ public class ChatRoom extends JFrame {
 							messageField.setText(messageField.getText() + text + "\n");
 						}
 					} else {
-							messageField.setText(messageField.getText() + receiveMsg + "\n");
+						messageField.setText(messageField.getText() + receiveMsg + "\n");
 					}
 					messageField.setCaretPosition(messageField.getText().length());
 				}
@@ -304,7 +297,7 @@ public class ChatRoom extends JFrame {
 			}
 		}
 	}
-//	public static void main(String[] args) {
-//		new ChatClient("Chan", "eee");
-//	}
+	// public static void main(String[] args) {
+	// new ChatClient("Chan", "eee");
+	// }
 }

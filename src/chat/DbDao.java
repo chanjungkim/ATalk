@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -390,9 +391,6 @@ public class DbDao {
 
 			result = ps.executeUpdate();
 
-			// Add master into JOIN when he creates a room
-			insertJoinedMember(room.getMasterID(), room.getMasterID());
-
 			System.out.println("방 생성 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			JDialog dialog = new JDialog();
@@ -491,19 +489,8 @@ public class DbDao {
 	// End of ROOM
 
 	// Start JOIN
-	// JOIN DAO CONSTRUCTOR
-	public DbDao(String id, String masterID) {
-		try {
-			Class.forName(DB_DRIVER);
-			insertJoinedMember(id, masterID);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	// INSERT JOIN
-	public int insertJoinedMember(String id, String masterID) {
+	public void insertJoinedMember(String id, String masterID) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -523,7 +510,32 @@ public class DbDao {
 			closePstmt();
 			closeConnection();
 		}
-		return result;
+	}
+	
+	// SELECT JOIN	
+	public List selectJoinedMember(String id) {
+		ArrayList<UserVO> joinList = new ArrayList<>();
+		try {
+			con = DriverManager.getConnection(DB_URL,DB_ID,DB_PW);
+			String sql = "SELECT ID FROM JOIN WHERE MASTER_ID = ?";
+			
+			ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				UserVO lv = new UserVO();
+				lv.setId(rs.getString(1));
+				joinList.add(lv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeRS();
+			closePstmt();
+			closeConnection();
+		}
+		return joinList;
 	}
 
 	// DELETE JOIN
