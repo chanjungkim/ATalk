@@ -13,13 +13,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
  
-public class MultiChattingServer extends JFrame{
+public class ChatServer extends JFrame{
     private ServerSocket serverSocket;
     private List<ChattingThread> threadList;
     private JPanel panel = new JPanel();
-    private JLabel lb = new JLabel("占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙...");
+    private JLabel lb = new JLabel("Waiting for clients...");
   
-    public MultiChattingServer() {
+    public ChatServer() {
         threadList = new ArrayList<>();
         try {
             serverSocket = new ServerSocket(5555);
@@ -40,7 +40,7 @@ public class MultiChattingServer extends JFrame{
         }
         panel.add(lb);
         add(panel);
-        setTitle("占쏙옙占쏙옙");
+        setTitle("ATalk Server");
         setSize(200,100);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -74,16 +74,15 @@ public class MultiChattingServer extends JFrame{
         public void run() {
             try {
                 nickname = br.readLine();
-                broadcast(nickname+"占쏙옙占쏙옙 占쏙옙占쏙옙占싹셨쏙옙占싹댐옙.");
+                broadcast(nickname+" entered the room.");
  
                 while (true) {
                     String msg = br.readLine();
                     broadcast(nickname + ": " + msg);
                 }
             } catch (IOException e) {
-                // 占쏙옙占� 클占쏙옙占싱억옙트占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙
                 removeThread(this);
-                broadcast("[" + nickname + "]占쏙옙占쏙옙 占쏙옙占쏙옙占싹울옙占쏙옙占싹댐옙.");
+                broadcast("" + nickname + "left the room.");
 //              e.printStackTrace();
             }
         }
@@ -99,6 +98,6 @@ public class MultiChattingServer extends JFrame{
     }
      
     public static void main(String[] args) {
-        MultiChattingServer server = new MultiChattingServer();
+        ChatServer server = new ChatServer();
     }
 }

@@ -26,7 +26,7 @@ public class DrawingServer extends Thread {
 		try {
 			serverSocket = new ServerSocket(6666);
 			while (true) {
-				System.out.println(".....");
+				System.out.println("Drawing Server started running.");
 				Socket socket = serverSocket.accept();
 				System.out.println("connected :" + socket.getInetAddress());
 
@@ -79,22 +79,10 @@ public class DrawingServer extends Thread {
 				}
 			} catch (IOException e) {
 				removeThread(this);
-				// broadcast("[" + nickname + "]���� �����Ͽ����ϴ�.");
-				// e.printStackTrace();
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
-
-		// // ���� �����尡 ����ϴ� Ŭ���̾�Ʈ���� �޼��� ������
-		// public void speak( recInfo) {
-		// try {
-		// bw.write(arr);
-		// bw.flush();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// }
 	}
-
 }

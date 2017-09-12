@@ -64,19 +64,34 @@ public class CompileFrame extends JFrame{
 				
 			}
 		});
-		scroll1.setBounds(50, 50, 550, 450);
+		scroll1.setBounds(5, 5, 550, 450);
+		textPanel.setBounds(5, 5, 550, 600);
+		scroll2.setBounds(5, 455, 550, 100);
+		outputArea.setBounds(5, 455, 550, 100);
 		codeArea.setRows(10);
 		codeArea.setColumns(10);
-		codeArea.setBackground(Color.DARK_GRAY);
-		codeArea.setForeground(Color.white);
+		codeArea.setTabSize(2);
 		
-		scroll2.setBounds(50, 500, 550, 100);
-		inputArea.setBackground(Color.YELLOW);
-		outputArea.setBounds(50, 500, 550, 100);
+		codeArea.setBackground(Color.BLACK);
+		codeArea.setForeground(Color.cyan);
+		codeArea.setSelectedTextColor(Color.black);
+		codeArea.setDisabledTextColor(Color.gray);
+		codeArea.setSelectionColor(Color.green);
+		codeArea.setCaretColor(Color.white);
+		codeArea.setLineWrap(true);
 		
+		textPanel.setBackground(Color.BLACK);
+		
+		btnPanel.setBackground(Color.DARK_GRAY);
+		
+		inputArea.setCaretColor(Color.WHITE);
+		inputArea.setForeground(Color.WHITE);
+		inputArea.setBackground(Color.BLACK);
+				
+		setBackground(Color.white);
 		
 		textPanel.setLayout(null);
-		textPanel.setBounds(0, 0, 600, 600);
+
 		textPanel.add(scroll1);
 		textPanel.add(scroll2);
 		
@@ -86,23 +101,21 @@ public class CompileFrame extends JFrame{
 		"import java.util.*;\n"+
 		"import java.lang.*;\n"+
 		"import java.io.*;\n" +
-		"import java.util.Scanner;\n" +
-		"class Code{\n" +
+		"\n" +
+		"public class Code{\n" +
 		"	public static void main (String[] args){\n"+
-		"		// your code goes here\n"+
+		"		// TODO: your code goes here. \n"+
 		"	}\n"+
 		"}";
 		
 		codeArea.setText(t);
-		textPanel.setBackground(Color.DARK_GRAY);
-		btnPanel.setBackground(Color.DARK_GRAY);
-		
+
 		add(textPanel);
 		add(btnPanel,new BorderLayout().PAGE_END);
-		
-		setBackground(Color.DARK_GRAY);
+
 		setVisible(true);
-		setSize(700, 700);
+		setResizable(false);
+		setSize(565, 625);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
