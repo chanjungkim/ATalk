@@ -180,15 +180,6 @@ public class RoomList extends JFrame {
 
 					}
 				});
-
-				settingDialogue.colorBtn.addActionListener(new ActionListener() { // 색상 변경 버튼
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-
 			}
 		});
 		// End of Setting Dialogue
@@ -462,11 +453,8 @@ public class RoomList extends JFrame {
 	class SettingDialogue extends JFrame {
 		private JDialog set;
 		private JPanel alarmPn;
-		private JPanel backgroundPn;
 		private JLabel alarmLb;
-		private JLabel backgroundLb;
 		private JButton alarmBtn;
-		private JButton colorBtn;
 		private JButton blackBtn;
 		private JButton profileChangeBtn;
 		private JButton logoutBtn;
@@ -474,26 +462,19 @@ public class RoomList extends JFrame {
 		public SettingDialogue() {
 			set = new JDialog(this, "설정");
 			alarmPn = new JPanel();
-			backgroundPn = new JPanel();
 			alarmLb = new JLabel("알람");
-			backgroundLb = new JLabel("배경 색");
 			alarmBtn = new JButton("켜기");
-			colorBtn = new JButton("색깔");
 			blackBtn = new JButton("블랙리스트");
 			profileChangeBtn = new JButton("회원정보 수정");
 			logoutBtn = new JButton("로그아웃");
 
 			set.setLayout(new GridLayout(5, 1));
 			alarmPn.setLayout(new BorderLayout());
-			backgroundPn.setLayout(new BorderLayout());
-
+			
 			alarmPn.add(alarmLb, BorderLayout.WEST);
 			alarmPn.add(alarmBtn, BorderLayout.EAST);
-			backgroundPn.add(backgroundLb, BorderLayout.WEST);
-			backgroundPn.add(colorBtn, BorderLayout.EAST);
 
 			set.add(alarmPn);
-			set.add(backgroundPn);
 			set.add(profileChangeBtn);
 			set.add(blackBtn);
 			set.add(logoutBtn);
