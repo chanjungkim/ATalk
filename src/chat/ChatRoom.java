@@ -44,7 +44,6 @@ public class ChatRoom extends JFrame {
 	private JScrollPane scrollFrame;
 
 	private JTextField typeField = new JTextField("Type");
-	private JButton chatSetBtn = new JButton("+");
 
 	private JButton user1;
 	private JButton user2 = new JButton("USER-1");
@@ -69,10 +68,7 @@ public class ChatRoom extends JFrame {
 		chatSetPanel = new JPanel();
 
 		leftPanel = new JPanel();
-		leftPanel.setToolTipText("<는 뒤로가기를 뜻합니다. 현재 로그아웃처럼 로그인화면으로 빠져나갑니다. 가운데는 유저 리스트를 보여주고 맨 하단은 마이크 설정을 보여줍니다.");
 		rightPanel = new JPanel();
-		messageField
-				.setToolTipText("메시지 창은 Edit할 수 없습니다. Typing하는 곳에 /help 혹은 /code을 치면 Bot이 대답합니다. 글이 많으면 스크롤이 활성화됩니다.");
 
 		// Function
 		messageField.setEditable(false);
@@ -85,31 +81,6 @@ public class ChatRoom extends JFrame {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-
-			}
-		});
-
-		chatSetBtn.addActionListener(new ActionListener() {
-			int i = 0;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (i == 0) {
-					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight() - 5);
-					// rightPanel.add(chatSetPanel, "Center");
-					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 5);
-					chatSetBtn.setText("이모티콘");
-					Dialog imo = new Dialog();
-					
-					i = 1;
-				} else {
-					messagesAreaPanel.setSize(messagesAreaPanel.getWidth(), messagesAreaPanel.getHeight() + 5);
-					// rightPanel.add(chatSetPanel, "Center");
-					chatSetPanel.setSize(messagesAreaPanel.getWidth(), 0);
-					chatSetBtn.setText("+");
-
-					i = 0;
-				}
 
 			}
 		});
@@ -141,21 +112,19 @@ public class ChatRoom extends JFrame {
 		});
 		
 		// Network
-		// 이벤트 처리기(서버에게 메세지 보내는 작업) 등록
+		// 
 		ChattingListener listener = new ChattingListener();
-		// 서버와의 통신을 위한 네트워크 설정 부분
-
+		// 
 		try {
 			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
 
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			// 서버와 연결한 후에 닉네임 입력해서 전송하기
-
+			// 
 			bw.write(id + "\n");
 			bw.flush();
 
-			// 닉네임 전송 후에는 서버가 보내는 메세지 받는 쓰레드
+			// 
 			new ListenThread().start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -173,10 +142,10 @@ public class ChatRoom extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (i == 0) {
-					System.out.println("마이크가 음소거 되었습니다.");
+					System.out.println("Mic on.");
 					i += 1;
 				} else {
-					System.out.println("마이크가 활성화 되었습니다.");
+					System.out.println("Mic off.");
 					i = 0;
 				}
 			}
@@ -211,7 +180,6 @@ public class ChatRoom extends JFrame {
 
 		messagesAreaPanel.add(scrollFrame);
 		typeAreaPanel.add(typeField);
-		typeAreaPanel.add(chatSetBtn);
 		typeAreaPanel.add(compile);
 		typeAreaPanel.add(drawing);
 		
@@ -230,7 +198,7 @@ public class ChatRoom extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-	// 이벤트 처리 클래스(채팅내용 서버에게 보내기)
+	// End
 
 	class ChattingListener implements ActionListener {
 		@Override
@@ -247,7 +215,7 @@ public class ChatRoom extends JFrame {
 		}
 	}
 
-	// 서버로부터 메세지를 받는 내부 쓰레드 클래스
+	// Start ListenThread
 	class ListenThread extends Thread {
 		@Override
 		public void run() {
@@ -261,7 +229,7 @@ public class ChatRoom extends JFrame {
 					String nickPart;
 					String commandChecker="";
 					if(receiveMsg.isEmpty()) {
-						nickPart = id+": "; //혹시 채팅 내용보내지 않을시에 id안나오게 하고 싶으면 여기 바꾸면됨		
+						nickPart = id+": "; // Show id in the messageArea	
 					}else {
 						nickPart= st.nextToken();
 						if(st.hasMoreTokens()) {
@@ -337,6 +305,6 @@ public class ChatRoom extends JFrame {
 		}
 	}
 //	public static void main(String[] args) {
-//		new ChatClient("김찬중", "방장");
+//		new ChatClient("Chan", "eee");
 //	}
 }
