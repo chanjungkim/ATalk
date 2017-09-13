@@ -41,7 +41,7 @@ public class ChatRoom extends JFrame {
 	private JButton drawing;
 
 	public JButton backBtn = new JButton("<");
-	
+
 	private AutoTextToImagePanel messageField = new AutoTextToImagePanel();
 	private JScrollPane scrollFrame;
 
@@ -54,12 +54,13 @@ public class ChatRoom extends JFrame {
 	private ArrayList<JButton> userBtnList = new ArrayList<>();
 	private String id;
 	private String masterID;
-	
+
+
 	DbDao dao = new DbDao();
 
 	public ChatRoom(String id, String masterID) {
 		this.id = id;
-		
+
 		panel = new JPanel();
 		userListPanel = new JPanel();
 		messagesAreaPanel = new JPanel();
@@ -92,11 +93,12 @@ public class ChatRoom extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				DbDao joinDao = new DbDao();
-				joinDao.deleteJoinedMember(id,masterID);
-				if(id.equals(masterID)) {
+				joinDao.deleteJoinedMember(id, masterID);
+				if (id.equals(masterID)) {
 					joinDao.deleteRoom(masterID);
+					RoomList roomList = new RoomList(id);
+					ChatServer c = new ChatServer("close");
 				}
-				RoomList roomList = new RoomList(id);
 			}
 		});
 
@@ -121,7 +123,7 @@ public class ChatRoom extends JFrame {
 		ChattingListener listener = new ChattingListener();
 		//
 		try {
-			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
+			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5551);
 
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -131,6 +133,7 @@ public class ChatRoom extends JFrame {
 
 			//
 			new ListenThread().start();
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -165,12 +168,12 @@ public class ChatRoom extends JFrame {
 		// Change this area
 		userListPanel.setBackground(Color.YELLOW);
 		messageField.setBackground(Color.ORANGE);
-		
-//		List joinList = new List();
-		
+
+		// List joinList = new List();
+
 		java.util.List<UserVO> join = dao.selectJoinedMember(masterID);
-		
-		for(int i = 0 ; i < join.size() ; i++) {
+
+		for (int i = 0; i < join.size(); i++) {
 
 			userBtnList.add(new JButton(join.get(i).getId()));
 			int k = i;
