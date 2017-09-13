@@ -51,7 +51,7 @@ public class RoomList extends JFrame {
 		roomListBtn = new JButton();
 
 		createRoomBtn = new JButton(new ImageIcon("balloon.PNG")); // 号持失
-		roomListBtn = new JButton(new ImageIcon("menu.png"));
+		roomListBtn = new JButton(new ImageIcon("8080.PNG"));
 		settingBtn = new JButton(new ImageIcon("setting.PNG")); // 室特
 		
 		listPanel.setAutoscrolls(true);				
@@ -284,9 +284,13 @@ public class RoomList extends JFrame {
 			}
 		});
 
+
 		roomListBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+					dispose();
+	
+					new RoomList(id);
 
 			}
 		});
