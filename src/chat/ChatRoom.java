@@ -2,6 +2,7 @@ package chat;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -15,6 +16,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -39,7 +41,7 @@ public class ChatRoom extends JFrame {
 	private JButton drawing;
 
 	public JButton backBtn = new JButton("<");
-
+	
 	private AutoTextToImagePanel messageField = new AutoTextToImagePanel();
 	private JScrollPane scrollFrame;
 
@@ -49,8 +51,11 @@ public class ChatRoom extends JFrame {
 	private BufferedReader br;
 	private BufferedWriter bw;
 
+	private ArrayList<JButton> userBtnList = new ArrayList<>();
 	private String id;
 	private String masterID;
+	
+	DbDao dao = new DbDao();
 
 	public ChatRoom(String id, String masterID) {
 		this.id = id;
@@ -87,7 +92,10 @@ public class ChatRoom extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				DbDao joinDao = new DbDao();
-				joinDao.deleteJoinedMember(masterID);
+				joinDao.deleteJoinedMember(id,masterID);
+				if(id.equals(masterID)) {
+					joinDao.deleteRoom(masterID);
+				}
 				RoomList roomList = new RoomList(id);
 			}
 		});
@@ -145,7 +153,6 @@ public class ChatRoom extends JFrame {
 				}
 			}
 		});
-
 		// Layout
 		messagesAreaPanel.setLayout(new BorderLayout());
 		messageField.setLayout(new BorderLayout());
@@ -158,14 +165,25 @@ public class ChatRoom extends JFrame {
 		// Change this area
 		userListPanel.setBackground(Color.YELLOW);
 		messageField.setBackground(Color.ORANGE);
+		
+//		List joinList = new List();
+		
+		java.util.List<UserVO> join = dao.selectJoinedMember(masterID);
+		
+		for(int i = 0 ; i < join.size() ; i++) {
 
-		// end
-
-		// Add
-
+			userBtnList.add(new JButton(join.get(i).getId()));
+			int k = i;
+			userBtnList.get(i).addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ProfileShow profile = new ProfileShow(join.get(k).getId());
+				}
+			});
+			userListPanel.add(userBtnList.get(i));
+		}
 
 		leftBottomPanel.add(mic);
-
 		leftTopPanel.add(backBtn, "West");
 		leftPanel.add(leftTopPanel, "North");
 		leftPanel.add(userListPanel, "Center");

@@ -323,7 +323,7 @@ public class DbDao {
 
 			while (rs.next()) {
 				RoomVO room = new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4),
-						rs.getString(5));
+						rs.getString(5), rs.getInt(6));
 				roomList.add(room);
 			}
 			for (RoomVO l : roomList) {
@@ -352,9 +352,8 @@ public class DbDao {
 			rs = ps.executeQuery();
 
 			roomList.clear();
-			
 			while (rs.next()) {
-				roomList.add(new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5)));
+				roomList.add(new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6)));
 			}
 			for (RoomVO l : roomList) {
 				System.out.println(l);
@@ -387,7 +386,7 @@ public class DbDao {
 			ps.setString(4, room.getLanguage());
 			ps.setString(5, room.getPassword());
 			roomList.add(new RoomVO(room.getTitle(), room.getMasterID(), room.getPopulation(), room.getLanguage(),
-					room.getPassword()));
+					room.getPassword(), room.getPortNum()));
 
 			result = ps.executeUpdate();
 
@@ -425,19 +424,19 @@ public class DbDao {
 	}
 
 	// DELETE ROOM
-	public int deleteRoom(RoomVO room) {
+	public int deleteRoom(String master_id) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "DELETE FROM ROOM WHERE ID=?";
+			String sql = "DELETE FROM ROOM WHERE MASTER_ID=?";
 
 			ps = con.prepareStatement(sql);
 
-			ps.setString(1, room.getMasterID());
+			ps.setString(1, master_id);
 
 			for (RoomVO l : roomList) {
-				if (l.getMasterID().equals(room.getMasterID())) {
+				if (l.getMasterID().equals(master_id)) {
 					roomList.remove(l);
 				}else {
 					// Just leave the room.
@@ -446,8 +445,8 @@ public class DbDao {
 
 			result = ps.executeUpdate();
 
-			// Delete master from JOIN when he leaves a room
-			deleteJoinedMember(room.getMasterID());
+//			// Delete master from JOIN when he leaves a room
+//			deleteJoinedMember(room.getMasterID());
 
 			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -539,17 +538,18 @@ public class DbDao {
 	}
 
 	// DELETE JOIN
-	public int deleteJoinedMember(String id) {
+	public int deleteJoinedMember(String id,String master_id) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "DELETE FROM JOIN WHERE ID=?";
+			String sql = "DELETE FROM JOIN WHERE ID=? AND MASTER_ID=?";
 
 			ps = con.prepareStatement(sql);
-
+			
 			ps.setString(1, id);
-
+			ps.setString(2, master_id);
+			
 			result = ps.executeUpdate();
 			System.out.println(id + "방 떠남 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLException e) {

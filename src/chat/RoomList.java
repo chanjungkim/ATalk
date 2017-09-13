@@ -68,11 +68,11 @@ public class RoomList extends JFrame {
 		
 		// make roomPanels and add into roomPanel ArrayList.
 		for(int i = 0 ; i < rooms.size() ; i++) {
-			String title = rooms.get(i).title;
-			String masterID = rooms.get(i).masterID;
-			int population = rooms.get(i).population;
-			String lang = rooms.get(i).language;
-			String pw = rooms.get(i).password;
+			String title = rooms.get(i).getTitle();
+			String masterID = rooms.get(i).getMasterID();
+			int population = rooms.get(i).getPopulation();
+			String lang = rooms.get(i).getLanguage();
+			String pw = rooms.get(i).getPassword();
 			
 			roomPanel.add(new RoomPanel(title, masterID, population, lang, pw));
 			
@@ -85,18 +85,13 @@ public class RoomList extends JFrame {
 			listPanel.add(roomPanel.get(j));
 			
 			roomPanel.get(j).roomBtn.addActionListener(new ActionListener() {
-				ChatRoom chat;
 				
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
+					DbDao joinDao = new DbDao(1);
 					setVisible(false);
-					chat = new ChatRoom(id, rooms.get(k).getMasterID());
-					chat.backBtn.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							chat.hide();
-						}
-					});
+					ChatRoom chat = new ChatRoom(id, rooms.get(k).getMasterID());
+					joinDao.insertJoinedMember(id, rooms.get(k).getMasterID());
 				}
 			});// End of Function
 		}
@@ -269,7 +264,7 @@ public class RoomList extends JFrame {
 							String pw = createRoomDialogue.getPasswordField();
 							
 							roomDao.insertJoinedMember(id, masterID); //조인테이블에 값 저장 방 생성자 및 참가자
-							RoomVO roomVo = new RoomVO(title, masterID, population, lang, pw);
+							RoomVO roomVo = new RoomVO(title, masterID, population, lang, pw, 0); // should add PN
 							roomDao.insertRoomInfo(roomVo);
 
 							createRoomDialogue.hide();

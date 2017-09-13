@@ -1,19 +1,21 @@
 package chat;
 
 public class RoomVO {
-	String title;
-	String masterID;
-	int population;
-	String language;
-	String password;
+	private String title;
+	private String masterID;
+	private int population;
+	private String language;
+	private String password;
+	private int portNum;
 	
 	//TITLE, MASTERID, POPULATION, LANGUAGE, PW
-	public RoomVO(String title, String masterID, int population, String language, String password) { //회원가입
+	public RoomVO(String title, String masterID, int population, String language, String password, int portNum) { //회원가입
 		this.title = title;
 		this.masterID = masterID;
 		this.population = population;
 		this.language = language;
 		this.password = password;
+		this.portNum = portNum;
 	}
 
 	public String getTitle() {
@@ -56,6 +58,14 @@ public class RoomVO {
 		this.password = password;
 	}
 
+	public void setPortNum(int portNum) {
+		this.portNum = portNum;
+	}
+	
+	public int getPortNum() {
+		return portNum;
+	}
+	
 	@Override
 	public String toString() {
 		return "RoomVO [title=" + title + ", masterID=" + masterID + ", population=" + population + ", language="
