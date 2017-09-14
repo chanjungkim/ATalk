@@ -17,7 +17,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.BoxLayout;
@@ -26,8 +28,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
-import server.MainServer;
 
 public class ChatRoom extends JFrame {
 	private final static String MAIN_SERVER_ADDR = "70.12.115.61";
@@ -49,9 +49,7 @@ public class ChatRoom extends JFrame {
 	private JScrollPane scrollFrame;
 
 	private JTextField typeField = new JTextField("Type");
-
-	private JButton user1;
-	private JButton user2 = new JButton("USER-1");
+;
 	private JButton mic = new JButton("MIC");
 
 	private String id;
@@ -73,8 +71,8 @@ public class ChatRoom extends JFrame {
 	
 	public ChatRoom(String id, String masterID) {
 		this.id = id;
+		this.masterID = masterID;
 		
-		user1 = new JButton(id);
 		panel = new JPanel();
 		userListPanel = new JPanel();
 		messagesAreaPanel = new JPanel();
@@ -106,9 +104,13 @@ public class ChatRoom extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				DbDao joinDao = new DbDao(id, masterID);
-				joinDao.deleteJoinedMember(masterID);
-				RoomList roomList = new RoomList(id);
+				dao.deleteJoinedMember(id, masterID);
+				if (id.equals(masterID)) {
+					dao.deleteRoom(masterID);
+					RoomList roomList = new RoomList(id);
+				} else {
+					RoomList roomList = new RoomList(id);
+				}
 			}
 		});
 
@@ -185,12 +187,22 @@ public class ChatRoom extends JFrame {
 		userListPanel.setBackground(Color.YELLOW);
 		messageField.setBackground(Color.ORANGE);
 
+		ArrayList<JButton> userBtnList = new ArrayList<>();
 		// end
+		List<UserVO> join = dao.selectJoinedMember(masterID);
 
+		for (int i = 0; i < join.size(); i++) {
+			userBtnList.add(new JButton(join.get(i).getId()));
+			int k = i;
+			userBtnList.get(i).addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ProfileShow profile = new ProfileShow(join.get(k).getId());
+				}
+			});
+			userListPanel.add(userBtnList.get(i));
+		}
 		// Add
-
-		userListPanel.add(user1);
-		userListPanel.add(user2);
 
 		leftBottomPanel.add(mic);
 

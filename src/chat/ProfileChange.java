@@ -35,10 +35,9 @@ public class ProfileChange extends JFrame {
 		JTextField phoneTextField = new JTextField(15);
 		JButton addBtn = new JButton("등록");
 		JButton closeBtn = new JButton("닫기");
-		
+
 		introduceTextArea.setLineWrap(true);
 
-		
 		Border lineBorder = BorderFactory.createLineBorder(Color.black, 1);
 		// 텍스트와 TextArea 경계 사이에 여백을 두기 위해서 emptyBorder를 생성합니다.
 		Border emptyBorder = BorderFactory.createEmptyBorder(7, 7, 7, 7);

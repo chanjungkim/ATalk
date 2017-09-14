@@ -86,7 +86,6 @@ public class RoomList extends JFrame {
 			int population = rooms.get(i).getPopulation();
 			String lang = rooms.get(i).getLanguage();
 			String pw = rooms.get(i).getPassword();
-//			int portNum = rooms.get(i).getPortNum();
 			
 			roomPanel.add(new RoomPanel(title, masterID, population, lang, pw));
 			
@@ -103,7 +102,9 @@ public class RoomList extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
+					DbDao joinDao = new DbDao(1);
 					setVisible(false);
+					joinDao.insertJoinedMember(id, rooms.get(k).getMasterID());
 					chat = new ChatRoom(id, rooms.get(k).getMasterID());
 					chat.backBtn.addActionListener(new ActionListener() {
 						@Override

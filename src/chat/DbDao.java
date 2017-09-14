@@ -237,7 +237,8 @@ public class DbDao {
 		}
 		return result;
 	}
-	//블랙리스트 삭제
+
+	// 블랙리스트 삭제
 	public int blockUserDelete(String id, String idToBlock) {
 		int result = 0;
 		try {
@@ -260,11 +261,11 @@ public class DbDao {
 		}
 		return result;
 	}
-	
-	//블랙리스트 검색
+
+	// 블랙리스트 검색
 	public List blockUserSelect(String id) {
 		ArrayList<UserVO> blackList = new ArrayList<>();
-		
+
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
@@ -334,9 +335,10 @@ public class DbDao {
 			rs = ps.executeQuery();
 
 			roomList.clear();
-			
+
 			while (rs.next()) {
-				roomList.add(new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6)));
+				roomList.add(new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4),
+						rs.getString(5), rs.getInt(6)));
 			}
 			for (RoomVO l : roomList) {
 				System.out.println(l);
@@ -352,7 +354,7 @@ public class DbDao {
 		}
 		return roomList;
 	}
-	
+
 	public RoomVO getRoomInfo(String masterId) {
 		RoomVO roomInfo = null;
 		try {
@@ -366,7 +368,8 @@ public class DbDao {
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
-				roomInfo = new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6));
+				roomInfo = new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
+						rs.getInt(6));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -379,10 +382,8 @@ public class DbDao {
 		}
 		return roomInfo;
 	}
-	
-	
-	
-	//End of getRoom
+
+	// End of getRoom
 	// INSERT ROOM
 	public int insertRoomInfo(RoomVO room) {
 		int result = 0;
@@ -399,7 +400,7 @@ public class DbDao {
 			ps.setString(4, room.getLanguage());
 			ps.setString(5, room.getPassword());
 			ps.setInt(6, room.getPortNum());
-			
+
 			roomList.add(new RoomVO(room.getTitle(), room.getMasterID(), room.getPopulation(), room.getLanguage(),
 					room.getPassword(), room.getPortNum()));
 
@@ -453,20 +454,20 @@ public class DbDao {
 
 			ps.setString(1, masterID);
 
-//			for (RoomVO l : roomList) {
-//				if (l.getMasterID().equals(masterID)) {
-//					System.out.println("리스트에서 방삭제");
-//					roomList.remove(l);
-//				}else {
-//					// Just leave the room.
-//					System.out.println("그냥 떠남");
-//				}
-//			}
+			// for (RoomVO l : roomList) {
+			// if (l.getMasterID().equals(masterID)) {
+			// System.out.println("리스트에서 방삭제");
+			// roomList.remove(l);
+			// }else {
+			// // Just leave the room.
+			// System.out.println("그냥 떠남");
+			// }
+			// }
 
 			result = ps.executeUpdate();
 
 			// Delete master from JOIN when he leaves a room
-			//deleteJoinedMember(room.getMasterID());
+			// deleteJoinedMember(room.getMasterID());
 
 			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 2: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -500,7 +501,7 @@ public class DbDao {
 		}
 		return result;
 	}
-	
+
 	public int resetRoom() {
 		int result = 0;
 		try {
@@ -521,7 +522,7 @@ public class DbDao {
 		}
 		return result;
 	}
-	
+
 	public int updateRoom() {
 		System.out.println("Unbuilt");
 		return 0;
@@ -529,17 +530,6 @@ public class DbDao {
 	// End of ROOM
 
 	// Start JOIN
-	// JOIN DAO CONSTRUCTOR
-	public DbDao(String id, String masterID) {
-		try {
-			Class.forName(DB_DRIVER);
-			insertJoinedMember(id, masterID);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	// INSERT JOIN
 	public int insertJoinedMember(String id, String masterID) {
 		int result = 0;
@@ -564,17 +554,44 @@ public class DbDao {
 		return result;
 	}
 
+	// SELECT JOIN
+	public List<UserVO> selectJoinedMember(String id) {
+		ArrayList<UserVO> joinList = new ArrayList<>();
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+			String sql = "SELECT ID FROM JOIN WHERE MASTER_ID = ?";
+
+			ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				UserVO lv = new UserVO();
+				lv.setId(rs.getString(1));
+				joinList.add(lv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeRS();
+			closePstmt();
+			closeConnection();
+		}
+		return joinList;
+	}
+
 	// DELETE JOIN
-	public int deleteJoinedMember(String id) {
+	public int deleteJoinedMember(String id, String master_id) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "DELETE FROM JOIN WHERE ID=?";
+			String sql = "DELETE FROM JOIN WHERE ID=? AND MASTER_ID=?";
 
 			ps = con.prepareStatement(sql);
 
 			ps.setString(1, id);
+			ps.setString(2, master_id);
 
 			result = ps.executeUpdate();
 			System.out.println(id + "방 떠남 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
@@ -586,7 +603,7 @@ public class DbDao {
 		}
 		return result;
 	}
-	
+
 	public int resetJoin() {
 		int result = 0;
 		try {
@@ -653,20 +670,20 @@ public class DbDao {
 			closeConnection();
 		}
 	}
-	
-	//프로필 검색 후 화면에 출력
+
+	// 프로필 검색 후 화면에 출력
 	public UserVO selectProfile(String id) {
 		UserVO lv = new UserVO();
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			
+
 			String sql = "SELECT NAME,BIRTHDATE,EMAIL,PHONE,INTRODUCTION,GITHUB,OTHEREMAIL FROM MEMBER "
 					+ "WHERE ID = ?";
-			
+
 			ps = con.prepareStatement(sql);
 			ps.setString(1, id);
 			rs = ps.executeQuery();
-			
+
 			if (rs.next()) {
 				lv.setName(rs.getString(1));
 				lv.setBirth(rs.getString(2));
@@ -676,17 +693,16 @@ public class DbDao {
 				lv.setGithub(rs.getString(6));
 				lv.setOtherEmail(rs.getString(7));
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			closeRS();
 			closePstmt();
 			closeConnection();
 		}
 		return lv;
 	}
-	
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// OTHER
