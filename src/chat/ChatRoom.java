@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 import server.MainServer;
 
 public class ChatRoom extends JFrame {
-	private final static String MAIN_SERVER_ADDR = "127.0.0.1";
+	private final static String MAIN_SERVER_ADDR = "70.12.115.61";
 	private JPanel panel;
 	private JPanel userListPanel;
 	private JPanel messagesAreaPanel;

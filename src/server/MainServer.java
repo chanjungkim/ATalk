@@ -16,7 +16,7 @@ import chat.DbDao;
 
 // <---------------------- Main Server
 public class MainServer extends JFrame{
-	public static final String MAIN_SERVER_ADDR = "127.0.0.1";
+	public static final String MAIN_SERVER_ADDR = "70.12.115.61";
 	public static final int MAIN_SERVER_PORT = 5555;
 	
 	private static int portSeed = 10000;

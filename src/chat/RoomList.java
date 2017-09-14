@@ -32,7 +32,7 @@ import javax.swing.JTextField;
 import server.MainServer;
 
 public class RoomList extends JFrame {
-	private final static String MAIN_SERVER_ADDR = "127.0.0.1";
+	private final static String MAIN_SERVER_ADDR = "70.12.115.61";
 	private final static int MAIN_SERVER_PORT = 5555;
 	private JPanel panel;
 	private JPanel menuPanel;
@@ -40,7 +40,7 @@ public class RoomList extends JFrame {
 	private JScrollPane scrollFrame;
 
 	private JButton createRoomBtn;
-	private JButton roomListBtn;
+	private JButton refreshBtn;
 	private JButton settingBtn;
 
 	private ArrayList<RoomPanel> roomPanel = new ArrayList<>();
@@ -61,10 +61,10 @@ public class RoomList extends JFrame {
 		scrollFrame = new JScrollPane(listPanel);
 		scrollFrame.enable(true);
 
-		roomListBtn = new JButton();
+		refreshBtn = new JButton();
 
 		createRoomBtn = new JButton(new ImageIcon("balloon.PNG")); // 号持失
-		roomListBtn = new JButton(new ImageIcon("menu.png"));
+		refreshBtn = new JButton(new ImageIcon("menu.png"));
 		settingBtn = new JButton(new ImageIcon("setting.PNG")); // 室特
 
 		listPanel.setAutoscrolls(true);
@@ -316,9 +316,12 @@ public class RoomList extends JFrame {
 			}
 		});
 
-		roomListBtn.addActionListener(new ActionListener() {
+		refreshBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				dispose();
+
+				new RoomList(id);
 
 			}
 		});
@@ -326,7 +329,7 @@ public class RoomList extends JFrame {
 
 		// Add Panels
 		menuPanel.add(createRoomBtn);
-		menuPanel.add(roomListBtn);
+		menuPanel.add(refreshBtn);
 		menuPanel.add(settingBtn);
 
 		// scrollFrame.add(listPanel);
