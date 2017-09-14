@@ -16,6 +16,8 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import server.MainServer;
+
 public class MyDrawing extends JFrame {
 
 	JPanel p1;
@@ -25,59 +27,56 @@ public class MyDrawing extends JFrame {
 
 	private ObjectOutputStream os;
 	private ObjectInputStream is;
+	Socket socket;
 
-	public MyDrawing() {
+	public MyDrawing(ObjectInputStream is, ObjectOutputStream os) {
 		super("::MyDrawing::");
-		try {
-			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 6666);
+		// socket = new Socket(InetAddress.getByName("70.12.115.61"),5555);
+		//
+		// os = new ObjectOutputStream(socket.getOutputStream());
+		// is = new ObjectInputStream(socket.getInputStream());
 
-			os = new ObjectOutputStream(socket.getOutputStream());
-			is = new ObjectInputStream(socket.getInputStream());
+		this.os = os;
+		this.is = is;
 
-			new ListenThread().start();
+		new ListenThread().start();
 
-			
-			pt = new PaintToolFrame();
-			p1 = new JPanel();
-			add(p1, "North");
-			p2 = new PaintPanel(os);
+		pt = new PaintToolFrame();
+		p1 = new JPanel();
+		add(p1, "North");
+		p2 = new PaintPanel(os);
 
-			add(p2, "Center");
-			p2.setBackground(Color.white);
+		add(p2, "Center");
+		p2.setBackground(Color.white);
 
-			btR = new JButton("RED");
-			btR.setBackground(Color.red);
-			p1.add(btR);
-			btG = new JButton("GREEN");
-			btG.setBackground(Color.green);
-			p1.add(btG);
-			btB = new JButton("BLUE");
-			btB.setBackground(Color.blue);
-			p1.add(btB);
-			btOpen = new JButton("Paint Tool");
-			p1.add(btOpen);
+		btR = new JButton("RED");
+		btR.setBackground(Color.red);
+		p1.add(btR);
+		btG = new JButton("GREEN");
+		btG.setBackground(Color.green);
+		p1.add(btG);
+		btB = new JButton("BLUE");
+		btB.setBackground(Color.blue);
+		p1.add(btB);
+		btOpen = new JButton("Paint Tool");
+		p1.add(btOpen);
 
-			MyHandler my = new MyHandler();
-			btR.addActionListener(my);
-			btG.addActionListener(my);
-			btB.addActionListener(my);
-			btOpen.addActionListener(my);
+		MyHandler my = new MyHandler();
+		btR.addActionListener(my);
+		btG.addActionListener(my);
+		btB.addActionListener(my);
+		btOpen.addActionListener(my);
 
-			pt.btPlus.addActionListener(my);
-			pt.btMinus.addActionListener(my);
-			pt.btClear.addActionListener(my);
+		pt.btPlus.addActionListener(my);
+		pt.btMinus.addActionListener(my);
+		pt.btClear.addActionListener(my);
 
-			pt.btColor.addActionListener(my);
-			pt.btClose.addActionListener(my);
+		pt.btColor.addActionListener(my);
+		pt.btClose.addActionListener(my);
 
-			setSize(500, 500);
-			setVisible(true);
-			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		setSize(500, 500);
+		setVisible(true);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	class ListenThread extends Thread {
@@ -85,7 +84,10 @@ public class MyDrawing extends JFrame {
 		@Override
 		public void run() {
 			try {
+
+				Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5555);
 				while (true) {
+
 					PaintInfoVO recInfo = (PaintInfoVO) is.readObject();
 					p2.paintInfoAdd(recInfo);
 				}

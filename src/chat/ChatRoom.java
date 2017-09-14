@@ -132,7 +132,7 @@ public class ChatRoom extends JFrame {
 		drawing.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				drawing.MyDrawing draw = new drawing.MyDrawing();
+				drawing.MyDrawing draw = new drawing.MyDrawing(isDraw, osDraw);
 			}
 		});
 

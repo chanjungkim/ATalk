@@ -29,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import server.MainServer;
+
 public class RoomList extends JFrame {
 	private final static String MAIN_SERVER_ADDR = "70.12.115.61";
 	private final static int MAIN_SERVER_PORT = 5555;
@@ -75,11 +77,8 @@ public class RoomList extends JFrame {
 
 		// Load Rooms from ROOM TABLE
 
-		
-		
 		rooms = user.getRoomList();
-		
-		
+
 		// make roomPanels and add into roomPanel ArrayList.
 		for (int i = 0; i < rooms.size(); i++) {
 			String title = rooms.get(i).getTitle();
@@ -87,10 +86,10 @@ public class RoomList extends JFrame {
 			int population = rooms.get(i).getPopulation();
 			String lang = rooms.get(i).getLanguage();
 			String pw = rooms.get(i).getPassword();
-			
+
 			java.util.List<UserVO> join = num.selectJoinedMember(masterID);
 			int currentPopulation = join.size();
-			roomPanel.add(new RoomPanel(title, masterID, currentPopulation,population, lang, pw));
+			roomPanel.add(new RoomPanel(title, masterID, currentPopulation, population, lang, pw));
 
 			System.out.println(title + " " + masterID + " " + population + " " + lang + " " + pw);
 		}
@@ -319,7 +318,7 @@ public class RoomList extends JFrame {
 							RoomVO roomVo = new RoomVO(title, masterID, population, lang, pw, roomPort);
 							roomDao.insertRoomInfo(roomVo);
 
-							roomPanel.add(new RoomPanel(title,masterID,1, population, lang, pw));
+							roomPanel.add(new RoomPanel(title, masterID, 1, population, lang, pw));
 							for (int i = 0; i < roomPanel.size(); i++) {
 								listPanel.add(roomPanel.get(i));
 								System.out.println(roomPanel.size());
@@ -377,7 +376,7 @@ public class RoomList extends JFrame {
 		System.out.println("getRoomPortToMainServer call");
 		int roomPort = 0;
 		try {
-			serverToMainServerSocket = new Socket(InetAddress.getByName(MAIN_SERVER_ADDR), MAIN_SERVER_PORT);
+			serverToMainServerSocket = new Socket(InetAddress.getByName(MainServer.MAIN_SERVER_ADDR),MainServer.MAIN_SERVER_PORT);
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(serverToMainServerSocket.getInputStream()));
 
