@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 // <-------------------- ServerThread -------------------------
@@ -75,8 +76,14 @@ class ServerThread extends Thread {
 
 				while (true) {
 					String msg = br.readLine();
-					broadcastToUsers(nickname + ": " + msg);
-				}
+					if (msg == null) {
+						broadcastToUsers("" + nickname + "left the room.");
+						break;
+					} else {
+						broadcastToUsers(nickname + ": " + msg);
+					}
+				}removeUserThread(this);
+
 			} catch (IOException e) {
 				removeUserThread(this);
 				broadcastToUsers("" + nickname + "left the room.");
