@@ -268,7 +268,7 @@ public class RoomList extends JFrame {
 								}
 							});
 							errorPanel.setLayout(new BorderLayout());
-
+//a
 							errorPanel.add(message, "Center");
 							errorPanel.add(check, "South");
 
