@@ -27,15 +27,17 @@ public class RoomPanel extends JPanel{
 	private String masterID;
 	private String language;
 	private String roomPassword;
+	private int currentPopulation;
 	private int populationLimitation;
+	private DbDao db = new DbDao();
 	
-	public RoomPanel(String title, String maker, int maxPopulation, String language, String password) {
+	public RoomPanel(String title, String maker,int currentPopulation, int maxPopulation, String language, String password) {
 		panel = new JPanel();
 		titlePanel = new JPanel();
 		rightPanel = new JPanel();
 		roomBtn = new JButton(title);
 		masterLb = new JLabel("방장: " + maker+" ");
-		populationLb = new JLabel("인원: 1/" + maxPopulation);
+		populationLb = new JLabel("인원: "+currentPopulation+"/"+ maxPopulation);
 		lang = new JLabel("언어: " + language);
 		++roomCounter;
 		

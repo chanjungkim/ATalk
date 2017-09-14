@@ -29,8 +29,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import server.MainServer;
-
 public class RoomList extends JFrame {
 	private final static String MAIN_SERVER_ADDR = "70.12.115.61";
 	private final static int MAIN_SERVER_PORT = 5555;
@@ -45,13 +43,12 @@ public class RoomList extends JFrame {
 
 	private ArrayList<RoomPanel> roomPanel = new ArrayList<>();
 	private ArrayList<RoomVO> rooms = new ArrayList<>();
-	
+
 	private JLabel master = new JLabel("방장:");
 	private JLabel count = new JLabel("인원:");
 
 	private Socket serverToMainServerSocket;
 
-	
 	public RoomList(String id) {
 		panel = new JPanel();
 		menuPanel = new JPanel();
@@ -70,48 +67,80 @@ public class RoomList extends JFrame {
 		listPanel.setAutoscrolls(true);
 		listPanel.setLayout(new FlowLayout());
 		panel.setLayout(new BorderLayout());
-		DbDao user = new DbDao();
 
+		DbDao user = new DbDao();
+		DbDao num = new DbDao();
 		// EtchedBorder eborder;
 		// eborder = new EtchedBorder(EtchedBorder.LOWERED);
 
 		// Load Rooms from ROOM TABLE
 
+		
+		
 		rooms = user.getRoomList();
 		
+		
 		// make roomPanels and add into roomPanel ArrayList.
-		for(int i = 0 ; i < rooms.size() ; i++) {
+		for (int i = 0; i < rooms.size(); i++) {
 			String title = rooms.get(i).getTitle();
 			String masterID = rooms.get(i).getMasterID();
 			int population = rooms.get(i).getPopulation();
 			String lang = rooms.get(i).getLanguage();
 			String pw = rooms.get(i).getPassword();
 			
-			roomPanel.add(new RoomPanel(title, masterID, population, lang, pw));
-			
-			System.out.println(title+" "+masterID+" "+population+" "+lang+" "+pw);
+			java.util.List<UserVO> join = num.selectJoinedMember(masterID);
+			int currentPopulation = join.size();
+			roomPanel.add(new RoomPanel(title, masterID, currentPopulation,population, lang, pw));
+
+			System.out.println(title + " " + masterID + " " + population + " " + lang + " " + pw);
 		}
-		
+
 		// Add rooms into listPanel & Clickable(functionally) Rooms
 		for (int j = 0; j < roomPanel.size(); j++) {
 			int k = j;
 			listPanel.add(roomPanel.get(j));
-			
+
 			roomPanel.get(j).roomBtn.addActionListener(new ActionListener() {
 				ChatRoom chat;
-				
+
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					DbDao joinDao = new DbDao(1);
-					setVisible(false);
-					joinDao.insertJoinedMember(id, rooms.get(k).getMasterID());
-					chat = new ChatRoom(id, rooms.get(k).getMasterID());
-					chat.backBtn.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							chat.hide();
-						}
-					});
+					// user.insertJoinedMember(id, rooms.get(k).getMasterID());
+					java.util.List<UserVO> join = num.selectJoinedMember(rooms.get(k).getMasterID());
+					if (join.size() == rooms.get(k).getPopulation()) {
+						JDialog dialog = new JDialog();
+						JPanel errorPanel = new JPanel();
+						JButton check = new JButton("확인");
+						JLabel message = new JLabel("방에 인원이 꽉 찼습니다.");
+
+						check.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								dialog.dispose();
+							}
+						});
+						errorPanel.setLayout(new BorderLayout());
+
+						errorPanel.add(message, "Center");
+						errorPanel.add(check, "South");
+
+						dialog.add(errorPanel);
+
+						dialog.pack();
+						dialog.setTitle("ERROR!!");
+						dialog.setVisible(true);
+					} else {
+						DbDao joinDao = new DbDao(1);
+						setVisible(false);
+						joinDao.insertJoinedMember(id, rooms.get(k).getMasterID());
+						chat = new ChatRoom(id, rooms.get(k).getMasterID());
+						chat.backBtn.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								chat.hide();
+							}
+						});
+					}
 				}
 			});// End of Function
 		}
@@ -185,7 +214,7 @@ public class RoomList extends JFrame {
 							String x = u.getBlackId();
 							nameList.add(x);
 						}
-						
+
 						bottomPn.add(nameLb);
 						bottomPn.add(nameText);
 						bottomPn.add(addBtn);
@@ -282,15 +311,15 @@ public class RoomList extends JFrame {
 							int population = createRoomDialogue.getPopulation();
 							String lang = createRoomDialogue.getLanguage();
 							String pw = createRoomDialogue.getPasswordField();
-							
+
 							// 방 생성시 메인 서버와 네트워크 연결
 							int roomPort = getRoomPortToMainServer();
-							
+
 							System.out.println("방만들기 디비 작업");
 							RoomVO roomVo = new RoomVO(title, masterID, population, lang, pw, roomPort);
 							roomDao.insertRoomInfo(roomVo);
 
-							roomPanel.add(new RoomPanel(title, masterID, population, lang, pw));
+							roomPanel.add(new RoomPanel(title,masterID,1, population, lang, pw));
 							for (int i = 0; i < roomPanel.size(); i++) {
 								listPanel.add(roomPanel.get(i));
 								System.out.println(roomPanel.size());
@@ -340,26 +369,26 @@ public class RoomList extends JFrame {
 		setResizable(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		
+
 	}
-	
-	// -------------- init netword to MainServer------------	
+
+	// -------------- init netword to MainServer------------
 	public int getRoomPortToMainServer() {
 		System.out.println("getRoomPortToMainServer call");
 		int roomPort = 0;
 		try {
 			serverToMainServerSocket = new Socket(InetAddress.getByName(MAIN_SERVER_ADDR), MAIN_SERVER_PORT);
-			
+
 			BufferedReader br = new BufferedReader(new InputStreamReader(serverToMainServerSocket.getInputStream()));
-			
+
 			String roomPortStr = null;
 
 			roomPortStr = br.readLine();
-			
+
 			System.out.println(roomPortStr);
 
-			roomPort =  Integer.parseInt(roomPortStr);
-			
+			roomPort = Integer.parseInt(roomPortStr);
+
 			br.close();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -368,7 +397,6 @@ public class RoomList extends JFrame {
 		}
 		return roomPort;
 	}
-	
 
 	// <--------------------- Inner Classes -------------------------->
 	class CreateRoomDialogue extends JFrame implements ItemListener { // 방 생성
@@ -522,7 +550,7 @@ public class RoomList extends JFrame {
 
 			set.setLayout(new GridLayout(5, 1));
 			alarmPn.setLayout(new BorderLayout());
-			
+
 			alarmPn.add(alarmLb, BorderLayout.WEST);
 			alarmPn.add(alarmBtn, BorderLayout.EAST);
 
