@@ -76,7 +76,7 @@ class ServerThread extends Thread {
 				while (true) {
 					String msg = br.readLine();
 					if (msg == null) {
-						broadcastToUsers("" + nickname + "left the room.");
+						broadcastToUsers("" + nickname + " left the room.");
 						break;
 					} else {
 						broadcastToUsers(nickname + ": " + msg);
@@ -85,7 +85,7 @@ class ServerThread extends Thread {
 				removeUserThread(this);
 			} catch (IOException e) {
 				removeUserThread(this);
-				broadcastToUsers("" + nickname + "left the room.");
+				broadcastToUsers("" + nickname + " left the room.");
 				e.printStackTrace();
 			}
 		}

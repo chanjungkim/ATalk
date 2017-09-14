@@ -143,15 +143,17 @@ public class ChatRoom extends JFrame {
 		try {
 			roomInfo = dao.getRoomInfo(masterID);
 			sockToRoomServer = new Socket(InetAddress.getByName(MAIN_SERVER_ADDR), roomInfo.getPortNum());
-			// sockToDrawingServer = new
+			
 			// Socket(InetAddress.getByName(MainServer.MAIN_SERVER_ADDR),
 			// roomInfo.getPortNum()+1);
 
 			bwChat = new BufferedWriter(new OutputStreamWriter(sockToRoomServer.getOutputStream()));
 			brChat = new BufferedReader(new InputStreamReader(sockToRoomServer.getInputStream()));
 
-			// isDraw = new ObjectInputStream(sockToDrawingServer.getInputStream());
-			// osDraw = new ObjectOutputStream(sockToDrawingServer.getOutputStream());
+			sockToDrawingServer = new Socket(InetAddress.getByName(MAIN_SERVER_ADDR), roomInfo.getPortNum()+1);
+			
+			osDraw = new ObjectOutputStream(sockToDrawingServer.getOutputStream());
+			isDraw = new ObjectInputStream(sockToDrawingServer.getInputStream());
 
 			bwChat.write(id + "\n");
 			bwChat.flush();
@@ -282,7 +284,7 @@ public class ChatRoom extends JFrame {
 						case "help":
 							messageField.setText(messageField.getText()
 									+ "\nBot: need some help?\nThese commands are available now: \n/help: Show command list. \n/code ((none)/java/python): code mode(default is 'c'.) \n/sing: Bot sings\n/time: Show current time\n"
-									+"emoticon: # -(hit) @ @(angry) - -(mad) ; ( (cry) ; )(wink) : D(smile) ^ ^(lovely) < 3(heart)");
+									+ "emoticon: # -(hit) @ @(angry) - -(mad) ; ( (cry) ; )(wink) : D(smile) ^ ^(lovely) < 3(heart)");
 							break;
 						case "code":
 							if (st.hasMoreTokens()) {
