@@ -282,9 +282,6 @@ public class RoomList extends JFrame {
 							String lang = createRoomDialogue.getLanguage();
 							String pw = createRoomDialogue.getPasswordField();
 							
-//							Socket socket = new Socket();
-//							ServerThread t = new ServerThread(socket);
-							
 							// 방 생성시 메인 서버와 네트워크 연결
 							int roomPort = getRoomPortToMainServer();
 							

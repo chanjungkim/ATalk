@@ -128,23 +128,6 @@ public class DbDao {
 
 	//////////////////////////////////////////////////////////
 	// 현재 로그인 접속 방식
-	// UPDATE MEMBER
-	public int updateProfile(String introduce, String github, String otherEmail) {
-		try {
-			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
-			String sql = "UPDATE MEMBER SET INTRODUCTION=?,GITHUB=?,OTHEREMAIL=?";
-			ps = con.prepareStatement(sql);
-
-			ps.setString(1, introduce);
-			ps.setString(2, github);
-			ps.setString(3, otherEmail);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
 	// USER CHECK
 	public int userCheck(String id, String pw) {
 		try {
