@@ -16,7 +16,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 public class ChatClient extends JFrame {
 	private JPanel panel;
@@ -32,7 +34,7 @@ public class ChatClient extends JFrame {
 	private String id = "";
 	private String pw = "";
 
-	private JButton signUpBtn = new JButton("�쉶�썝媛��엯");
+	private JButton signUpBtn = new JButton("Sign up");
 
 	public ChatClient() {
 		DbDao dao = new DbDao();
@@ -92,10 +94,11 @@ public class ChatClient extends JFrame {
 					if(dao.userCheck(userinField.getText(), new String(passwordField.getPassword()))==1) {
 						dispose();
 					}
-				} else if (e.getKeyChar() == e.VK_BACK_SPACE) {
-					pw = pw.substring(0, pw.length() - 1);
-					System.out.println("蹂�寃쎈맂 �뙣�뒪�썙�뱶: " + pw);
-				}
+				} 
+//				else if (e.getKeyChar() == e.VK_BACK_SPACE) {
+//					pw = pw.substring(0, pw.length() - 1);
+//					System.out.println("aaaa: " + pw);
+//				}
 			}
 		});
 
@@ -137,16 +140,16 @@ public class ChatClient extends JFrame {
 	}
 
 	public class SignUpDialog extends JFrame {
-		private JDialog set = new JDialog(this, "Atalk �쉶�썝媛��엯");
+		private JDialog set = new JDialog(this, "Atalk Sign up");
 		private JPanel topPanel = new JPanel();
 		private JPanel bottomPanel = new JPanel();
 
-		private JLabel idLb = new JLabel("�븘�씠�뵒");
-		private JLabel pwLb = new JLabel("鍮꾨�踰덊샇");
-		private JLabel nameLb = new JLabel("�씠由�");
-		private JLabel birthDayLb = new JLabel("�깮�뀈�썡�씪");
-		private JLabel emailLb = new JLabel("�씠硫붿씪");
-		private JLabel phoneLb = new JLabel("�쟾�솕踰덊샇");
+		private JLabel idLb = new JLabel("ID");
+		private JLabel pwLb = new JLabel("PW");
+		private JLabel nameLb = new JLabel("Name");
+		private JLabel birthDayLb = new JLabel("Birthday");
+		private JLabel emailLb = new JLabel("E-mail");
+		private JLabel phoneLb = new JLabel("Phone");
 
 		private JTextField idField = new JTextField(10);
 		private JTextField pwField = new JTextField(10);
@@ -155,10 +158,10 @@ public class ChatClient extends JFrame {
 		private JTextField emailField = new JTextField(15);
 		private JTextField phoneField = new JTextField(15);
 
-		private JButton confirmShowBtn = new JButton("�빟愿� 蹂닿린");
-		private JCheckBox confirmCheck = new JCheckBox("�빟愿� �룞�쓽");
-		private JButton okBtn = new JButton("媛��엯");
-		private JButton cancelBtn = new JButton("痍⑥냼");
+		private JButton confirmShowBtn = new JButton("Terms of Use");
+		private JCheckBox confirmCheck = new JCheckBox("Agree");
+		private JButton okBtn = new JButton("Finish");
+		private JButton cancelBtn = new JButton("Cancel");
 
 		UserVO user = null;
 		DbDao dao = new DbDao();
@@ -196,7 +199,48 @@ public class ChatClient extends JFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("�빟愿� �궡�슜 蹂댁씠湲�");
+					JDialog dialog = new JDialog();
+					JPanel errorPanel = new JPanel();
+					JButton check = new JButton("OK");
+
+					JTextPane message = new JTextPane();
+					JScrollPane scroll = new JScrollPane(message);
+					scroll.createVerticalScrollBar();
+					scroll.setWheelScrollingEnabled(true);
+					message.setText("These Terms of Service (“Terms”) govern your access to and use of our services, including our various websites, SMS, APIs, email notifications, applications, buttons, widgets, ads, commerce services, and our other covered services (https://support.twitter.com/articles/20172501) that link to these Terms (collectively, the “Services”), and any information, text, links, graphics, photos, videos, or other materials or arrangements of materials uploaded, downloaded or appearing on the Services (collectively referred to as “Content”). By using the Services you agree to be bound by these Terms.\r\n" + 
+							"1. Who May Use the Services\r\n" + 
+							"\r\n" + 
+							"2. Privacy\r\n" + 
+							"\r\n" + 
+							"3. Content on the Services\r\n" + 
+							"\r\n" + 
+							"4. Using the Services\r\n" + 
+							"\r\n" + 
+							"5. Disclaimers and Limitations of Liability\r\n" + 
+							"\r\n" + 
+							"6. General\r\n" + 
+							"\r\n" + 
+							"1. Who May Use the Services\r\n" + 
+							"You may use the Services only if you agree to form a binding contract with Twitter and are not a person barred from receiving services under the laws of the applicable jurisdiction. In any case, you must be at least 13 years old to use the Services. If you are accepting these Terms and using the Services on behalf of a company, organization, government, or other legal entity, you represent and warrant that you are authorized to do so.\r\n" + 
+							"2. Privacy\r\n" + 
+							"Our Privacy Policy (https://www.twitter.com/privacy) describes how we handle the information you provide to us when you use our Services. You understand that through your use of the Services you consent to the collection and use (as set forth in the Privacy Policy) of this information, including the transfer of this information to the United States, Ireland, and/or other countries for storage, processing and use by Twitter and its affiliates.");
+
+					check.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							dialog.dispose();
+						}
+					});
+					errorPanel.setLayout(new BorderLayout());
+
+					errorPanel.add(message, "Center");
+					errorPanel.add(check, "South");
+
+					dialog.add(errorPanel);
+
+					dialog.setSize(800, 600);
+					dialog.setTitle("Terms of Use");
+					dialog.setVisible(true);
 				}
 			});
 
@@ -217,8 +261,8 @@ public class ChatClient extends JFrame {
 								|| phoneField.getText().equals("")) {
 							JDialog dialog = new JDialog();
 							JPanel errorPanel = new JPanel();
-							JButton check = new JButton("�솗�씤");
-							JLabel message = new JLabel("�쟾遺� �옉�꽦�빐二쇱꽭�슂");
+							JButton check = new JButton("OK");
+							JLabel message = new JLabel("Please fill out the form.");
 
 							check.addActionListener(new ActionListener() {
 								@Override
@@ -244,7 +288,27 @@ public class ChatClient extends JFrame {
 						}
 
 					} else {
-						System.out.println("�룞�쓽�븯�뀛�빞�빀�땲�떎.");
+						JDialog dialog = new JDialog();
+						JPanel errorPanel = new JPanel();
+						JButton check = new JButton("OK");
+						JLabel message = new JLabel("You should check 'agree' to sign up.");
+
+						check.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								dialog.dispose();
+							}
+						});
+						errorPanel.setLayout(new BorderLayout());
+
+						errorPanel.add(message, "Center");
+						errorPanel.add(check, "South");
+
+						dialog.add(errorPanel);
+
+						dialog.pack();
+						dialog.setTitle("ERROR!!");
+						dialog.setVisible(true);
 					}
 				}
 			});
@@ -258,7 +322,7 @@ public class ChatClient extends JFrame {
 
 			add(topPanel);
 			// add(panel);
-			setTitle("Atalk �쉶�썝媛��엯");
+			setTitle("Atalk Sign up");
 			setResizable(false);
 			setSize(250, 300);
 			setVisible(true);
