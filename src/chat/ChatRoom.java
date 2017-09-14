@@ -15,7 +15,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -282,8 +281,8 @@ public class ChatRoom extends JFrame {
 						switch (commandChecker.substring(1, commandChecker.length())) {
 						case "help":
 							messageField.setText(messageField.getText()
-									+ "\nBot: need some help?\nThese commands are available now: \n/help: Show command list. \n/code ((none)/java/python): code mode(default is 'c'.) \n/sing: Bot sings\n/time: Show current time\n");
-							System.out.println("need some help?\n");
+									+ "\nBot: need some help?\nThese commands are available now: \n/help: Show command list. \n/code ((none)/java/python): code mode(default is 'c'.) \n/sing: Bot sings\n/time: Show current time\n"
+									+"emoticon: # -(hit) @ @(angry) - -(mad) ; ( (cry) ; )(wink) : D(smile) ^ ^(lovely) < 3(heart)");
 							break;
 						case "code":
 							if (st.hasMoreTokens()) {
