@@ -57,7 +57,7 @@ public class RoomVO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
 	public void setPortNum(int portNum) {
 		this.portNum = portNum;
 	}
@@ -65,7 +65,7 @@ public class RoomVO {
 	public int getPortNum() {
 		return portNum;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "RoomVO [title=" + title + ", masterID=" + masterID + ", population=" + population + ", language="

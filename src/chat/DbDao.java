@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,7 +78,7 @@ public class DbDao {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "INSERT INTO MEMBER(ID,PW,NAME,BIRTHDAY,EMAIL,PHONE) VALUES(?,?,?,?,?,?)";
+			String sql = "INSERT INTO MEMBER(ID,PW,NAME,BIRTHDATE,EMAIL,PHONE) VALUES(?,?,?,?,?,?)";
 
 			ps = con.prepareStatement(sql);
 
@@ -352,6 +351,7 @@ public class DbDao {
 			rs = ps.executeQuery();
 
 			roomList.clear();
+			
 			while (rs.next()) {
 				roomList.add(new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6)));
 			}
@@ -369,6 +369,36 @@ public class DbDao {
 		}
 		return roomList;
 	}
+	
+	public RoomVO getRoomInfo(String masterId) {
+		RoomVO roomInfo = null;
+		try {
+			Class.forName(DB_DRIVER);
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+
+			String sql = "SELECT * FROM ROOM where master_id=?";
+
+			ps = con.prepareStatement(sql);
+			ps.setString(1, masterId);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				roomInfo = new RoomVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			closeRS();
+			closePstmt();
+			closeConnection();
+		}
+		return roomInfo;
+	}
+	
+	
+	
 	//End of getRoom
 	// INSERT ROOM
 	public int insertRoomInfo(RoomVO room) {
@@ -376,7 +406,7 @@ public class DbDao {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "INSERT INTO ROOM(TITLE, MASTER_ID, POPULATION, LANGUAGE, PW) VALUES(?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO ROOM(TITLE, MASTER_ID, POPULATION, LANGUAGE, PW, PORT_NUM) VALUES(?, ?, ?, ?, ?, ?)";
 
 			ps = con.prepareStatement(sql);
 
@@ -385,10 +415,15 @@ public class DbDao {
 			ps.setInt(3, room.getPopulation());
 			ps.setString(4, room.getLanguage());
 			ps.setString(5, room.getPassword());
+			ps.setInt(6, room.getPortNum());
+			
 			roomList.add(new RoomVO(room.getTitle(), room.getMasterID(), room.getPopulation(), room.getLanguage(),
 					room.getPassword(), room.getPortNum()));
 
 			result = ps.executeUpdate();
+
+			// Add master into JOIN when he creates a room
+			insertJoinedMember(room.getMasterID(), room.getMasterID());
 
 			System.out.println("방 생성 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -424,7 +459,7 @@ public class DbDao {
 	}
 
 	// DELETE ROOM
-	public int deleteRoom(String master_id) {
+	public int deleteRoom(String masterID) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -433,22 +468,24 @@ public class DbDao {
 
 			ps = con.prepareStatement(sql);
 
-			ps.setString(1, master_id);
+			ps.setString(1, masterID);
 
-			for (RoomVO l : roomList) {
-				if (l.getMasterID().equals(master_id)) {
-					roomList.remove(l);
-				}else {
-					// Just leave the room.
-				}
-			}
+//			for (RoomVO l : roomList) {
+//				if (l.getMasterID().equals(masterID)) {
+//					System.out.println("리스트에서 방삭제");
+//					roomList.remove(l);
+//				}else {
+//					// Just leave the room.
+//					System.out.println("그냥 떠남");
+//				}
+//			}
 
 			result = ps.executeUpdate();
 
-//			// Delete master from JOIN when he leaves a room
-//			deleteJoinedMember(room.getMasterID());
+			// Delete master from JOIN when he leaves a room
+			//deleteJoinedMember(room.getMasterID());
 
-			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
+			System.out.println("방 삭제 쿼리 수행 결과(1: 수행됨, 2: 실패): " + result);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			JDialog dialog = new JDialog();
 			JPanel errorPanel = new JPanel();
@@ -480,7 +517,28 @@ public class DbDao {
 		}
 		return result;
 	}
+	
+	public int resetRoom() {
+		int result = 0;
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
+			String sql = "DELETE FROM ROOM";
+
+			ps = con.prepareStatement(sql);
+
+			result = ps.executeUpdate();
+
+			System.out.println("방 리셋 쿼리 수행 결과(1: 수행됨, 2: 실패): " + result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closePstmt();
+			closeConnection();
+		}
+		return result;
+	}
+	
 	public int updateRoom() {
 		System.out.println("Unbuilt");
 		return 0;
@@ -488,8 +546,19 @@ public class DbDao {
 	// End of ROOM
 
 	// Start JOIN
+	// JOIN DAO CONSTRUCTOR
+	public DbDao(String id, String masterID) {
+		try {
+			Class.forName(DB_DRIVER);
+			insertJoinedMember(id, masterID);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	// INSERT JOIN
-	public void insertJoinedMember(String id, String masterID) {
+	public int insertJoinedMember(String id, String masterID) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
@@ -509,49 +578,44 @@ public class DbDao {
 			closePstmt();
 			closeConnection();
 		}
-	}
-	
-	// SELECT JOIN	
-	public List selectJoinedMember(String id) {
-		ArrayList<UserVO> joinList = new ArrayList<>();
-		try {
-			con = DriverManager.getConnection(DB_URL,DB_ID,DB_PW);
-			String sql = "SELECT ID FROM JOIN WHERE MASTER_ID = ?";
-			
-			ps = con.prepareStatement(sql);
-			ps.setString(1, id);
-			rs = ps.executeQuery();
-			
-			while (rs.next()) {
-				UserVO lv = new UserVO();
-				lv.setId(rs.getString(1));
-				joinList.add(lv);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			closeRS();
-			closePstmt();
-			closeConnection();
-		}
-		return joinList;
+		return result;
 	}
 
 	// DELETE JOIN
-	public int deleteJoinedMember(String id,String master_id) {
+	public int deleteJoinedMember(String id) {
 		int result = 0;
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
 
-			String sql = "DELETE FROM JOIN WHERE ID=? AND MASTER_ID=?";
+			String sql = "DELETE FROM JOIN WHERE ID=?";
 
 			ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, id);
-			ps.setString(2, master_id);
-			
+
 			result = ps.executeUpdate();
 			System.out.println(id + "방 떠남 쿼리 수행 결과(1: 수행됨, 0: 실패): " + result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closePstmt();
+			closeConnection();
+		}
+		return result;
+	}
+	
+	public int resetJoin() {
+		int result = 0;
+		try {
+			con = DriverManager.getConnection(DB_URL, DB_ID, DB_PW);
+
+			String sql = "DELETE FROM JOIN";
+
+			ps = con.prepareStatement(sql);
+
+			result = ps.executeUpdate();
+
+			System.out.println("조인 리셋 쿼리 수행 결과(1: 수행됨, 2: 실패): " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -1,4 +1,3 @@
 eclipse.preferences.version=1
 encoding//src/chat/ChatClient.java=UTF-8
-encoding//src/compile/Compile.java=UTF-8
-encoding//src/compile/CompileFrame.java=UTF-8
+encoding//src/chat/ChatRoom.java=UTF-8

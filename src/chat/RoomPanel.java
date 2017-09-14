@@ -52,9 +52,6 @@ public class RoomPanel extends JPanel{
 		roomBtn.setFont(new Font("πŸ≈¡", Font.BOLD, 25));	
 		masterLb.setFont(new Font("πŸ≈¡", Font.BOLD, 25));
 		populationLb.setFont(new Font("πŸ≈¡", Font.BOLD, 25));
-
-	
-
 		
 		setBackground(Color.blue);
 		titlePanel.add(roomBtn);

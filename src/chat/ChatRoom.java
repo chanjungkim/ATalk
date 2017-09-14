@@ -2,7 +2,6 @@ package chat;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -11,12 +10,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -27,7 +27,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import server.MainServer;
+
 public class ChatRoom extends JFrame {
+	private final static String MAIN_SERVER_ADDR = "127.0.0.1";
 	private JPanel panel;
 	private JPanel userListPanel;
 	private JPanel messagesAreaPanel;
@@ -39,28 +42,39 @@ public class ChatRoom extends JFrame {
 	private JPanel rightPanel;
 	private JButton compile;
 	private JButton drawing;
-
+	
 	public JButton backBtn = new JButton("<");
 
 	private AutoTextToImagePanel messageField = new AutoTextToImagePanel();
 	private JScrollPane scrollFrame;
 
 	private JTextField typeField = new JTextField("Type");
+
+	private JButton user1;
+	private JButton user2 = new JButton("USER-1");
 	private JButton mic = new JButton("MIC");
 
-	private BufferedReader br;
-	private BufferedWriter bw;
-
-	private ArrayList<JButton> userBtnList = new ArrayList<>();
 	private String id;
 	private String masterID;
-
-
-	DbDao dao = new DbDao();
-
+	////////////////////////////////////////////////////////
+	// �쁽�옱 �겢�씪�씠�뼵�듃媛� �냼�냽�맂 諛� �꽌踰�(梨꾪똿�꽌踰�, 洹몃┝�꽌踰�)�� �넻�떊�븷 硫ㅻ쾭蹂��닔�뱾
+	private Socket sockToRoomServer;
+	private Socket sockToDrawingServer;
+	
+	private BufferedReader brChat;
+	private BufferedWriter bwChat;
+	
+	private ObjectOutputStream osDraw;
+	private ObjectInputStream isDraw;
+	/////////////////////////////////////////////////////////
+	private RoomVO roomInfo;
+	
+	private DbDao dao = new DbDao();
+	
 	public ChatRoom(String id, String masterID) {
 		this.id = id;
-
+		
+		user1 = new JButton(id);
 		panel = new JPanel();
 		userListPanel = new JPanel();
 		messagesAreaPanel = new JPanel();
@@ -87,27 +101,23 @@ public class ChatRoom extends JFrame {
 
 			}
 		});
-
+		
 		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				DbDao joinDao = new DbDao();
-				joinDao.deleteJoinedMember(id, masterID);
-				if (id.equals(masterID)) {
-					joinDao.deleteRoom(masterID);
-					RoomList roomList = new RoomList(id);
-					ChatServer c = new ChatServer("close");
-				}
+				DbDao joinDao = new DbDao(id, masterID);
+				joinDao.deleteJoinedMember(masterID);
+				RoomList roomList = new RoomList(id);
 			}
 		});
 
 		compile = new JButton("compile");
 		compile.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				compile.CompileFrame com = new compile.CompileFrame();
+				compile.CompileFrame com = new compile.CompileFrame(); 
 			}
 		});
 		drawing = new JButton("drawing");
@@ -117,23 +127,26 @@ public class ChatRoom extends JFrame {
 				drawing.MyDrawing draw = new drawing.MyDrawing();
 			}
 		});
-
+		
 		// Network
-		//
+		// 
 		ChattingListener listener = new ChattingListener();
-		//
+		// 
 		try {
-			Socket socket = new Socket(InetAddress.getByName("70.12.115.61"), 5551);
+			roomInfo = dao.getRoomInfo(masterID);
+			sockToRoomServer = new Socket(InetAddress.getByName(MAIN_SERVER_ADDR), roomInfo.getPortNum());
+//			sockToDrawingServer = new Socket(InetAddress.getByName(MainServer.MAIN_SERVER_ADDR), roomInfo.getPortNum()+1);
 
-			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			//
-			bw.write(id + "\n");
-			bw.flush();
+			bwChat = new BufferedWriter(new OutputStreamWriter(sockToRoomServer.getOutputStream()));
+			brChat = new BufferedReader(new InputStreamReader(sockToRoomServer.getInputStream()));
+			
+//			isDraw = new ObjectInputStream(sockToDrawingServer.getInputStream());
+//			osDraw = new ObjectOutputStream(sockToDrawingServer.getOutputStream());
+			
+			bwChat.write(id + "\n");
+			bwChat.flush();
 
-			//
 			new ListenThread().start();
-
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -141,6 +154,8 @@ public class ChatRoom extends JFrame {
 		}
 
 		typeField.addActionListener(listener);
+
+		
 
 		mic.addActionListener(new ActionListener() {
 			int i = 0;
@@ -156,6 +171,7 @@ public class ChatRoom extends JFrame {
 				}
 			}
 		});
+
 		// Layout
 		messagesAreaPanel.setLayout(new BorderLayout());
 		messageField.setLayout(new BorderLayout());
@@ -169,24 +185,15 @@ public class ChatRoom extends JFrame {
 		userListPanel.setBackground(Color.YELLOW);
 		messageField.setBackground(Color.ORANGE);
 
-		// List joinList = new List();
+		// end
 
-		java.util.List<UserVO> join = dao.selectJoinedMember(masterID);
+		// Add
 
-		for (int i = 0; i < join.size(); i++) {
-
-			userBtnList.add(new JButton(join.get(i).getId()));
-			int k = i;
-			userBtnList.get(i).addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ProfileShow profile = new ProfileShow(join.get(k).getId());
-				}
-			});
-			userListPanel.add(userBtnList.get(i));
-		}
+		userListPanel.add(user1);
+		userListPanel.add(user2);
 
 		leftBottomPanel.add(mic);
+
 		leftTopPanel.add(backBtn, "West");
 		leftPanel.add(leftTopPanel, "North");
 		leftPanel.add(userListPanel, "Center");
@@ -196,7 +203,7 @@ public class ChatRoom extends JFrame {
 		typeAreaPanel.add(typeField);
 		typeAreaPanel.add(compile);
 		typeAreaPanel.add(drawing);
-
+		
 		rightPanel.add(messagesAreaPanel, "Center");
 		rightPanel.add(typeAreaPanel, "South");
 
@@ -221,8 +228,8 @@ public class ChatRoom extends JFrame {
 			typeField.setText("");
 
 			try {
-				bw.write(msg + "\n");
-				bw.flush();
+				bwChat.write(msg + "\n");
+				bwChat.flush();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -238,21 +245,21 @@ public class ChatRoom extends JFrame {
 
 					Thread.sleep(1000);
 
-					String receiveMsg = br.readLine();
+					String receiveMsg = brChat.readLine();
 					StringTokenizer st = new StringTokenizer(receiveMsg);
 					String nickPart;
-					String commandChecker = "";
-					if (receiveMsg.isEmpty()) {
-						nickPart = id + ": "; // Show id in the messageArea
-					} else {
-						nickPart = st.nextToken();
-						if (st.hasMoreTokens()) {
+					String commandChecker="";
+					if(receiveMsg.isEmpty()) {
+						nickPart = id+": "; // Show id in the messageArea	
+					}else {
+						nickPart= st.nextToken();
+						if(st.hasMoreTokens()) {
 							commandChecker = st.nextToken();
 						}
 					}
 					String text = "";
 					System.out.println(commandChecker);
-					if (commandChecker.isEmpty() != true && commandChecker.charAt(0) == '/') {
+					if (commandChecker.isEmpty()!=true && commandChecker.charAt(0) == '/') {
 						switch (commandChecker.substring(1, commandChecker.length())) {
 						case "help":
 							messageField.setText(messageField.getText()
@@ -306,7 +313,7 @@ public class ChatRoom extends JFrame {
 							messageField.setText(messageField.getText() + text + "\n");
 						}
 					} else {
-						messageField.setText(messageField.getText() + receiveMsg + "\n");
+							messageField.setText(messageField.getText() + receiveMsg + "\n");
 					}
 					messageField.setCaretPosition(messageField.getText().length());
 				}
@@ -318,7 +325,7 @@ public class ChatRoom extends JFrame {
 			}
 		}
 	}
-	// public static void main(String[] args) {
-	// new ChatClient("Chan", "eee");
-	// }
+//	public static void main(String[] args) {
+//		new ChatClient("Chan", "eee");
+//	}
 }
