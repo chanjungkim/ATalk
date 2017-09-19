@@ -54,13 +54,13 @@
 > * 홍준완: 로그인 v
 > * 장진영: 프로필, 설정 v
 * 결과
-<img src="result/01_Log_In.jpg" size="100%">
-<img src="result/02_Room_List.jpg" size="100%">
-<img src="result/03_Chat_Type_1.jpg" size="100%">
-<img src="result/04_Chat_Type_2.jpg" size="100%">
-<img src="result/05_Profile.jpg" size="100%">
-<img src="result/06_Setting.jpg" size="100%">
-<img src="result/07_Log_Out.jpg" size="100%">
+<img src="result/ui/01_Log_In.jpg" size="100%">
+<img src="result/ui/02_Room_List.jpg" size="100%">
+<img src="result/ui/03_Chat_Type_1.jpg" size="100%">
+<img src="result/ui/04_Chat_Type_2.jpg" size="100%">
+<img src="result/ui/05_Profile.jpg" size="100%">
+<img src="result/ui/06_Setting.jpg" size="100%">
+<img src="result/ui/07_Log_Out.jpg" size="100%">
 
 > - [X] 완료
 
