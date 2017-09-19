@@ -54,6 +54,14 @@
 > * 홍준완: 로그인 v
 > * 장진영: 프로필, 설정 v
 * 결과
+<img src="result/01_Log_In.jpg" size="100%">
+<img src="result/02_Room_List.jpg" size="100%">
+<img src="result/03_Chat_Type_1.jpg" size="100%">
+<img src="result/04_Chat_Type_2.jpg" size="100%">
+<img src="result/05_Profile.jpg" size="100%">
+<img src="result/06_Setting.jpg" size="100%">
+<img src="result/07_Log_Out.jpg" size="100%">
+
 > - [X] 완료
 
 #### 5차 회의
@@ -90,8 +98,8 @@
 > 3. 방을 생성하면 ROOM에 방정보가 들어가고 JOIN에 방 정보와 멤버 정보가 들어감
 > 4. 음성채팅은 보류. 멀티 채팅에 전념하기.
 * 결과
-<img src="contents/er-diagram.jpg" size="100%">
-<img src="contents/schema.jpg" size="100%">
+<img src="result/er-diagram.jpg" size="100%">
+<img src="result/schema.jpg" size="100%">
 > - [X] 완료
 
 #### 8차 회의
@@ -116,7 +124,7 @@
 > 3. 이모티콘 완료
 > 4. DrawingServerThread 대강 완료 -> 동시 작업 시 에러
 * 결과
-<img src="contents/emoticon.jpg" size="100%">
+<img src="result/emoticon.jpg" size="100%">
 > - [X] 완료
 
 #### 10차 회의
