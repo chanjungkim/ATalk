@@ -18,10 +18,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class DbDao {
-	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private static final String DB_URL = "jdbc:oracle:thin:@70.12.115.61:1521:xe";
-	private static final String DB_ID = "atalk";
-	private static final String DB_PW = "sds1501";
+	private static String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static String DB_URL = "jdbc:oracle:thin:@70.12.115.61:1521:xe";
+	private static String DB_ID = "atalk";
+	private static String DB_PW = "sds1501";
 
 	private Connection con;
 	private PreparedStatement ps;
@@ -761,4 +761,37 @@ public class DbDao {
 			}
 		}
 	}
+
+	public static String getDB_DRIVER() {
+		return DB_DRIVER;
+	}
+
+	public static void setDB_DRIVER(String dB_DRIVER) {
+		DB_DRIVER = dB_DRIVER;
+	}
+
+	public static String getDB_URL() {
+		return DB_URL;
+	}
+
+	public static void setDB_URL(String dB_URL) {
+		DB_URL = dB_URL;
+	}
+
+	public static String getDB_ID() {
+		return DB_ID;
+	}
+
+	public static void setDB_ID(String dB_ID) {
+		DB_ID = dB_ID;
+	}
+
+	public static String getDB_PW() {
+		return DB_PW;
+	}
+
+	public static void setDB_PW(String dB_PW) {
+		DB_PW = dB_PW;
+	}
+	
 }

@@ -1,5 +1,7 @@
 package server;
  
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -7,18 +9,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
- 
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
- 
+import javax.swing.JTextField;
+
 import chat.DbDao;
-import server.DrawingServerThread.ChattingThread;
  
 // <---------------------- Main Server
 public class MainServer extends JFrame{
-    public static final String MAIN_SERVER_ADDR = "70.12.115.61";
-    public static final int MAIN_SERVER_PORT = 5555;
+    public static String MAIN_SERVER_ADDR = "70.12.115.56";
+    public static int MAIN_SERVER_PORT = 5555;
      
     private static int portSeed = 10000;
      
@@ -30,12 +34,24 @@ public class MainServer extends JFrame{
     private static int serverCount=0;
      
     private JPanel panel = new JPanel();
-    private JLabel lb = new JLabel("Waiting for server...");     
-     
+    private JLabel lb1 = new JLabel("MAIN SERVER ADDR");     
+    private JTextField ipField = new JTextField();
+    private JLabel lb2 = new JLabel("MAIN SERVER PORT");     
+    private JTextField portField = new JTextField();
+    private JLabel lb3 = new JLabel("DB DRIVER");     
+    private JTextField dbDriver = new JTextField();
+    private JLabel lb4 = new JLabel("DB URL");     
+    private JTextField dbUrl = new JTextField();
+    private JLabel lb5 = new JLabel("DB ID");     
+    private JTextField dbId = new JTextField();
+    private JLabel lb6 = new JLabel("DB PW");     
+    private JTextField dbPw = new JTextField();
+    private JButton resumeBtn = new JButton("RESUME");
+
     public MainServer() {
         serverThreadList = new ArrayList<>();
         drawingThreadList = new ArrayList<>();
-         
+  
         db.resetJoin();
         db.resetRoom();
          
@@ -45,8 +61,40 @@ public class MainServer extends JFrame{
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-         
-        panel.add(lb);
+        
+        panel.setLayout(new BoxLayout(panel, 1));
+        panel.add(lb1);
+        panel.add(ipField);
+        panel.add(lb2);
+        panel.add(portField);
+        panel.add(lb3);
+        panel.add(dbDriver);
+        panel.add(lb4);
+        panel.add(dbUrl);
+        panel.add(lb5);
+        panel.add(dbId);
+        panel.add(lb6);
+        panel.add(dbPw);
+        panel.add(resumeBtn);
+        ipField.setText(MAIN_SERVER_ADDR);
+        portField.setText(Integer.toString(MAIN_SERVER_PORT));
+        dbDriver.setText(db.getDB_DRIVER());
+        dbUrl.setText(db.getDB_URL());
+        dbId.setText(db.getDB_ID());
+        dbPw.setText(db.getDB_PW());
+        
+        resumeBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setMAIN_SERVER_ADDR(ipField.getText());
+				setMAIN_SERVER_PORT(Integer.parseInt(portField.getText()));
+				db.setDB_DRIVER(dbDriver.getText());
+				db.setDB_URL(dbUrl.getText());
+				db.setDB_ID(dbId.getText());
+				db.setDB_PW(dbPw.getText());
+			}
+		});
+        
         add(panel);
         setTitle("ATalk Server");
         setSize(300, 400);
@@ -113,151 +161,25 @@ public class MainServer extends JFrame{
         System.out.println("one server has been removed.");
         serverThreadList.remove(sT);
     }
-     
-//    public static void setServerCount() {
-//      
-//    }
-//    
-//    public static int getServerCount() {
-//      return serverCount;
-//    }  
- 
-    // <-------------------- ServerThread -------------------------
-//    class ServerThread extends Thread {
-//      private final static int BASIC_PORT_NUM = 5555;
-//      private final static int DRAWING_PORT_NUM = 7777;
-//      
-//      private ArrayList<UserThread> userThreadList = new ArrayList<>();
-//        private ServerSocket serverSocket;
-//
-//        private String masterID;
-//        private int serverNum;
-//        private int portNum;
-//        
-//        private BufferedReader mainToServerBr;
-//        private BufferedWriter serverToMainBw;
-//
-//        public ServerThread(Socket mainServerSocket) {
-//          try {
-//              // Start setting up Port Num.
-//              mainToServerBr = new BufferedReader(new InputStreamReader(mainServerSocket.getInputStream()));
-//              serverToMainBw = new BufferedWriter(new OutputStreamWriter(mainServerSocket.getOutputStream()));
-//              
-//              int serverNum = Integer.parseInt(mainToServerBr.readLine());
-//              int portNum = BASIC_PORT_NUM+serverNum;
-//              int drawingPortNum = DRAWING_PORT_NUM+serverNum;
-//
-//                serverSocket = new ServerSocket(portNum);
-//
-//              Socket socketToServer = new Socket(InetAddress.getByName("127.0.0.1"), portNum);
-//
-//                DrawingServer drawingServer = new DrawingServer(drawingPortNum);
-//                drawingServer.start();
-//              // End of setting up Port Num.
-//
-//              serverToMainBw.flush();
-//          } catch (IOException e1) {
-//              // TODO Auto-generated catch block
-//              e1.printStackTrace();
-//          }
-//            while (true) {
-//                System.out.println("Waiting for client...");
-//                Socket socketToUser;
-//              try {
-//                  socketToUser = serverSocket.accept();
-//                  
-//                  System.out.println("Connected :" + socketToUser.getInetAddress());
-//                  
-//                  UserThread uT = new UserThread(socketToUser);
-//                  userThreadList.add(uT);
-//                  uT.start();
-//              } catch (IOException e) {
-//                  // TODO Auto-generated catch block
-//                  e.printStackTrace();
-//              }
-//            }
-//        }
-//      
-//        
-//        @Override
-//        public void run() {
-//            try {
-//                while (true) {
-//                  String msg = mainToServerBr.readLine();  // useless
-//                }
-//            } catch (IOException e) {
-//              
-//                removeServerThread(this);
-//                System.out.println(portNum+"방이 제거 되었습니다.");
-//              e.printStackTrace();
-//            }
-//        }
-//        public void speak(String msg) {
-//            try {
-//                serverToMainBw.write("1"); // add one
-//                serverToMainBw.flush();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        public void broadcastToUsers(String msg) {
-//            for (UserThread uT : userThreadList) {
-//                uT.sendMessage(msg);
-//            }
-//        }
-//        
-//        public int getServerCount(){
-//          return serverNum;
-//        }
-//        
-//        public void removeUserThread(UserThread uT) {
-//            userThreadList.remove(uT);
-//        }
-//                
-//        //<-------------------- UserThread -------------------------
-//        class UserThread extends Thread {
-//            private String nickname;
-//            private BufferedReader serverToUserBr;
-//            private BufferedWriter userToServerBw;
-//     
-//            public UserThread(Socket serverSocket) {
-//                try {
-//                    serverToUserBr = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
-//                    userToServerBw = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//     
-//            @Override
-//            public void run() {
-//                try {
-//                    nickname = serverToUserBr.readLine();
-//                    broadcastToUsers(nickname+" entered the room.");
-//     
-//                    while (true) {
-//                        String msg = serverToUserBr.readLine();
-//                        broadcastToUsers(nickname + ": " + msg);
-//                    }
-//                } catch (IOException e) {
-//                    removeUserThread(this);
-//                    broadcastToUsers("" + nickname + "left the room.");
-//                  e.printStackTrace();
-//                }
-//            }
-//     
-//            public void sendMessage(String msg) {
-//                try {
-//                    userToServerBw.write(msg + "\n");
-//                    userToServerBw.flush();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-    public static void main(String[] args) {
+    
+    public static String getMAIN_SERVER_ADDR() {
+		return MAIN_SERVER_ADDR;
+	}
+
+	public static void setMAIN_SERVER_ADDR(String mAIN_SERVER_ADDR) {
+		MAIN_SERVER_ADDR = mAIN_SERVER_ADDR;
+	}
+
+	public static int getMAIN_SERVER_PORT() {
+		return MAIN_SERVER_PORT;
+	}
+
+	public static void setMAIN_SERVER_PORT(int mAIN_SERVER_PORT) {
+		MAIN_SERVER_PORT = mAIN_SERVER_PORT;
+	}
+
+	public static void main(String[] args) {
         MainServer server = new MainServer();
     }
+    
 }
